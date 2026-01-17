@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.login"
+    namespace = "com.example.impl"
 }
 
 dependencies {
