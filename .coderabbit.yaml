@@ -1,68 +1,61 @@
-# .coderabbit.yaml (repo root)
+# ===============================
+# CodeRabbit configuration
+# ===============================
 
 # 리뷰/코멘트 언어
-language: "ko-KR"
+language: ko-KR
 
-# 전체 톤 가이드(최대 250자)
-tone_instructions: >
-  정확하고 담백하게 리뷰해줘. 불필요한 비난/감정표현은 하지 말고,
-  근거(왜 문제인지)와 대안(어떻게 고칠지)을 짧게 제시해줘.
-  Android 아키텍처/성능 저하 가능성(리컴포지션, 코루틴, DI, 모듈 경계)을 우선순위로 봐줘.
+# 전체 톤 가이드
+tone_instructions: |
+  정확하고 담백하게 리뷰해줘.
+  불필요한 비난이나 감정적인 표현은 피하고,
+  왜 문제가 되는지와 어떻게 개선할 수 있는지를 간결하게 설명해줘.
+  Android 아키텍처와 성능 저하 가능성
+  (리컴포지션, 코루틴, DI, 모듈 경계)을 우선적으로 분석해줘.
 
 reviews:
-  # 리뷰 스타일 프로필: chill
-  profile: "chill"
+  # 리뷰 스타일
+  profile: chill
 
-  high_level_summary: true :contentReference[oaicite:3]{index=3}
-  poem: false :contentReference[oaicite:4]{index=4}
-  in_progress_fortune: false :contentReference[oaicite:5]{index=5}
-  collapse_walkthrough: true :contentReference[oaicite:6]{index=6}
+  # 리뷰 옵션
+  high_level_summary: true
+  poem: false
+  in_progress_fortune: false
+  collapse_walkthrough: true
 
   # 자동 리뷰 설정
   auto_review:
-    enabled: true :contentReference[oaicite:7]{index=7}
-    auto_incremental_review: true :contentReference[oaicite:8]{index=8}
-    drafts: false :contentReference[oaicite:9]{index=9}
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
     base_branches:
       - "^develop$"
-
-
     ignore_title_keywords:
       - "wip"
       - "draft"
 
+  # 경로별 리뷰 지침
   path_instructions:
-    # Kotlin/Compose 전반
     - path: "**/*.kt"
       instructions: |
-        아래 우선순위로 리뷰해줘:
-        1) 아키텍처/모듈 경계: feature→core 의존 방향, UI/Domain/Data 분리, public API 최소화, 순환 의존 가능성
-        2) 상태/단방향 흐름: UI state 단일 소스, event/effect 분리, Flow/StateFlow 사용이 안전한지
-        3) 코루틴/Flow: dispatcher 적절성, cancellation/structured concurrency, 누수(전역 스코프/무한 collect), backpressure(conflate/buffer) 사용 근거
-        4) 성능: 불필요한 객체 생성, 컬렉션 변환 남발, 과한 인라인 람다, 로깅/트레이스 남용, I/O on Main
-        5) 테스트/가독성: 변경 영향 범위, 네이밍, 주석보다 코드로 의도 드러내기
+        다음 항목을 우선적으로 리뷰해줘:
+        1) 아키텍처/모듈 경계 (feature → core 의존 방향, 순환 의존성)
+        2) 상태 관리와 단방향 데이터 흐름
+        3) Coroutine / Flow 사용의 안정성 (dispatcher, cancellation, leak)
+        4) 성능 이슈 (불필요한 recomposition, 객체 생성, 메인 스레드 I/O)
+        5) 가독성과 변경 영향 범위
 
-    # Compose 성능/리컴포지션 집중
     - path: "**/*compose*/**/*.kt"
       instructions: |
-        Compose 성능 중심으로 봐줘:
-        - 불필요한 recomposition 유발(unstable 파라미터/람다, remember 누락, derivedStateOf/rememberUpdatedState 사용 여부)
-        - Lazy 리스트 key 안정성, item content 분리, snapshot state 사용
-        - side effect(LaunchedEffect/DisposableEffect) 키 적절성, collectAsStateWithLifecycle 누락 여부
-        - Modifier 체인 과도/재사용, 이미지/리소스 로딩 위치
+        Compose 성능을 중심으로 리뷰해줘:
+        - 불필요한 recomposition 유발 요소
+        - remember / derivedStateOf / rememberUpdatedState 사용 여부
+        - Lazy 리스트 key 안정성
+        - LaunchedEffect / SideEffect 키 적절성
 
-    # DI/Hilt/Koin 등
-    - path: "**/*di*/**/*.kt"
-      instructions: |
-        DI 구성에서 성능/유지보수 관점으로 확인해줘:
-        - @Singleton/@Reusable 범위 적절성, Activity/Feature scope 오남용
-        - Provider/EntryPoint 남발, 불필요한 객체 그래프 생성
-        - 모듈 공개 범위(public/internal) 및 feature 모듈 침범 여부
-
-    # Gradle/빌드 로직
     - path: "**/*.gradle.kts"
       instructions: |
-        빌드 성능/모듈화 관점으로 리뷰해줘:
-        - 플러그인/의존성 버전 정렬(BOM/버전 카탈로그), 중복 선언
-        - configuration cache / build cache 방해 요소
-        - api vs implementation 선택 적절성, 불필요한 transitive 노출
+        빌드 성능과 모듈화 관점에서 리뷰해줘:
+        - dependency 정렬과 중복
+        - api / implementation 선택
+        - 불필요한 transitive dependency
