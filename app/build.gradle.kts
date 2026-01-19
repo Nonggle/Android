@@ -1,8 +1,12 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.example.nonggle.android.application.compose)
     alias(libs.plugins.example.nonggle.android.hilt)
+}
+
+fun getSecretKey(key: String): String {
+    return gradleLocalProperties(rootDir, providers).getProperty(key)
 }
 
 android {
@@ -10,6 +14,8 @@ android {
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${getSecretKey("KAKAO_NATIVE_APP_KEY")}\"")
+        manifestPlaceholders["kakaoKey"] = "kakao${getSecretKey("KAKAO_NATIVE_APP_KEY")}"
     }
 
     buildFeatures {
