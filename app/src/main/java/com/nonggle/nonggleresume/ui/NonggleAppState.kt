@@ -1,19 +1,16 @@
-package com.example.nonggleresume.ui
+package com.nonggle.nonggleresume.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation3.runtime.NavKey
 import com.example.data.util.NetworkMonitor
 import com.example.home.navigation.HomeNavKey
 import com.example.navigation.NavigationState
 import com.example.navigation.rememberNavigationState
-import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
+import com.nonggle.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 

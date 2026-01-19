@@ -1,4 +1,4 @@
-package com.example.nonggleresume.util
+package com.nonggle.nonggleresume.util
 
 import android.content.res.Configuration
 import androidx.activity.ComponentActivity

@@ -1,5 +1,6 @@
-package com.example.nonggleresume
+package com.nonggle.nonggleresume
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -15,10 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.data.util.NetworkMonitor
 import com.example.designsystem.theme.NonggleTheme
-import com.example.nonggleresume.ui.NonggleApp
-import com.example.nonggleresume.ui.rememberNonggleAppState
-import com.example.nonggleresume.util.isSystemInDarkTheme
-import com.example.nonggleresume.util.isSysyemInDarkTheme
+import com.nonggle.nonggleresume.ui.NonggleApp
+import com.nonggle.nonggleresume.ui.rememberNonggleAppState
+import com.nonggle.nonggleresume.util.isSystemInDarkTheme
+import com.nonggle.nonggleresume.util.isSysyemInDarkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -62,8 +63,8 @@ class MainActivity : ComponentActivity() {
                     .collect { darkTheme ->
                         enableEdgeToEdge(
                             statusBarStyle = SystemBarStyle.auto(
-                                lightScrim = android.graphics.Color.TRANSPARENT,
-                                darkScrim = android.graphics.Color.TRANSPARENT
+                                lightScrim = Color.TRANSPARENT,
+                                darkScrim = Color.TRANSPARENT
                             ) { darkTheme },
                             navigationBarStyle = SystemBarStyle.auto(
                                 lightScrim = lightScrim,
@@ -103,9 +104,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
 
-private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
 
 
 data class ThemeSettings(

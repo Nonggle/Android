@@ -1,11 +1,11 @@
-package com.example.nonggleresume
+package com.nonggle.nonggleresume
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
-import com.example.nonggleresume.MainActivityUiState.Loading
-import com.example.nonggleresume.MainActivityUiState.Success
+import com.nonggle.nonggleresume.MainActivityUiState.Loading
+import com.nonggle.nonggleresume.MainActivityUiState.Success
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
