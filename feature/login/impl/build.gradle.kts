@@ -14,6 +14,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.kakao.sdk:v2-user:2.11.0")
 
     implementation(project(":feature:login:api"))
 }

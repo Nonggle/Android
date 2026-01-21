@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
 
+    // kakao login
+    implementation("com.kakao.sdk:v2-user:2.11.0")
+
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))

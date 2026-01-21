@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -37,6 +38,7 @@ internal fun LoginScreen(modifier: Modifier = Modifier) {
         AppLogoForLogin()
         Spacer(modifier = modifier.weight(1f))
         kakaoLoginButton(
+            modifier = Modifier.padding(bottom = 30.dp),
             onClick = {
                 //viewModel.setEvent(LoginContract.Event.KakaoLoginButtonClick)
             },
@@ -64,10 +66,11 @@ fun AppLogoForLogin(modifier: Modifier = Modifier) {
 
 @Composable
 fun kakaoLoginButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
     NonggleImageButton(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 20.dp)
             .fillMaxWidth(),
         onClick = onClick,
@@ -77,4 +80,10 @@ fun kakaoLoginButton(
         titleTextStyle = MaterialTheme.typography.labelLarge,
         imageResource = R.drawable.kakaobtn
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginPreviewScreen() {
+    LoginScreen()
 }
