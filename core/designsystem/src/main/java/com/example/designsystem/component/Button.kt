@@ -91,7 +91,7 @@ fun FullButton(
 }
 
 @Composable
-fun ImageButton(
+fun NonggleImageButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     titleText: String,
