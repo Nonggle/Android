@@ -10,7 +10,9 @@ import com.example.navigation.NavigationState
 import com.example.navigation.rememberNavigationState
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
@@ -18,18 +20,20 @@ import kotlinx.coroutines.flow.stateIn
 fun rememberNonggleAppState(
     networkMonitor: NetworkMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    isLogin: Boolean = false,
 ): NonggleAppState {
-    val navigationState = rememberNavigationState(HomeNavKey, TOP_LEVEL_NAV_ITEMS.keys)
+    val mainNavigationState = rememberNavigationState(HomeNavKey, TOP_LEVEL_NAV_ITEMS.keys)
 
     return remember(
-        navigationState,
+        mainNavigationState,
         coroutineScope,
-        networkMonitor
+        networkMonitor,
+        isLogin,
     ) {
         NonggleAppState(
-            navigationState = navigationState,
+            mainNavigationState = mainNavigationState,
             coroutineScope = coroutineScope,
-            networkMonitor = networkMonitor
+            networkMonitor = networkMonitor,
         )
     }
 }
@@ -37,10 +41,21 @@ fun rememberNonggleAppState(
 
 @Stable
 class NonggleAppState(
-    val navigationState: NavigationState,
+    val mainNavigationState: NavigationState,
     coroutineScope: CoroutineScope,
-    networkMonitor: NetworkMonitor
+    networkMonitor: NetworkMonitor,
 ) {
+    private val _isLogin = MutableStateFlow(false)
+
+    val graphState: StateFlow<RootGraph> =
+        _isLogin.map { login ->
+            if(login) RootGraph.Main else RootGraph.Login
+        }.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = RootGraph.Login
+        )
+
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)
         .stateIn(
@@ -48,4 +63,18 @@ class NonggleAppState(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false
         )
+
+    fun logout() {
+        _isLogin.value = false
+    }
+
+    fun onLoginSuccess() {
+        _isLogin.value = true
+    }
+
+}
+
+sealed interface RootGraph {
+    data object Login : RootGraph
+    data object Main : RootGraph
 }

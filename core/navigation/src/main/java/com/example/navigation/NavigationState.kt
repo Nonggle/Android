@@ -49,8 +49,7 @@ class NavigationState(
 ) {
     val currentTopLevelKey: NavKey by derivedStateOf { topLevelStack.last() }
 
-    val topLevelKeys
-        get() = subStacks.keys
+    val topLevelKeys get() = subStacks.keys
 
     @get:VisibleForTesting
     val currentSubStack: NavBackStack<NavKey>
