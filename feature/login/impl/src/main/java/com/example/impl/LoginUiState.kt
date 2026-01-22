@@ -1,7 +1,8 @@
 package com.example.impl
 
 sealed interface LoginUiState {
+    data object Idle: LoginUiState
     data object Loading: LoginUiState
 
-    data object LoginRe
+    data object LoginSuccess: LoginUiState
 }

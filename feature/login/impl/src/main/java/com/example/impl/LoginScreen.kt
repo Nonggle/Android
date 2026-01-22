@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,31 +21,53 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.designsystem.component.NonggleImageButton
 import com.example.designsystem.theme.soYo
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    onLoginSuccess: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    LoginScreen(modifier)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(uiState) {
+        if(uiState is LoginUiState.LoginSuccess) {
+            onLoginSuccess()
+        }
+    }
+
+    LoginScreen(
+        modifier = modifier,
+        uiState = LoginUiState.Idle,
+        kakaoLoginButtonClick = { viewModel.kakaoLoginButtonClick() }
+    )
 }
 
 @Composable
-internal fun LoginScreen(modifier: Modifier = Modifier) {
+internal fun LoginScreen(
+    modifier: Modifier = Modifier,
+    uiState: LoginUiState,
+    kakaoLoginButtonClick: () -> Unit,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = modifier.weight(1f))
-        AppLogoForLogin()
-        Spacer(modifier = modifier.weight(1f))
-        kakaoLoginButton(
-            modifier = Modifier.padding(bottom = 30.dp),
-            onClick = {
-                //viewModel.setEvent(LoginContract.Event.KakaoLoginButtonClick)
-            },
-        )
+        when(uiState) {
+            LoginUiState.Idle -> {
+                Spacer(modifier = modifier.weight(1f))
+                AppLogoForLogin()
+                Spacer(modifier = modifier.weight(1f))
+                kakaoLoginButton(
+                    modifier = Modifier.padding(bottom = 30.dp),
+                    onClick = kakaoLoginButtonClick,
+                )
+            }
+            else -> {
+                CircularProgressIndicator()
+            }
+        }
     }
 }
 
@@ -52,7 +77,7 @@ fun AppLogoForLogin(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 50.dp),
-        text = "농글",
+        text = stringResource(R.string.app_name),
         color = MaterialTheme.colorScheme.primary,
         style = TextStyle(
             fontFamily = soYo,
@@ -85,5 +110,8 @@ fun kakaoLoginButton(
 @Preview(showBackground = true)
 @Composable
 fun LoginPreviewScreen() {
-    LoginScreen()
+    LoginScreen(
+        uiState = LoginUiState.Idle,
+        kakaoLoginButtonClick = {}
+    )
 }
