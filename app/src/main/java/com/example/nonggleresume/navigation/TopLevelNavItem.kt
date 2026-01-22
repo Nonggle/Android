@@ -32,8 +32,8 @@ val DOWNLOAD = TopLevelNavItem(
 )
 
 val SETTING = TopLevelNavItem(
-    selectedIconRes = NonggleIcons.homeSelected,
-    unselectedIconRes = NonggleIcons.homeUnselected,
+    selectedIconRes = NonggleIcons.settingSelected,
+    unselectedIconRes = NonggleIcons.settingUnselected,
     iconTextId = settingResource.string.feature_name,
     titleTextId = settingResource.string.feature_name,
 )
