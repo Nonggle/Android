@@ -168,8 +168,10 @@ fun ContainedButton(
 @Composable
 fun OutlinedButton(
     modifier: Modifier = Modifier,
+    isSelect: Boolean,
     enabled: Boolean = true,
     enableColor: Color,
+    selectColor: Color,
     enableContentColor: Color,
     pressedColor: Color,
     disableContentColor: Color? = null,
@@ -185,7 +187,7 @@ fun OutlinedButton(
         disableContentColor = disableContentColor,
         roundedCorner = 4.dp,
         backgroundColor = Color.White,
-        border = BorderStroke(width = 1.dp, color = enableColor),
+        border = BorderStroke(width = 1.dp, color = if(isSelect) selectColor else enableColor ),
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         content = {

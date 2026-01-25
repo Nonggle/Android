@@ -25,7 +25,7 @@ val LightDefaultColorScheme = lightColorScheme(
     secondary = NonggleTokens.m2,
     onSecondary = NonggleTokens.white,
     secondaryContainer = NonggleTokens.m6,
-    onSecondaryContainer = NonggleTokens.m1,
+    onSecondaryContainer = NonggleTokens.m3,
 
     tertiary = NonggleTokens.s1,
     onTertiary = NonggleTokens.black,

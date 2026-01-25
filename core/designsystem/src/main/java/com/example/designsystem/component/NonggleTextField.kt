@@ -72,8 +72,7 @@ fun NonggleTextField(
                 visualTransformation = visualTransformation,
                 placeholder = placeholder,
                 maxLines = maxLines,
-                textStyle = textStyle,
-                textColor = textColor
+                textStyle = textStyle.copy(color = textColor),
                 readOnly = readOnly,
                 trailingIcon = trailingIcon,
                 colors = TextFieldDefaults.colors(
@@ -85,7 +84,7 @@ fun NonggleTextField(
                     unfocusedContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                )
+                ),
             )
             TextFieldType.Outlined -> OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -94,8 +93,7 @@ fun NonggleTextField(
                 value = value,
                 onValueChange = onValueChange,
                 supportingText = supportText,
-                textStyle = textStyle,
-                textColor = textColor,
+                textStyle = textStyle.copy(color = textColor),
                 shape = shape,
                 placeholder = placeholder,
                 keyboardOptions = keyboardOptions,
@@ -103,6 +101,7 @@ fun NonggleTextField(
                 visualTransformation = visualTransformation,
                 maxLines = maxLines,
                 trailingIcon = trailingIcon,
+                isError = isError,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = focusedColor,
                     unfocusedBorderColor = if(isSuccess) successColor else enabledColor,
