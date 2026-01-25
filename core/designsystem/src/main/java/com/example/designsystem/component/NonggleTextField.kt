@@ -73,6 +73,7 @@ fun NonggleTextField(
                 placeholder = placeholder,
                 maxLines = maxLines,
                 textStyle = textStyle,
+                textColor = textColor
                 readOnly = readOnly,
                 trailingIcon = trailingIcon,
                 colors = TextFieldDefaults.colors(
@@ -94,6 +95,7 @@ fun NonggleTextField(
                 onValueChange = onValueChange,
                 supportingText = supportText,
                 textStyle = textStyle,
+                textColor = textColor,
                 shape = shape,
                 placeholder = placeholder,
                 keyboardOptions = keyboardOptions,
