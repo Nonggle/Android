@@ -5,4 +5,6 @@ sealed interface LoginUiState {
     data object Loading: LoginUiState
 
     data object LoginSuccess: LoginUiState
+
+    data object LoginFail: LoginUiState
 }

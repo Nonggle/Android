@@ -80,7 +80,7 @@ internal fun NonggleApp(
                             onClick = { mainNavigator.navigate(navKey) },
                             icon = { Icon(painterResource(navItem.unselectedIconRes), null) },
                             selectedIcon = { Icon(painterResource(navItem.selectedIconRes), null) },
-                            label = { Text(stringResource(navItem.titleTextId)) },
+                            label = { Text(navItem.title()) },
                         )
                     }
                 }
@@ -109,7 +109,7 @@ internal fun NonggleApp(
                             val destination = TOP_LEVEL_NAV_ITEMS[appState.mainNavigationState.currentTopLevelKey] ?: error("Top level nav item not found for ${appState.mainNavigationState.currentTopLevelKey}")
 
                             TopAppBar(
-                                title = { Text(text = stringResource(destination.iconTextId)) }
+                                title = { Text(destination.title()) }
                             )
                         }
 

@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,10 +32,14 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(uiState) {
         if(uiState is LoginUiState.LoginSuccess) {
             onLoginSuccess()
+        }
+        if(uiState is LoginUiState.LoginFail) {
+            // 토스트 메시지 표시하기
         }
     }
 
@@ -55,7 +60,7 @@ internal fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when(uiState) {
-            LoginUiState.Idle -> {
+            LoginUiState.Idle, LoginUiState.LoginFail -> {
                 Spacer(modifier = modifier.weight(1f))
                 AppLogoForLogin()
                 Spacer(modifier = modifier.weight(1f))
