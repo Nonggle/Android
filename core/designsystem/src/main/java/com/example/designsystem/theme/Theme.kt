@@ -45,6 +45,7 @@ val LightDefaultColorScheme = lightColorScheme(
 
     surfaceVariant = NonggleTokens.g4,
     onSurfaceVariant = NonggleTokens.g1,
+    surfaceTint = NonggleTokens.g2,
 
     inverseSurface = NonggleTokens.black,
     inverseOnSurface = NonggleTokens.g5,
