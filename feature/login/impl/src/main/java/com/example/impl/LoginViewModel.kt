@@ -20,20 +20,7 @@ class LoginViewModel @Inject constructor(
 
     fun kakaoLoginButtonClick() {
         viewModelScope.launch {
-//            _uiState.value = LoginUiState.Loading
-//            runCatching {
-//                kakaoAuthDataSource.login()
-//            }.onSuccess { token ->
-//                Log.i("LoginViewModel", "로그인 성공 ${token.accessToken}")
-//                _uiState.value = LoginUiState.LoginSuccess
-//            }.onFailure { throwable ->
-//                if (throwable is java.util.concurrent.CancellationException) {
-//                    throw throwable
-//                }
-//                Log.e("LoginViewModel", "로그인 실패", throwable)
-//                _uiState.value = LoginUiState.LoginFail
-//            }
-           // UserApiClient.login()
+            kakaoAuthDataSource.kakaoLogin()
         }
     }
 
