@@ -29,37 +29,43 @@ import com.example.designsystem.theme.soYo
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    //onShowLoginFailSnackBar: suspend (String) -> Unit,
     onLoginSuccess: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(uiState) {
-        if(uiState is LoginUiState.LoginSuccess) {
-            onLoginSuccess()
-        }
-        if(uiState is LoginUiState.LoginFail) {
-            // 토스트 메시지 표시하기
-        }
-    }
 
     LoginScreen(
         modifier = modifier,
-        uiState = LoginUiState.Idle,
-        kakaoLoginButtonClick = { viewModel.kakaoLoginButtonClick() }
+        loginState = uiState.loginState,
+        onLoginSuccess = onLoginSuccess,
+        kakaoLoginButtonClick = { viewModel.setEvent(LoginEvent.KakaoLoginButtonClick) }
     )
 }
 
 @Composable
 internal fun LoginScreen(
     modifier: Modifier = Modifier,
-    uiState: LoginUiState,
+    loginState: LoginUiState = LoginUiState.Idle,
+    //onShowLoginFailSnackBar: suspend (String) -> Unit,
+    onLoginSuccess: () -> Unit,
     kakaoLoginButtonClick: () -> Unit,
 ) {
+    val kakaoLoginFailMessage = stringResource(R.string.fail_kakao_login)
+
+        LaunchedEffect(loginState) {
+        if(loginState is LoginUiState.LoginSuccess) {
+            onLoginSuccess()
+        } else if(loginState is LoginUiState.LoginFail) {
+            // 토스트 메시지 표시하기
+            //onShowLoginFailSnackBar(kakaoLoginFailMessage)
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when(uiState) {
+        when(loginState) {
             LoginUiState.Idle, LoginUiState.LoginFail -> {
                 Spacer(modifier = modifier.weight(1f))
                 AppLogoForLogin()
@@ -109,14 +115,5 @@ fun kakaoLoginButton(
         backgroundColor = Color(0xFFF9E000),
         titleTextStyle = MaterialTheme.typography.labelLarge,
         imageResource = R.drawable.kakaobtn
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPreviewScreen() {
-    LoginScreen(
-        uiState = LoginUiState.Idle,
-        kakaoLoginButtonClick = {}
     )
 }

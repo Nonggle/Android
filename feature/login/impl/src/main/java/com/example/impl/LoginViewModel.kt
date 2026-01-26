@@ -1,29 +1,36 @@
 package com.example.impl
-import com.example.impl.KakaoAuthDataSource
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.user.UserApiClient
+import com.example.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val kakaoAuthDataSource: KakaoAuthDataSource
-) : ViewModel() {
+   private val kakaoLoginManager: KakaoLoginManager
+) : BaseViewModel<LoginEvent, LoginState, LoginEffect>(
+        initialState = LoginState()
+    ) {
 
-    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
-
-    fun kakaoLoginButtonClick() {
-        viewModelScope.launch {
-            kakaoAuthDataSource.kakaoLogin()
+    override fun onEvent(event: LoginEvent) {
+        when(event) {
+            is LoginEvent.KakaoLoginButtonClick -> kakaoLoginButtonClick()
         }
     }
 
-
-
+    private fun kakaoLoginButtonClick() {
+        viewModelScope.launch {
+            kakaoLoginManager.kakaoLogin()
+                .onSuccess {
+                    updateState {
+                        copy(loginState = LoginUiState.LoginSuccess)
+                    }
+                }
+                .onFailure {
+                    updateState {
+                        copy(loginState = LoginUiState.LoginFail)
+                    }
+                }
+        }
+    }
 }

@@ -17,4 +17,5 @@ dependencies {
     implementation("com.kakao.sdk:v2-user:2.11.0")
 
     implementation(project(":feature:login:api"))
+    implementation(project(":core:ui"))
 }
