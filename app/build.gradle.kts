@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.androidx.navigation3.ui)
 
     // kakao login
-    implementation("com.kakao.sdk:v2-user:2.11.0")
+    implementation(libs.kakao.user)
 
 
     implementation(project(":core:designsystem"))
@@ -59,7 +59,6 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:navigation"))
 
-    implementation(project(":feature:login:impl"))
     implementation(project(":feature:login:api"))
     implementation(project(":feature:home"))
     implementation(project(":feature:download"))

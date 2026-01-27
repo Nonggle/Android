@@ -28,6 +28,9 @@ projectMinSdkVersion = "26"
 projectTargetSdkVersion = "36"
 projectCompileSdkVersion = "36"
 
+#kakao sdk
+kakaoSdk = "2.23.2"
+
 # Firebase
 google-services = "4.4.4"
 firebaseCrashlyticsPlugin = "3.0.6"
@@ -75,6 +78,9 @@ androidx-lifecycle-viewModel-navigation3 = { group = "androidx.lifecycle", name 
 
 # 26버전이 필요한 api 21 버전에서도 사용할 수 있게 해주는 역할
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+
+# kakao sdk
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakaoSdk" }
 
 
 [plugins]
