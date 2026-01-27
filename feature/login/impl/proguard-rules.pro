@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Kakao SDK 모델 클래스 유지
+-keep class com.kakao.sdk.**.model.* { <fields>; }
+
+# API 인터페이스 유지 (R8 full mode 관련 이슈 해결)
+-keep interface com.kakao.sdk.**.*Api { *; }
