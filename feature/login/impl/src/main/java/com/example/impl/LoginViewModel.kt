@@ -21,12 +21,12 @@ class LoginViewModel @Inject constructor(
 
     private fun kakaoLoginButtonClick() {
         viewModelScope.launch {
+            updateState {copy(isLoading = true)}
             kakaoLoginManager.kakaoLogin()
                 .onSuccess {
                     updateState {
                         copy(
                             loginState = LoginUiState.LoginSuccess,
-                            isLoading = true
                         )
                     }
                 }
@@ -35,6 +35,7 @@ class LoginViewModel @Inject constructor(
                         copy(loginState = LoginUiState.LoginFail)
                     }
                 }
+            updateState {copy(isLoading = false)}
         }
     }
 }

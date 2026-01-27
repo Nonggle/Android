@@ -34,7 +34,7 @@ class KakaoLoginManager @Inject constructor(
         }
     }
 
-    suspend fun loginWithKakaoTalk(): OAuthToken = suspendCoroutine { continuation ->
+    private suspend fun loginWithKakaoTalk(): OAuthToken = suspendCoroutine { continuation ->
         UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
             when {
                 error != null -> continuation.resumeWithException(error)
@@ -44,7 +44,7 @@ class KakaoLoginManager @Inject constructor(
         }
     }
 
-    suspend fun loginWithKakaoAccount(): OAuthToken = suspendCoroutine {  continuation ->
+    private suspend fun loginWithKakaoAccount(): OAuthToken = suspendCoroutine {  continuation ->
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
             when {
                 error != null -> continuation.resumeWithException(error)
