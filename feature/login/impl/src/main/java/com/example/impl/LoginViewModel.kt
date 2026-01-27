@@ -1,4 +1,5 @@
 package com.example.impl
+
 import androidx.lifecycle.viewModelScope
 import com.example.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,13 +8,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-   private val kakaoLoginManager: KakaoLoginManager
+    private val kakaoLoginManager: KakaoLoginManager
 ) : BaseViewModel<LoginEvent, LoginState, LoginEffect>(
-        initialState = LoginState()
-    ) {
+    initialState = LoginState()
+) {
 
     override fun onEvent(event: LoginEvent) {
-        when(event) {
+        when (event) {
             is LoginEvent.KakaoLoginButtonClick -> kakaoLoginButtonClick()
         }
     }
@@ -23,7 +24,10 @@ class LoginViewModel @Inject constructor(
             kakaoLoginManager.kakaoLogin()
                 .onSuccess {
                     updateState {
-                        copy(loginState = LoginUiState.LoginSuccess)
+                        copy(
+                            loginState = LoginUiState.LoginSuccess,
+                            isLoading = true
+                        )
                     }
                 }
                 .onFailure {

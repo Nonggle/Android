@@ -24,16 +24,15 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.example.api.LoginEntryProvider
 import com.example.api.LoginNavKey
 import com.example.designsystem.component.NonggleMobileNavigationScaffold
 import com.example.designsystem.component.NonggleNavigationBarItem
 import com.example.download.navigation.downLoadEntryProvider
 import com.example.home.navigation.homeEntryProvider
-import com.example.impl.navigation.LoginEntry
 import com.example.navigation.Navigator
 import com.example.navigation.toEntries
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
@@ -55,17 +54,11 @@ internal fun NonggleApp(
 
     when(graphState) {
         RootGraph.Login -> {
-            val entryProvider = entryProvider {
-                LoginEntry(onLoginSuccess = { appState.onLoginSuccess() })
-            }
+            //val entryProvider = LoginEntryProvider(onLoginSuccess = { appState.onLoginSuccess() })
 
             NavDisplay(
-                entries = remember {
-                    mutableStateListOf(entryProvider(LoginNavKey))
-                },
-                onBack = {
-                    // 로그인 화면에서 뒤로가면 앱 종료
-                }
+                entries = entryProvider,
+                onBack = {}
             )
         }
 
