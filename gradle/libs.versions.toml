@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.2"
+agp = "8.13.0"
 androidTools = "31.5.0"
 kotlin = "2.0.0"
 ksp = "2.0.0-1.0.22"
@@ -28,12 +28,20 @@ projectMinSdkVersion = "26"
 projectTargetSdkVersion = "36"
 projectCompileSdkVersion = "36"
 
+#kakao sdk
+kakaoSdk = "2.23.2"
+
+# Firebase
+google-services = "4.4.4"
+firebaseCrashlyticsPlugin = "3.0.6"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -71,6 +79,9 @@ androidx-lifecycle-viewModel-navigation3 = { group = "androidx.lifecycle", name 
 # 26버전이 필요한 api 21 버전에서도 사용할 수 있게 해주는 역할
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
+# kakao sdk
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakaoSdk" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -79,6 +90,10 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Firebase
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+gms-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 # build-logic
 example-nonggle-android-application = {id = "example.nonggle.android.application", version = "unspecified"}

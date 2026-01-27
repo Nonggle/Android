@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">농글농글</string>
+    <string name="nav_item_home">홈</string>
+    <string name="nav_item_download">다운로드</string>
+    <string name="nav_item_setting">설정</string>
 </resources>

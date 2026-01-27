@@ -12,4 +12,5 @@ object NonggleIcons {
     val downloadUnselected = R.drawable.download_unselect
     val downloadSelected = R.drawable.download_select
     val settingUnselected = R.drawable.setting_unselect
+    val settingSelected = R.drawable.setting_select
 }

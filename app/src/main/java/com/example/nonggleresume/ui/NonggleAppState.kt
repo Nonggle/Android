@@ -4,35 +4,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation3.runtime.NavKey
 import com.example.data.util.NetworkMonitor
 import com.example.home.navigation.HomeNavKey
 import com.example.navigation.NavigationState
 import com.example.navigation.rememberNavigationState
+import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
 fun rememberNonggleAppState(
     networkMonitor: NetworkMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    isLogin: Boolean = false,
 ): NonggleAppState {
-    val navigationState = rememberNavigationState(HomeNavKey, TOP_LEVEL_NAV_ITEMS.keys)
+    val mainNavigationState = rememberNavigationState(HomeNavKey, TOP_LEVEL_NAV_ITEMS.keys)
 
     return remember(
-        navigationState,
+        mainNavigationState,
         coroutineScope,
-        networkMonitor
+        networkMonitor,
+        isLogin,
     ) {
         NonggleAppState(
-            navigationState = navigationState,
+            mainNavigationState = mainNavigationState,
             coroutineScope = coroutineScope,
-            networkMonitor = networkMonitor
+            networkMonitor = networkMonitor,
         )
     }
 }
@@ -40,10 +44,21 @@ fun rememberNonggleAppState(
 
 @Stable
 class NonggleAppState(
-    val navigationState: NavigationState,
+    val mainNavigationState: NavigationState,
     coroutineScope: CoroutineScope,
-    networkMonitor: NetworkMonitor
+    networkMonitor: NetworkMonitor,
 ) {
+    private val _isLogin = MutableStateFlow(false)
+
+    val rootNavState: StateFlow<RootNavKey> =
+        _isLogin.map { login ->
+            if(login) RootNavKey.MainNavKey else RootNavKey.LoginNavKey
+        }.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = RootNavKey.LoginNavKey
+        )
+
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)
         .stateIn(
@@ -51,4 +66,13 @@ class NonggleAppState(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false
         )
+
+    fun logout() {
+        _isLogin.value = false
+    }
+
+    fun goMain() {
+        _isLogin.value = true
+    }
+
 }
