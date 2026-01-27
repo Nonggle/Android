@@ -22,7 +22,7 @@ internal fun SettingScreen() {
             modifier = Modifier.fillMaxSize()
         ) {
             items(100) {
-                Text(text = "홈화면")
+                Text(text = "설정")
             }
         }
     }

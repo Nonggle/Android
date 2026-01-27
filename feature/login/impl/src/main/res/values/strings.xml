@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name ="app_name">농글</string>
+    <string name ="start_with_kakao">카카오로 시작하기</string>
+    <string name= "fail_kakao_login">카카오 로그인에 실패했습니다. 다시 시도해주세요.</string>
+</resources>

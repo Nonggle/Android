@@ -1,5 +1,6 @@
 package com.example.nonggleresume
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -62,8 +63,8 @@ class MainActivity : ComponentActivity() {
                     .collect { darkTheme ->
                         enableEdgeToEdge(
                             statusBarStyle = SystemBarStyle.auto(
-                                lightScrim = android.graphics.Color.TRANSPARENT,
-                                darkScrim = android.graphics.Color.TRANSPARENT
+                                lightScrim = Color.TRANSPARENT,
+                                darkScrim = Color.TRANSPARENT
                             ) { darkTheme },
                             navigationBarStyle = SystemBarStyle.auto(
                                 lightScrim = lightScrim,
@@ -73,11 +74,6 @@ class MainActivity : ComponentActivity() {
                     }
             }
         }
-
-        // Keep the splash screen on-screen until the UI state is loaded. This condition is
-        // evaluated each time the app needs to be redrawn so it should be fast to avoid blocking
-        // the UI.
-        //splashScreen.setKeepOnScreenCondition { viewModel.uiState.value.shouldKeepSplashScreen() }
 
         setContent {
             val appState = rememberNonggleAppState(networkMonitor = networkMonitor)
@@ -103,9 +99,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
 
-private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
 
 
 data class ThemeSettings(
