@@ -18,4 +18,5 @@ dependencies {
     implementation(libs.kakao.user)
 
     implementation(project(":core:ui"))
+    implementation(project(":feature:login:api"))
 }

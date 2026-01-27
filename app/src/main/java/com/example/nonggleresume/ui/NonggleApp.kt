@@ -20,23 +20,24 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.example.api.LoginEntryProvider
-import com.example.api.LoginNavKey
 import com.example.designsystem.component.NonggleMobileNavigationScaffold
 import com.example.designsystem.component.NonggleNavigationBarItem
 import com.example.download.navigation.downLoadEntryProvider
 import com.example.home.navigation.homeEntryProvider
+import com.example.impl.navigation.LoginEntryProvider
 import com.example.navigation.Navigator
+import com.example.navigation.rememberNavigationState
 import com.example.navigation.toEntries
+import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider
+import com.example.api.LoginNavKey
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,24 +46,30 @@ internal fun NonggleApp(
     appState: NonggleAppState,
     modifier: Modifier = Modifier,
 ) {
-    val isOfflne by appState.isOffline.collectAsStateWithLifecycle()
-    val graphState by appState.graphState.collectAsStateWithLifecycle()
+    val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+    val rootNavState by appState.rootNavState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(isOfflne) {
-        if(isOfflne) Log.d("NOTCONNECT", "네트워크 미연결")
+    LaunchedEffect(isOffline) {
+        if(isOffline) Log.d("NOTCONNECT", "네트워크 미연결")
     }
 
-    when(graphState) {
-        RootGraph.Login -> {
-            //val entryProvider = LoginEntryProvider(onLoginSuccess = { appState.onLoginSuccess() })
+    when(rootNavState) {
+        RootNavKey.LoginNavKey -> {
+            val loginNavigationState = rememberNavigationState(
+                startKey = LoginNavKey,
+                topLevelKeys = setOf(LoginNavKey)
+            )
+            val entryProvider = entryProvider {
+                LoginEntryProvider(navigateToMain = appState::goMain)
+            }
 
             NavDisplay(
-                entries = entryProvider,
-                onBack = {}
+                entries = loginNavigationState.toEntries(entryProvider),
+                onBack = { /* 로그인 화면에서는 보통 뒤로가기를 막습니다 */ }
             )
         }
 
-        RootGraph.Main -> {
+        RootNavKey.MainNavKey -> {
             val mainNavigator = remember { Navigator(appState.mainNavigationState) }
             NonggleMobileNavigationScaffold(
                 navigationBarItems = {

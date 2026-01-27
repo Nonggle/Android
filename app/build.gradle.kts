@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":core:navigation"))
 
     implementation(project(":feature:login:api"))
+    implementation(project(":feature:login:impl"))
     implementation(project(":feature:home"))
     implementation(project(":feature:download"))
     implementation(project(":feature:setting"))

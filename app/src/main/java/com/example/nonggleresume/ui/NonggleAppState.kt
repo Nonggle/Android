@@ -8,12 +8,15 @@ import com.example.data.util.NetworkMonitor
 import com.example.home.navigation.HomeNavKey
 import com.example.navigation.NavigationState
 import com.example.navigation.rememberNavigationState
+import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
@@ -47,13 +50,13 @@ class NonggleAppState(
 ) {
     private val _isLogin = MutableStateFlow(false)
 
-    val graphState: StateFlow<RootGraph> =
+    val rootNavState: StateFlow<RootNavKey> =
         _isLogin.map { login ->
-            if(login) RootGraph.Main else RootGraph.Login
+            if(login) RootNavKey.MainNavKey else RootNavKey.LoginNavKey
         }.stateIn(
             scope = coroutineScope,
             started = SharingStarted.Eagerly,
-            initialValue = RootGraph.Login
+            initialValue = RootNavKey.LoginNavKey
         )
 
     val isOffline = networkMonitor.isOnline
@@ -68,13 +71,8 @@ class NonggleAppState(
         _isLogin.value = false
     }
 
-    fun onLoginSuccess() {
+    fun goMain() {
         _isLogin.value = true
     }
 
-}
-
-sealed interface RootGraph {
-    data object Login : RootGraph
-    data object Main : RootGraph
 }

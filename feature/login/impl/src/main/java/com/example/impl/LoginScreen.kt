@@ -28,7 +28,7 @@ import com.example.designsystem.theme.soYo
 fun LoginScreen(
     modifier: Modifier = Modifier,
     //onShowLoginFailSnackBar: suspend (String) -> Unit,
-    onLoginSuccess: () -> Unit,
+    navigateToMain: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,7 +36,7 @@ fun LoginScreen(
     LoginScreen(
         modifier = modifier,
         loginState = uiState.loginState,
-        onLoginSuccess = onLoginSuccess,
+        navigateToMain = navigateToMain,
         kakaoLoginButtonClick = { viewModel.setEvent(LoginEvent.KakaoLoginButtonClick) }
     )
 }
@@ -46,14 +46,14 @@ internal fun LoginScreen(
     modifier: Modifier = Modifier,
     loginState: LoginUiState = LoginUiState.Idle,
     //onShowLoginFailSnackBar: suspend (String) -> Unit,
-    onLoginSuccess: () -> Unit,
+    navigateToMain: () -> Unit,
     kakaoLoginButtonClick: () -> Unit,
 ) {
     val kakaoLoginFailMessage = stringResource(R.string.fail_kakao_login)
 
         LaunchedEffect(loginState) {
         if(loginState is LoginUiState.LoginSuccess) {
-            onLoginSuccess()
+            navigateToMain()
         } else if(loginState is LoginUiState.LoginFail) {
             // 토스트 메시지 표시하기
             //onShowLoginFailSnackBar(kakaoLoginFailMessage)
@@ -61,13 +61,14 @@ internal fun LoginScreen(
     }
 
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when(loginState) {
             LoginUiState.Idle, LoginUiState.LoginFail -> {
-                Spacer(modifier = modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
                 AppLogoForLogin()
-                Spacer(modifier = modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
                 KakaoLoginButton(
                     modifier = Modifier.padding(bottom = 30.dp),
                     onClick = kakaoLoginButtonClick,

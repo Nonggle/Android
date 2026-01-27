@@ -6,7 +6,3 @@ plugins {
 android {
     namespace = "com.example.api"
 }
-
-dependencies {
-    implementation(project(":feature:login:impl"))
-}
