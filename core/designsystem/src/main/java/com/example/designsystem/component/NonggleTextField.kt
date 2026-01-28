@@ -1,5 +1,6 @@
 package com.example.designsystem.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,18 +10,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.designsystem.theme.NonggleTheme
 
 @Composable
 fun NonggleTextField(
@@ -30,16 +33,16 @@ fun NonggleTextField(
     onValueChange: (String) -> Unit,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    textStyle: TextStyle = NonggleTheme.typography.b1_main,
     textColor: Color = Color(0xFF1E1E1E),
-    focusedColor: Color = MaterialTheme.colorScheme.primary,
-    errorColor: Color = MaterialTheme.colorScheme.error,
-    successColor: Color = MaterialTheme.colorScheme.primary,
-    disabledColor: Color = MaterialTheme.colorScheme.outline,
-    enabledColor: Color = MaterialTheme.colorScheme.outline,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    focusedColor: Color = NonggleTheme.colorScheme.m1,
+    errorColor: Color = NonggleTheme.colorScheme.error,
+    successColor: Color = NonggleTheme.colorScheme.m1,
+    disabledColor: Color = NonggleTheme.colorScheme.g3,
+    enabledColor: Color = NonggleTheme.colorScheme.g4,
+    containerColor: Color = NonggleTheme.colorScheme.g4,
     trailingIcon: @Composable (() -> Unit)? = null,
-    placeholder: @Composable (() -> Unit),
+    hintTextResId: Int,
     supportText: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -70,7 +73,13 @@ fun NonggleTextField(
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 visualTransformation = visualTransformation,
-                placeholder = placeholder,
+                placeholder = {
+                    Text(
+                        text = stringResource(hintTextResId),
+                        style = NonggleTheme.typography.b1_main,
+                        color = NonggleTheme.colorScheme.g3,
+                    )
+                },
                 maxLines = maxLines,
                 textStyle = textStyle.copy(color = textColor),
                 readOnly = readOnly,
@@ -95,7 +104,13 @@ fun NonggleTextField(
                 supportingText = supportText,
                 textStyle = textStyle.copy(color = textColor),
                 shape = shape,
-                placeholder = placeholder,
+                placeholder = {
+                    Text(
+                        text = stringResource(hintTextResId),
+                        style = NonggleTheme.typography.b1_main,
+                        color = NonggleTheme.colorScheme.g3,
+                    )
+                },
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 visualTransformation = visualTransformation,

@@ -15,9 +15,3 @@ class ResumeWriteViewModel @Inject constructor() :
         }
     }
 }
-
-enum class Gender {
-    MALE, FEMALE()
-
-    fun
-}

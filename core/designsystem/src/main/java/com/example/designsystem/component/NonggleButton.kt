@@ -16,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.R
+import com.example.designsystem.theme.NonggleTheme
 
 @Composable
 fun NonggleButton(
@@ -57,7 +57,7 @@ fun NonggleButton(
         border = border,
         contentPadding = contentPadding ?: PaddingValues(all = 0.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if(isPressed) pressedColor else backgroundColor,
+            containerColor = if (isPressed) pressedColor else backgroundColor,
             contentColor = contentColor,
             disabledContainerColor = disableBackGroundColor ?: backgroundColor,
             disabledContentColor = disableContentColor ?: contentColor,
@@ -73,22 +73,20 @@ fun FullButton(
     modifier: Modifier = Modifier,
     enabled: Boolean,
     onClick: () -> Unit,
-    titleText: String,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
-    disableBackGroundColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    titleTextStyle: TextStyle
+    title: String,
+    titleTextStyle: TextStyle,
 ) {
     NonggleButton(
         modifier = modifier,
         enabled = enabled,
         contentColor = Color.White,
-        backgroundColor = backgroundColor,
-        disableContentColor = disableBackGroundColor,
+        backgroundColor = NonggleTheme.colorScheme.m1,
+        disableContentColor = NonggleTheme.colorScheme.m3, // Now matches the intended use
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 20.dp),
         content = {
             Text(
-                text = titleText,
+                text = title,
                 style = titleTextStyle
             )
         }
@@ -142,9 +140,9 @@ fun ContainedButton(
     titleText: String,
     titleTextStyle: TextStyle,
     contentPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 13.dp),
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
-    pressBackgroundColor: Color = MaterialTheme.colorScheme.secondary,
-    disableBackGroundColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    backgroundColor: Color = NonggleTheme.colorScheme.m1,
+    pressBackgroundColor: Color = NonggleTheme.colorScheme.g3,
+    disableBackGroundColor: Color = NonggleTheme.colorScheme.g4,
 ) {
     NonggleButton(
         modifier = modifier,
@@ -170,31 +168,25 @@ fun OutlinedButton(
     modifier: Modifier = Modifier,
     isSelect: Boolean,
     enabled: Boolean = true,
-    enableColor: Color,
-    selectColor: Color,
-    enableContentColor: Color,
-    pressedColor: Color,
-    disableContentColor: Color? = null,
     titleText: String,
-    titleTextStyle: TextStyle,
     onClick: () -> Unit,
 ) {
     NonggleButton(
         modifier = modifier.wrapContentHeight(),
         enabled = enabled,
-        pressedColor = pressedColor,
-        contentColor = enableContentColor,
-        disableContentColor = disableContentColor,
+        pressedColor = NonggleTheme.colorScheme.m1,
+        contentColor = NonggleTheme.colorScheme.m1,
+        disableContentColor = NonggleTheme.colorScheme.g3,
         roundedCorner = 4.dp,
         backgroundColor = Color.White,
-        border = BorderStroke(width = 1.dp, color = if(isSelect) selectColor else enableColor ),
+        border = BorderStroke(width = 1.dp, color = if (isSelect) NonggleTheme.colorScheme.m1 else NonggleTheme.colorScheme.g_line),
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         content = {
             Text(
                 textAlign = TextAlign.Center,
                 text = titleText,
-                style = titleTextStyle
+                style = NonggleTheme.typography.b4_btn
             )
         }
     )
@@ -225,7 +217,8 @@ fun OutlinedIconButton(
         contentPadding = PaddingValues(vertical = 16.dp),
         content = {
             Row(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
                     .padding(all = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -248,8 +241,8 @@ fun OutlinedIconButton(
 @Composable
 fun NonggleIconButton(
     modifier: Modifier = Modifier,
-    ImageResourceId: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    ImageResourceId: Int
 ) {
     IconButton(
         onClick = onClick,

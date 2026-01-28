@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,7 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.designsystem.component.NonggleImageButton
+import com.example.designsystem.component.ImageButton
+import com.example.designsystem.theme.NonggleTheme
 import com.example.designsystem.theme.soYo
 
 @Composable
@@ -88,7 +88,7 @@ fun AppLogoForLogin(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(top = 50.dp),
         text = stringResource(R.string.app_name),
-        color = MaterialTheme.colorScheme.primary,
+        color = NonggleTheme.colorScheme.m1,
         style = TextStyle(
             fontFamily = soYo,
             fontWeight = FontWeight.Bold,
@@ -104,15 +104,15 @@ fun KakaoLoginButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    NonggleImageButton(
+    ImageButton(
         modifier = modifier
             .padding(horizontal = 20.dp)
             .fillMaxWidth(),
         onClick = onClick,
         titleText = stringResource(R.string.start_with_kakao),
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        contentColor = NonggleTheme.colorScheme.g1,
         backgroundColor = Color(0xFFF9E000),
-        titleTextStyle = MaterialTheme.typography.labelLarge,
+        titleTextStyle = NonggleTheme.typography.b4_btn,
         imageResource = R.drawable.kakaobtn
     )
 }

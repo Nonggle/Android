@@ -4,16 +4,24 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,12 +34,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.designsystem.component.ContainedButton
 import com.example.designsystem.component.NonggleIconButton
 import com.example.designsystem.component.NonggleTextField
 import com.example.designsystem.component.OutlinedButton
 import com.example.designsystem.component.TextFieldType
-import com.example.impl.Gender
+import com.example.designsystem.theme.NonggleTheme
 import com.example.impl.R
+import com.example.impl.component.certificationChipItem
+import com.example.impl.component.genderSelectButton
+import com.example.impl.utils.Gender
 
 //@Composable
 //internal fun ResumeStep1Screen() {
@@ -40,8 +52,11 @@ import com.example.impl.R
 
 @Composable
 internal fun ResumeStep1Screen(
+    birthDate: String,
+    selectUserCertificate: Boolean,
+    haveCertificate: Boolean,
 
-) {
+    ) {
     var userName by rememberSaveable { mutableStateOf("") }
 
     LazyColumn(
@@ -53,21 +68,21 @@ internal fun ResumeStep1Screen(
             Text(
                 modifier = Modifier.padding(top = 24.dp),
                 text = stringResource(R.string.resume1Screen_profile_image),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g2,
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = stringResource(R.string.resume1Screen_introduceTitle),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.surfaceTint,
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g2,
             )
             // 프로필 이미지
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(R.string.resume1Screen_nameTitle),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g1,
             )
             nameInputField(
                 value = userName,
@@ -77,34 +92,33 @@ internal fun ResumeStep1Screen(
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(R.string.resume1Screen_birthDateTitle),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g1,
             )
-            birthDateSelectBox()
+            birthDateSelectBox(birthDate = birthDate)
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(R.string.resume1Screen_genderTitle),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g1
             )
             genderSelectBox(
                 modifier = Modifier.padding(top = 12.dp),
-                userGender = {  },
                 onSelectUserGender = {},
-                isSelect = {}
+                isSelect = selectUserCertificate
             )
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(R.string.resume1Screen_label_certificate),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g1
             )
             certificateSelectBox(
                 modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),
                 onClick = {},
-                haveCertificate = true /// FIXME
+                haveCertificate = haveCertificate /// FIXME
             )
-            if(state.haveCertificate) {
+            if (haveCertificate) {
 
             }
         }
@@ -133,15 +147,7 @@ private fun nameInputField(
                 )
             }
         },
-        placeholder = {
-            Text(
-                text = stringResource(R.string.resume1Screen_HintText_writeUserName),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.surfaceTint,
-            )
-        },
-        textStyle = MaterialTheme.typography.bodyLarge,
-        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        hintTextResId = R.string.resume1Screen_HintText_writeUserName,
     )
 }
 
@@ -154,7 +160,7 @@ private fun birthDateSelectBox(
             .fillMaxWidth()
             .padding(top = 8.dp)
             .border(
-                BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
                 shape = RoundedCornerShape(4.dp)
             )
             .clickable {
@@ -169,7 +175,7 @@ private fun birthDateSelectBox(
         ) {
             Text(
                 text = birthDate,
-                style = MaterialTheme.typography.labelLarge,
+                style = NonggleTheme.typography.b1_main,
                 textAlign = TextAlign.Start
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -184,37 +190,28 @@ private fun birthDateSelectBox(
 @Composable
 private fun genderSelectBox(
     modifier: Modifier = Modifier,
-    userGender: String,
     onSelectUserGender: (Gender) -> Unit,
-    isSelect: (Gender) -> Boolean,
+    isSelect: Boolean,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
-        OutlinedButton(
-            modifier = Modifier
+        genderSelectButton(
+            modifier = modifier
                 .weight(1f)
                 .padding(end = 16.dp),
-            isSelect = isSelect(Gender.FEMALE),
-            titleText = stringResource(R.string.resume1Screen_label_women),
-            onClick = { onSelectUserGender(Gender.FEMALE) },
-            titleTextStyle = MaterialTheme.typography.bodyLarge,
-            enableColor = MaterialTheme.colorScheme.outline,
-            enableContentColor = MaterialTheme.colorScheme.outline,
-            pressedColor = MaterialTheme.colorScheme.primary,
-            selectColor = MaterialTheme.colorScheme.primary,
+            text = stringResource(R.string.resume1Screen_label_women),
+            selectGender = { onSelectUserGender(Gender.FEMALE) },
+            userGender = Gender.FEMALE,
+            isSelect = isSelect,
         )
-        OutlinedButton(
-            modifier = Modifier
+        genderSelectButton(
+            modifier = modifier
                 .weight(1f),
-            isSelect = isSelect(Gender.MALE),
-            titleText = stringResource(R.string.resume1Screen_label_man),
-            onClick = { onSelectUserGender(Gender.MALE) },
-            titleTextStyle = MaterialTheme.typography.bodyLarge,
-            enableColor = MaterialTheme.colorScheme.outline,
-            enableContentColor = MaterialTheme.colorScheme.outline,
-            pressedColor = MaterialTheme.colorScheme.primary,
-            selectColor = MaterialTheme.colorScheme.primary,
+            text = stringResource(R.string.resume1Screen_label_man),
+            selectGender = { onSelectUserGender(Gender.MALE) },
+            userGender = Gender.MALE,
+            isSelect = isSelect,
         )
     }
 }
@@ -235,11 +232,6 @@ private fun certificateSelectBox(
             isSelect = haveCertificate,
             titleText = stringResource(R.string.resume1Screen_label_havecertificate),
             onClick = { onClick(true) },
-            titleTextStyle = MaterialTheme.typography.bodyLarge,
-            enableColor = MaterialTheme.colorScheme.outline,
-            enableContentColor = MaterialTheme.colorScheme.outline,
-            pressedColor = MaterialTheme.colorScheme.primary,
-            selectColor = MaterialTheme.colorScheme.primary,
         )
         OutlinedButton(
             modifier = Modifier
@@ -247,12 +239,76 @@ private fun certificateSelectBox(
             isSelect = !haveCertificate,
             titleText = stringResource(R.string.resume1Screen_label_nocertificate),
             onClick = { onClick(false) },
-            titleTextStyle = MaterialTheme.typography.bodyLarge,
-            enableColor = MaterialTheme.colorScheme.outline,
-            enableContentColor = MaterialTheme.colorScheme.outline,
-            pressedColor = MaterialTheme.colorScheme.primary,
-            selectColor = MaterialTheme.colorScheme.primary,
         )
     }
 }
 
+
+@Composable
+private fun certificateDetail(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    onClear: () -> Unit,
+    certificateTypeSubmit: () -> Unit,
+    userSubmitCertificateList: List<String>,
+    removeCertificateChip: (Int) -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            NonggleTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight(),
+                textFieldType = TextFieldType.Standard,
+                value = value,
+                onValueChange = onValueChange,
+                trailingIcon = {
+                    if (value.isNotEmpty()) {
+                        NonggleIconButton(
+                            ImageResourceId = R.drawable.xcircle,
+                            onClick = onClear
+                        )
+                    }
+                },
+                hintTextResId = R.string.resume1Screen_HintText_writeUserName,
+            )
+            //자격증 추가 버튼
+            ContainedButton(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                contentPadding = PaddingValues(horizontal = 30.dp, vertical = 13.dp),
+                enabled = value.isNotEmpty(),
+                onClick = certificateTypeSubmit,
+                titleText = stringResource(R.string.resume1Screen_certificateDetail_confirmBtnText),
+                titleTextStyle = NonggleTheme.typography.b4_btn,
+            )
+        }
+        LazyVerticalGrid(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 200.dp),
+            columns = GridCells.Fixed(3),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            items(
+                count = userSubmitCertificateList.size,
+                key = { userSubmitCertificateList[it] }
+            ) { index ->
+                certificationChipItem(
+                    title = userSubmitCertificateList[index],
+                    removeChip = { removeCertificateChip(index) }
+                )
+            }
+        }
+    }
+}
