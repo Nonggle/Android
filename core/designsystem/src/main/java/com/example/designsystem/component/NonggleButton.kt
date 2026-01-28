@@ -71,10 +71,10 @@ fun NonggleButton(
 @Composable
 fun FullButton(
     modifier: Modifier = Modifier,
-    enabled: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     title: String,
-    titleTextStyle: TextStyle,
+    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn,
 ) {
     NonggleButton(
         modifier = modifier,
@@ -195,7 +195,7 @@ fun OutlinedButton(
 @Composable
 fun OutlinedIconButton(
     modifier: Modifier = Modifier,
-    enabled: Boolean,
+    enabled: Boolean = true,
     contentColor: Color,
     pressedContentColor: Color,
     disableContentColor: Color,
