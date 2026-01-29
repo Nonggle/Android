@@ -19,6 +19,7 @@ androidxLifecycleViewModelNavigation3 = "1.2.0"
 desugar_jdk_libs = "2.0.4"
 androidxSavedStateCompose = "1.4.0"
 kotlinxSerializationJson = "1.6.3"
+detekt = "1.23.8"
 
 # Project versions
 projectApplicationId = "com.example.nonggleresume"
@@ -65,6 +66,7 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt"}
 
 # hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -104,6 +106,7 @@ example-nonggle-android-feature-ui = {id = "example.nonggle.android.feature.ui",
 example-nonggle-module-jvm-library = {id = "example.nonggle.module.jvm.library", version = "unspecified"}
 example-nonggle-android-hilt = {id = "example.nonggle.android.hilt", version = "unspecified"}
 example-nonggle-android-serialization = {id = "example.nonggle.android.serialization", version = "unspecified"}
+example-nonggle-android-detekt = {id = "example.nonggle.android.detekt", version = "unspecified"}
 
 # ksp
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
@@ -111,6 +114,10 @@ kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin"}
 
 # hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+
+# detekt
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
 
 [bundles]
 compose = [

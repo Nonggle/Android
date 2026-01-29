@@ -11,6 +11,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -51,6 +52,10 @@ gradlePlugin {
         register("androidSerialization") {
             id = "example.nonggle.android.serialization"
             implementationClass = "AndroidSerializationConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "example.nonggle.android.detekt"
+            implementationClass = "AndroidDetektConventionPlugin"
         }
     }
 }

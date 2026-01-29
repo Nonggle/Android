@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.example.nonggle.android.library.compose)
+    alias(libs.plugins.example.nonggle.android.detekt)
 }
 
 android {
