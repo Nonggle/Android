@@ -9,7 +9,12 @@ pluginManagement {
             }
         }
         mavenCentral()
-        gradlePluginPortal()
+        gradlePluginPortal {
+            content {
+                // Add this line to include the KSP plugin
+                includeGroupByRegex("com\\.google\\.devtools\\.ksp.*")
+            }
+        }
     }
 }
 dependencyResolutionManagement {
