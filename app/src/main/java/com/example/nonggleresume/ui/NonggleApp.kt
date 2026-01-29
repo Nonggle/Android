@@ -25,9 +25,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.example.designsystem.component.NonggleMobileNavigationScaffold
-import com.example.designsystem.component.NonggleNavigationBarItem
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.component.NonggleMobileNavigationScaffold
+import com.example.core.designsystem.component.NonggleNavigationBarItem
+import com.example.core.designsystem.theme.NonggleTheme
 import com.example.download.navigation.downLoadEntryProvider
 import com.example.feature.login.api.LoginNavKey
 import com.example.feature.login.impl.navigation.LoginEntryProvider

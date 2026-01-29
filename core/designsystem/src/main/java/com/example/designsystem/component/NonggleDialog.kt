@@ -1,4 +1,4 @@
-package com.example.designsystem.component
+package com.example.core.designsystem.component
 /// Toast, Dialog
 class NonggleDialog {
 }

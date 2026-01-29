@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.data.util.NetworkMonitor
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.theme.NonggleTheme
 import com.example.nonggleresume.ui.NonggleApp
 import com.example.nonggleresume.ui.rememberNonggleAppState
 import com.example.nonggleresume.util.isSystemInDarkTheme

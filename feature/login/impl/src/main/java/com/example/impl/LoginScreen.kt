@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.designsystem.component.ImageButton
-import com.example.designsystem.theme.NonggleTheme
-import com.example.designsystem.theme.soYo
+import com.example.core.designsystem.component.ImageButton
+import com.example.core.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.theme.soYo
 
 @Composable
 fun LoginScreen(

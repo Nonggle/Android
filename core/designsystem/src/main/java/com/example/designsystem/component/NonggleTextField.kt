@@ -1,6 +1,5 @@
-package com.example.designsystem.component
+package com.example.core.designsystem.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.theme.NonggleTheme
 
 @Composable
 fun NonggleTextField(

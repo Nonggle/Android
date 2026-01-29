@@ -39,8 +39,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.designsystem.component.OutlinedButton
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.component.OutlinedButton
+import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
 import com.example.impl.utils.Gender
 import kotlinx.coroutines.flow.distinctUntilChanged

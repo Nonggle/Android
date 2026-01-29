@@ -1,4 +1,4 @@
-package com.example.designsystem.component
+package com.example.core.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.designsystem.R
+import com.example.core.designsystem.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)

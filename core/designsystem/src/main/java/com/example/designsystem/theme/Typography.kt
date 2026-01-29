@@ -1,4 +1,4 @@
-package com.example.designsystem.theme
+package com.example.core.designsystem.theme
 
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle

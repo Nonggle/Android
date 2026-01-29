@@ -1,4 +1,4 @@
-package com.example.designsystem.component
+package com.example.core.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,8 +28,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.designsystem.R
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.R
+import com.example.core.designsystem.theme.NonggleTheme
 
 @Composable
 fun NonggleButton(

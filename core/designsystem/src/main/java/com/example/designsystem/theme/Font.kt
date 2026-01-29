@@ -1,9 +1,9 @@
-package com.example.designsystem.theme
+package com.example.core.designsystem.theme
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontFamily
-import com.example.designsystem.R
+import com.example.core.designsystem.R
 
 val soYo = FontFamily(
     Font(R.font.soyo_maple_bold, FontWeight.Bold, FontStyle.Normal),

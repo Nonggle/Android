@@ -1,19 +1,9 @@
 package com.example.feature.resume.impl.step2
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import com.example.designsystem.component.OutlinedButton
+import com.example.core.designsystem.component.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,9 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.designsystem.component.NonggleBottomSheet
-import com.example.designsystem.component.OutlinedIconButton
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.designsystem.component.NonggleBottomSheet
+import com.example.core.designsystem.component.OutlinedIconButton
+import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
 
 //@Composable
