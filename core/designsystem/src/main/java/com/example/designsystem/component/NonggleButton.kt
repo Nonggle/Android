@@ -81,7 +81,7 @@ fun FullButton(
         enabled = enabled,
         contentColor = Color.White,
         backgroundColor = NonggleTheme.colorScheme.m1,
-        disableContentColor = NonggleTheme.colorScheme.m3, // Now matches the intended use
+        disableContentColor = NonggleTheme.colorScheme.m3,
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 20.dp),
         content = {

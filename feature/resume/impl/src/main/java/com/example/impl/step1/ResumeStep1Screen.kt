@@ -57,11 +57,10 @@ import com.example.impl.utils.Gender
 
 @Composable
 internal fun ResumeStep1Screen(
-    birthDate: String,
-    selectUserCertificate: Boolean,
-    haveCertificate: Boolean,
-
-    ) {
+    birthDate: String = "",
+    selectUserCertificate: Boolean = false,
+    haveCertificate: Boolean = false,
+) {
     var userName by rememberSaveable { mutableStateOf("") }
 
     LazyColumn(
@@ -389,8 +388,8 @@ fun PreviewDateSpinner() {
     BirthDateSelectContent(
         years = listOf("2000", "1999", "182939"),
         months = listOf("01", "02", "03"),
-        days = listOf("1","2","3"),
-        onClick = {  },
-        onDismissRequest = {  }
+        days = listOf("1", "2", "3"),
+        onClick = { },
+        onDismissRequest = { }
     )
 }

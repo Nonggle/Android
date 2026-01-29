@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="resume_basicTitle">기본정보</string>
+    <string name="resume_careerTitle">경력사항</string>
+    <string name="resume_portfolioTitle">자기소개</string>
+    <string name="resume_conditionTitle">희망조건</string>
+    <string name="resume_nextStep">다음</string>
+    <string name="resume_complete">완료</string>
+
     <string name="resume1Screen_profile_image">프로필 이미지</string>
     <string name="resume1Screen_introduceTitle">※ 본인을 소개할 수 있는 이미지를 업로드 해주세요.</string>
     <string name="resume1Screen_nameTitle">이름</string>
