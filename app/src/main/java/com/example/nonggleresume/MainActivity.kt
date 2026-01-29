@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -79,7 +78,7 @@ class MainActivity : ComponentActivity() {
             val appState = rememberNonggleAppState(networkMonitor = networkMonitor)
 
             CompositionLocalProvider(
-                //LocalAnalyticsHelper provides analyticsHelper, //여기에 firebase analytics를 연동할 수 있지 않을까
+                // LocalAnalyticsHelper provides analyticsHelper, //여기에 firebase analytics를 연동할 수 있지 않을까
             ) {
                 NonggleTheme(
                     darkTheme = themeSettings.darkTheme,
@@ -102,7 +101,6 @@ class MainActivity : ComponentActivity() {
 private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
 
 private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
-
 
 data class ThemeSettings(
     val darkTheme: Boolean,

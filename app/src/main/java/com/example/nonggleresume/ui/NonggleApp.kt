@@ -27,33 +27,31 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.designsystem.component.NonggleMobileNavigationScaffold
 import com.example.designsystem.component.NonggleNavigationBarItem
+import com.example.designsystem.theme.NonggleTheme
 import com.example.download.navigation.downLoadEntryProvider
+import com.example.feature.login.api.LoginNavKey
+import com.example.feature.login.impl.navigation.LoginEntryProvider
 import com.example.home.navigation.homeEntryProvider
-import com.example.impl.navigation.LoginEntryProvider
 import com.example.navigation.Navigator
 import com.example.navigation.rememberNavigationState
 import com.example.navigation.toEntries
 import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider
-import com.example.api.LoginNavKey
-import com.example.designsystem.theme.NonggleTheme
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NonggleApp(
     appState: NonggleAppState,
-    modifier: Modifier = Modifier,
 ) {
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
     val rootNavState by appState.rootNavState.collectAsStateWithLifecycle()
 
     LaunchedEffect(isOffline) {
-        if(isOffline) Log.d("NOTCONNECT", "네트워크 미연결")
+        if (isOffline) Log.d("NOTCONNECT", "네트워크 미연결")
     }
 
-    when(rootNavState) {
+    when (rootNavState) {
         RootNavKey.LoginNavKey -> {
             val loginNavigationState = rememberNavigationState(
                 startKey = LoginNavKey,
@@ -121,7 +119,6 @@ internal fun NonggleApp(
                                 }
                             )
                         ) {
-
                             val entryProvider = entryProvider {
                                 homeEntryProvider(mainNavigator)
                                 downLoadEntryProvider(mainNavigator)

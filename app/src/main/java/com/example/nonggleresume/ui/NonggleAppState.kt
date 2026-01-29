@@ -14,9 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
@@ -41,7 +39,6 @@ fun rememberNonggleAppState(
     }
 }
 
-
 @Stable
 class NonggleAppState(
     val mainNavigationState: NavigationState,
@@ -52,7 +49,7 @@ class NonggleAppState(
 
     val rootNavState: StateFlow<RootNavKey> =
         _isLogin.map { login ->
-            if(login) RootNavKey.MainNavKey else RootNavKey.LoginNavKey
+            if (login) RootNavKey.MainNavKey else RootNavKey.LoginNavKey
         }.stateIn(
             scope = coroutineScope,
             started = SharingStarted.Eagerly,
@@ -74,5 +71,4 @@ class NonggleAppState(
     fun goMain() {
         _isLogin.value = true
     }
-
 }

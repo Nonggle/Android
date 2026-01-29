@@ -4,6 +4,7 @@
     <string name="resume1Screen_introduceTitle">※ 본인을 소개할 수 있는 이미지를 업로드 해주세요.</string>
     <string name="resume1Screen_nameTitle">이름</string>
     <string name="resume1Screen_HintText_writeUserName">본인의 이름을 입력해주세요.</string>
+
     <string name="resume1Screen_birthDateTitle">생년월일</string>
     <string name="resume1Screen_birthDateSubTitle">생년월일을 선택해주세요.</string>
 
@@ -15,6 +16,10 @@
     <string name="resume1Screen_label_havecertificate">있음</string>
     <string name="resume1Screen_label_nocertificate">없음</string>
     <string name="resume1Screen_certificateDetail_inputHintText">자격증을 입력해주세요.</string>
-    <string name="resume1Screen_certificateDetail_confirmBtnText">확인</string>
+    <string name="resume1Screen_confirmBtnText">확인</string>
+
+    <string name="resume2Screen_Title_careerTitle">경력사항</string>
+    <string name="resume2Screen_Title_careerSubTitle">※ 어플 사용 이전 본인의 이력을 추가해주세요.</string>
+    <string name="resume2Screen_Title_careerAddTitle">경력추가하기</string>
 
 </resources>

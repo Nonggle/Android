@@ -13,6 +13,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.R
 
@@ -38,8 +39,8 @@ fun NonggleBottomSheet(
             ) {
                 Image(
                     modifier = Modifier
-                        .size(24.dp)
                         .padding(end = 20.dp, top = 20.dp, bottom = 8.dp)
+                        .size(24.dp)
                         .clickable { onDismissRequest() },
                     painter = painterResource(id = R.drawable.close),
                     contentDescription = null
@@ -47,5 +48,14 @@ fun NonggleBottomSheet(
                 content()
             }
         }
+    )
+}
+
+@Preview
+@Composable
+fun NoggleBottomSheetPreview() {
+    NonggleBottomSheet(
+        onDismissRequest = {  },
+        content = {}
     )
 }

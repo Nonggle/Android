@@ -1,4 +1,4 @@
-package com.example.impl
+package com.example.feature.login.impl
 
 import androidx.lifecycle.viewModelScope
 import com.example.ui.BaseViewModel

@@ -19,7 +19,7 @@ fun ComponentActivity.isSysyemInDarkTheme() = callbackFlow {
     }
 // 이 리스너로 설정 변경에 대한 이벤트를 받는다
     addOnConfigurationChangedListener(listener)
-    awaitClose {removeOnConfigurationChangedListener(listener)}
+    awaitClose { removeOnConfigurationChangedListener(listener) }
 }
     .distinctUntilChanged()
     .conflate()

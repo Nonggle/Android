@@ -1,4 +1,4 @@
-package com.example.impl
+package com.example.feature.login.impl
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

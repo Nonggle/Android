@@ -5,5 +5,5 @@ plugins {
 }
 
 android {
-    namespace = "com.example.api"
+    namespace = "com.example.feature.login.api"
 }

@@ -27,6 +27,11 @@ class AndroidDetektConventionPlugin: Plugin<Project> {
         buildUponDefaultConfig = true
         // 설정 파일 위치 (루트 프로젝트 기준)
         config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+        source.setFrom(
+            files(
+                "src/main/java"
+            )
+        )
         // 병렬 처리
         parallel = true
         // 자동 수정 활성화

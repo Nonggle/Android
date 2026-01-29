@@ -6,8 +6,8 @@ import androidx.compose.ui.res.stringResource
 import com.example.designsystem.icon.NonggleIcons
 import com.example.download.navigation.DownLoadNavKey
 import com.example.home.navigation.HomeNavKey
-import com.example.setting.navigation.SettingNavKey
 import com.example.nonggleresume.R
+import com.example.setting.navigation.SettingNavKey
 
 data class TopLevelNavItem(
     @DrawableRes val selectedIconRes: Int,
