@@ -34,7 +34,7 @@ fun NonggleTextField(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = NonggleTheme.typography.b1_main,
-    textColor: Color = Color(0xFF1E1E1E),
+    textColor: Color = NonggleTheme.colorScheme.black,
     focusedColor: Color = NonggleTheme.colorScheme.m1,
     errorColor: Color = NonggleTheme.colorScheme.error,
     successColor: Color = NonggleTheme.colorScheme.m1,
