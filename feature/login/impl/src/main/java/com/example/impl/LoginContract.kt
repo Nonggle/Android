@@ -1,8 +1,8 @@
 package com.example.feature.login.impl
 
-import com.example.ui.UiEffect
-import com.example.ui.UiEvent
-import com.example.ui.UiState
+import com.example.core.ui.UiEffect
+import com.example.core.ui.UiEvent
+import com.example.core.ui.UiState
 
 sealed interface LoginUiState {
     data object Idle: LoginUiState // 로그인 이전
