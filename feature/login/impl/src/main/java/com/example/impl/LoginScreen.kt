@@ -1,5 +1,6 @@
 package com.example.feature.login.impl
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +42,7 @@ fun LoginScreen(
     )
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 internal fun LoginScreen(
     modifier: Modifier = Modifier,
