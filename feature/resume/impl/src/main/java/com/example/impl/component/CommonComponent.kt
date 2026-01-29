@@ -1,9 +1,10 @@
-package com.example.impl.component
+package com.example.feature.resume.impl.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -38,11 +39,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import com.example.designsystem.component.OutlinedButton
 import com.example.designsystem.theme.NonggleTheme
+import com.example.feature.resume.impl.R
 import com.example.impl.utils.Gender
-import com.example.impl.R
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -92,7 +92,10 @@ fun certificationChipItem(
             )
             Image(
                 modifier = Modifier
-                    .padding(start = 8.dp),
+                    .padding(start = 8.dp)
+                    .clickable(
+                        onClick = removeChip
+                    ),
                 painter = painterResource(R.drawable.xcircle),
                 contentDescription = null,
             )

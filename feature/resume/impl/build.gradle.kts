@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.impl"
+    namespace = "com.example.feature.resume.impl"
 }
 
 dependencies {

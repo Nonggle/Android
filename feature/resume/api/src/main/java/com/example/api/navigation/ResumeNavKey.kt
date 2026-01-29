@@ -1,4 +1,4 @@
-package com.example.api.navigation
+package com.example.feature.resume.api
 
 //@Serializable
 //object ResumeNavKey : NavKey

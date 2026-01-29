@@ -1,4 +1,4 @@
-package com.example.impl.step2
+package com.example.feature.resume.impl.step2
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.example.designsystem.component.NonggleBottomSheet
 import com.example.designsystem.component.OutlinedIconButton
 import com.example.designsystem.theme.NonggleTheme
-import com.example.impl.R
+import com.example.feature.resume.impl.R
 
 //@Composable
 //internal fun ResumeSte2Screen() {
@@ -43,13 +43,13 @@ import com.example.impl.R
 internal fun ResumeStep2Screen(
     totalPeriod: String,
 ) {
-    var isShowBottomSheet by remember{ mutableStateOf(false) }
+    var isShowBottomSheet by remember { mutableStateOf(false) }
 
-    if(isShowBottomSheet) {
+    if (isShowBottomSheet) {
         NonggleBottomSheet(
             onDismissRequest = { isShowBottomSheet = false },
 
-        )
+            )
     }
 
     LazyColumn(
@@ -74,21 +74,20 @@ internal fun ResumeStep2Screen(
                 titleText = totalPeriod
             )
         }
-            this.items {
-                // 경력 리스트 위치
-            }
-            item{
-                OutlinedIconButton(
-                    modifier = Modifier.padding(bottom = 32.dp),
-                    contentColor = NonggleTheme.colorScheme.g3,
-                    pressedContentColor = NonggleTheme.colorScheme.g3,
-                    disableContentColor = NonggleTheme.colorScheme.g3,
-                    borderColor = NonggleTheme.colorScheme.g_line,
-                    titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
-                    titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
-                    onClick = {isShowBottomSheet = true}
-                )
-            }
+//            this.items {
+//                // 경력 리스트 위치
+//            }
+        item {
+            OutlinedIconButton(
+                modifier = Modifier.padding(bottom = 32.dp),
+                contentColor = NonggleTheme.colorScheme.g3,
+                pressedContentColor = NonggleTheme.colorScheme.g3,
+                disableContentColor = NonggleTheme.colorScheme.g3,
+                borderColor = NonggleTheme.colorScheme.g_line,
+                titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
+                titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
+                onClick = { isShowBottomSheet = true }
+            )
         }
     }
 }

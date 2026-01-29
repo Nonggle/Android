@@ -1,4 +1,4 @@
-package com.example.impl
+package com.example.feature.resume.impl
 
 import com.example.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

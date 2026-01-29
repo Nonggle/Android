@@ -1,4 +1,4 @@
-package com.example.impl.step1
+package com.example.feature.resume.impl.step1
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -43,11 +43,11 @@ import com.example.designsystem.component.NonggleTextField
 import com.example.designsystem.component.OutlinedButton
 import com.example.designsystem.component.TextFieldType
 import com.example.designsystem.theme.NonggleTheme
-import com.example.impl.R
-import com.example.impl.component.Picker
-import com.example.impl.component.certificationChipItem
-import com.example.impl.component.genderSelectButton
-import com.example.impl.component.rememberPickerState
+import com.example.feature.resume.impl.R
+import com.example.feature.resume.impl.component.Picker
+import com.example.feature.resume.impl.component.certificationChipItem
+import com.example.feature.resume.impl.component.genderSelectButton
+import com.example.feature.resume.impl.component.rememberPickerState
 import com.example.impl.utils.Gender
 
 //@Composable
@@ -372,7 +372,7 @@ private fun certificateDetail(
         ) {
             items(
                 count = userSubmitCertificateList.size,
-                key = { index }
+                key = { index -> userSubmitCertificateList[index] }
             ) { index ->
                 certificationChipItem(
                     title = userSubmitCertificateList[index],
