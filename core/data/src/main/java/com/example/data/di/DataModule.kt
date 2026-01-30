@@ -1,7 +1,7 @@
-package com.example.data.di
+package com.example.core.data.di
 
-import com.example.data.util.ConnectivityManagerNetworkMonitor
-import com.example.data.util.NetworkMonitor
+import com.example.core.data.util.ConnectivityManagerNetworkMonitor
+import com.example.core.data.util.NetworkMonitor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
