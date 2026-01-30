@@ -1,5 +1,6 @@
 package com.example.feature.resume.impl.step1
 
+import coil3.Uri
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent
 import com.example.core.ui.UiState
@@ -16,7 +17,7 @@ enum class Gender(val value: Int) {
 }
 
 data class InfoData(
-    val profileImageUrl: String? = null,
+    val profileImageUrl: Uri? = null,
     val name: String? = null,
     val introduction: String? = null
 )

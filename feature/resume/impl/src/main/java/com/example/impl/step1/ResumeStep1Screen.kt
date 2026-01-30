@@ -1,7 +1,10 @@
 package com.example.feature.resume.impl.step1
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,11 +35,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.Uri
+import coil3.compose.AsyncImage
 import com.example.core.designsystem.component.ContainedButton
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleIconButton
@@ -48,16 +56,25 @@ import com.example.feature.resume.impl.component.Picker
 import com.example.feature.resume.impl.component.certificationChipItem
 import com.example.feature.resume.impl.component.genderSelectButton
 import com.example.feature.resume.impl.component.rememberPickerState
-import com.example.feature.resume.impl.step1.Gender
 
-//@Composable
-//internal fun ResumeStep1Screen() {
-//
-//}
+@Composable
+internal fun ResumeStep1Screen() {
+    ResumeStep1Screen(
+        context = LocalContext.current,
+        profileImageUrl = null,
+        navigateToGallery = {},
+        removeProfileImage = {},
+        birthDate = "",
+    )
+}
 
 @Composable
 internal fun ResumeStep1Screen(
-    birthDate: String = "",
+    context: Context,
+    profileImageUrl: Uri?,
+    navigateToGallery: () -> Unit,
+    removeProfileImage: () -> Unit,
+    birthDate: String,
     selectUserCertificate: Boolean = false,
     haveCertificate: Boolean = false,
 ) {
@@ -73,7 +90,7 @@ internal fun ResumeStep1Screen(
                 modifier = Modifier.padding(top = 24.dp),
                 text = stringResource(R.string.resume1Screen_profile_image),
                 style = NonggleTheme.typography.b2_sub,
-                color = NonggleTheme.colorScheme.g2,
+                color = NonggleTheme.colorScheme.g1,
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
@@ -81,6 +98,41 @@ internal fun ResumeStep1Screen(
                 style = NonggleTheme.typography.b2_sub,
                 color = NonggleTheme.colorScheme.g2,
             )
+            // 갤러리 이미지 표시 위젯
+            Box(
+                modifier = Modifier
+                    .size(96.dp)
+                    .padding(top = 16.dp)
+                    .background(
+                        color = NonggleTheme.colorScheme.g4,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .clickable {
+                        navigateToGallery()
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                profileImageUrl?.let { uri ->
+                    AsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        error = painterResource(R.drawable.imageupload),
+                        contentScale = ContentScale.Crop,
+                        model = uri,
+                        placeholder = painterResource(R.drawable.imageupload),
+                        contentDescription = null,
+                    )
+                }
+                Image(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.TopEnd)
+                        .clickable {
+                            removeProfileImage()
+                        },
+                    painter = painterResource(R.drawable.xcircle),
+                    contentDescription = null,
+                )
+            }
             // 프로필 이미지
             Text(
                 modifier = Modifier.padding(top = 32.dp),
@@ -167,9 +219,11 @@ private fun birthDateSelectBox(
                 BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
                 shape = RoundedCornerShape(4.dp)
             )
-            .clickable {
-                // 생년월일 선택 필드
-            }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = LocalIndication.current,
+                onClick = { /* 생년월일 선택 필드 */ }
+            )
     ) {
         Row(
             modifier = Modifier

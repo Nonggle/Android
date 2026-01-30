@@ -71,7 +71,6 @@ internal fun ResumeStep2Screen(
             OutlinedIconButton(
                 modifier = Modifier.padding(bottom = 32.dp),
                 contentColor = NonggleTheme.colorScheme.g3,
-                pressedContentColor = NonggleTheme.colorScheme.g3,
                 disableContentColor = NonggleTheme.colorScheme.g3,
                 borderColor = NonggleTheme.colorScheme.g_line,
                 titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleTab
 import com.example.core.designsystem.theme.NonggleTheme
+import com.example.designsystem.component.NonggleTopAppBar
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step1.ResumeStep1Screen
 import com.example.feature.resume.impl.main.ResumeTab.Companion.getByValue
@@ -44,7 +46,7 @@ internal fun ResumeMainScreen(
                 pagerState.animateScrollToPage(index)
             }
         },
-        onNextOrCompleteClick = {
+        navigateToComplete = {
             if (pagerState.currentPage == uiState.tabList.size - 1) {
                 navigateToHome()
             } else {
@@ -52,22 +54,30 @@ internal fun ResumeMainScreen(
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
             }
-        }
+        },
+        navigateGoBack = navigateToHome
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ResumeMainScreen(
     modifier: Modifier = Modifier,
     tabList: List<Int>,
     pagerState: PagerState,
     onTabClick: (Int) -> Unit,
-    onNextOrCompleteClick: () -> Unit,
+    navigateToComplete: () -> Unit,
+    navigateGoBack: () -> Unit
 ) {
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+        NonggleTopAppBar(
+            titleRes = R.string.resume_Title,
+            navigationIcon = R.drawable.arrow_left,
+            onNavigationClick = navigateGoBack
+        )
         NonggleTabRow(selectedTabIndex = pagerState.currentPage) {
             tabList.forEachIndexed { index, title ->
                 NonggleTab(
@@ -99,7 +109,7 @@ internal fun ResumeMainScreen(
         FullButton(
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = onNextOrCompleteClick,
+            onClick = navigateToComplete,
             title = if(pagerState.currentPage == tabList.size - 1) stringResource(R.string.resume_complete) else stringResource(R.string.resume_nextStep)
         )
     }
