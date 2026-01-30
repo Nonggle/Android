@@ -62,7 +62,8 @@ dependencies {
 
     implementation(project(":feature:login:api"))
     implementation(project(":feature:login:impl"))
-    implementation(project(":feature:home"))
+    implementation(project(":feature:home:api"))
+    implementation(project(":feature:home:impl"))
     implementation(project(":feature:download"))
     implementation(project(":feature:setting"))
 }
