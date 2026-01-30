@@ -19,10 +19,8 @@ import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleTab
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
-import com.example.feature.resume.impl.ResumeTab
-import com.example.feature.resume.impl.ResumeTab.Companion.getByValue
-import com.example.feature.resume.impl.ResumeWriteViewModel
 import com.example.feature.resume.impl.step1.ResumeStep1Screen
+import com.example.impl.main.ResumeTab.Companion.getByValue
 import kotlinx.coroutines.launch
 /// TODO: 완료시 토스트메시지 띄우기
 
@@ -30,7 +28,7 @@ import kotlinx.coroutines.launch
 internal fun ResumeMainScreen(
     modifier: Modifier = Modifier,
     navigateToHome: () -> Unit,
-    viewModel: ResumeWriteViewModel = hiltViewModel(),
+    viewModel: ResumeMainViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
