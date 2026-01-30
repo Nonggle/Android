@@ -35,6 +35,7 @@ kakaoSdk = "2.23.2"
 # Firebase
 google-services = "4.4.4"
 firebaseCrashlyticsPlugin = "3.0.6"
+navigation3Runtime = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -83,6 +84,7 @@ desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 
 # kakao sdk
 kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakaoSdk" }
+navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3Runtime" }
 
 
 [plugins]
