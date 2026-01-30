@@ -1,8 +1,8 @@
 package com.example.common.network.di
 
-import com.example.common.network.Dispatcher
-import com.example.common.network.NonggleDispatchers.IO
-import com.example.common.network.NonggleDispatchers.Default
+import com.example.core.common.network.Dispatcher
+import com.example.core.common.network.NonggleDispatchers.IO
+import com.example.core.common.network.NonggleDispatchers.Default
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
