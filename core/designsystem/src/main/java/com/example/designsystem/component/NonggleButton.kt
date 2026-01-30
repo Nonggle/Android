@@ -1,8 +1,6 @@
 package com.example.core.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,8 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,12 +39,8 @@ fun NonggleButton(
     disableBackGroundColor: Color? = null,
     onClick: () -> Unit,
     contentPadding: PaddingValues? = null,
-    pressedColor: Color = backgroundColor,
     content: @Composable () -> Unit
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-
     Button(
         modifier = modifier,
         enabled = enabled,
@@ -57,12 +49,11 @@ fun NonggleButton(
         border = border,
         contentPadding = contentPadding ?: PaddingValues(all = 0.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isPressed) pressedColor else backgroundColor,
+            containerColor = backgroundColor,
             contentColor = contentColor,
             disabledContainerColor = disableBackGroundColor ?: backgroundColor,
             disabledContentColor = disableContentColor ?: contentColor,
         ),
-        interactionSource = interactionSource,
     ) {
         content()
     }
@@ -141,7 +132,6 @@ fun ContainedButton(
     titleTextStyle: TextStyle,
     contentPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 13.dp),
     backgroundColor: Color = NonggleTheme.colorScheme.m1,
-    pressBackgroundColor: Color = NonggleTheme.colorScheme.g3,
     disableBackGroundColor: Color = NonggleTheme.colorScheme.g4,
 ) {
     NonggleButton(
@@ -149,7 +139,6 @@ fun ContainedButton(
         enabled = enabled,
         contentColor = Color.White,
         roundedCorner = 4.dp,
-        pressedColor = pressBackgroundColor,
         backgroundColor = backgroundColor,
         disableContentColor = disableBackGroundColor,
         onClick = onClick,
@@ -174,7 +163,6 @@ fun OutlinedButton(
     NonggleButton(
         modifier = modifier.wrapContentHeight(),
         enabled = enabled,
-        pressedColor = NonggleTheme.colorScheme.m1,
         contentColor = NonggleTheme.colorScheme.m1,
         disableContentColor = NonggleTheme.colorScheme.g3,
         roundedCorner = 4.dp,
@@ -197,7 +185,6 @@ fun OutlinedIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     contentColor: Color,
-    pressedContentColor: Color,
     disableContentColor: Color,
     borderColor: Color,
     titleText: String,
@@ -207,7 +194,6 @@ fun OutlinedIconButton(
     NonggleButton(
         modifier = modifier,
         enabled = enabled,
-        pressedColor = pressedContentColor,
         contentColor = contentColor,
         disableContentColor = disableContentColor,
         roundedCorner = 4.dp,

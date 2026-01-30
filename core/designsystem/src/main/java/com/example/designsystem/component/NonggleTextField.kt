@@ -75,8 +75,7 @@ fun NonggleTextField(
                 placeholder = {
                     Text(
                         text = stringResource(hintTextResId),
-                        style = NonggleTheme.typography.b1_main,
-                        color = NonggleTheme.colorScheme.g3,
+                        style = NonggleTheme.typography.b1_main.copy(color = NonggleTheme.colorScheme.g3),
                     )
                 },
                 maxLines = maxLines,
