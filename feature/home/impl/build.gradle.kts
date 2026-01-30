@@ -18,4 +18,7 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":feature:home:api"))
+
+    implementation(project(":feature:resume:api"))
+    implementation(project(":feature:resume:impl"))
 }

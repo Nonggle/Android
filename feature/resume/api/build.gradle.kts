@@ -10,4 +10,6 @@ android {
 
 dependencies {
     implementation(libs.navigation3.runtime)
+
+    implementation(project(":core:navigation"))
 }
