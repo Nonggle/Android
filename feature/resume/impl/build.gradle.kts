@@ -17,5 +17,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":core:designsystem"))
+    implementation(project(":feature:resume:api"))
     implementation(project(":core:ui"))
 }

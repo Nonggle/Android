@@ -4,6 +4,10 @@ plugins {
     alias(libs.plugins.example.nonggle.android.detekt)
 }
 
+android {
+    namespace = "com.example.feature.resume.api"
+}
+
 dependencies {
     implementation(libs.navigation3.runtime)
 }
