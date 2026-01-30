@@ -5,9 +5,9 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.example.data.util.NetworkMonitor
-import com.example.home.navigation.HomeNavKey
-import com.example.navigation.NavigationState
-import com.example.navigation.rememberNavigationState
+import com.example.core.navigation.NavigationState
+import com.example.core.navigation.rememberNavigationState
+import com.example.feature.home.api.HomeNavKey
 import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope

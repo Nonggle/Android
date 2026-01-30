@@ -31,10 +31,10 @@ import com.example.core.designsystem.theme.NonggleTheme
 import com.example.download.navigation.downLoadEntryProvider
 import com.example.feature.login.api.LoginNavKey
 import com.example.feature.login.impl.navigation.LoginEntryProvider
-import com.example.home.navigation.homeEntryProvider
-import com.example.navigation.Navigator
-import com.example.navigation.rememberNavigationState
-import com.example.navigation.toEntries
+import com.example.core.navigation.Navigator
+import com.example.core.navigation.rememberNavigationState
+import com.example.core.navigation.toEntries
+import com.example.feature.home.impl.navigation.homeEntryProvider
 import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider

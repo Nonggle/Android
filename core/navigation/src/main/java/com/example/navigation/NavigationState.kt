@@ -1,4 +1,4 @@
-package com.example.navigation
+package com.example.core.navigation
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.core.designsystem.icon.NonggleIcons
 import com.example.download.navigation.DownLoadNavKey
-import com.example.home.navigation.HomeNavKey
+import com.example.feature.home.api.HomeNavKey
 import com.example.nonggleresume.R
 import com.example.setting.navigation.SettingNavKey
 
