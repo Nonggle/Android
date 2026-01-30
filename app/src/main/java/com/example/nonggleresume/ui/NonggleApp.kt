@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,7 +25,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.core.designsystem.component.NonggleMobileNavigationScaffold
 import com.example.core.designsystem.component.NonggleNavigationBarItem
-import com.example.core.designsystem.theme.NonggleTheme
 import com.example.download.navigation.downLoadEntryProvider
 import com.example.feature.login.api.LoginNavKey
 import com.example.feature.login.impl.navigation.LoginEntryProvider
@@ -47,7 +44,7 @@ internal fun NonggleApp(
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
     val rootNavState by appState.rootNavState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(isOffline) {
+    LaunchedEffect(isOffline) {/// TODO: 네트워크 미연결시 다이얼로그 처리
         if (isOffline) Log.d("NOTCONNECT", "네트워크 미연결")
     }
 
@@ -69,7 +66,10 @@ internal fun NonggleApp(
 
         RootNavKey.MainNavKey -> {
             val mainNavigator = remember { Navigator(appState.mainNavigationState) }
+            val shouldShowBottomBar = appState.mainNavigationState.currentKey in TOP_LEVEL_NAV_ITEMS.keys
+
             NonggleMobileNavigationScaffold(
+                showBottomBar = shouldShowBottomBar,
                 navigationBarItems = {
                     TOP_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
                         val selected = navKey == appState.mainNavigationState.currentTopLevelKey
@@ -82,54 +82,31 @@ internal fun NonggleApp(
                         )
                     }
                 }
-            ) {
-                Scaffold(
-                    containerColor = NonggleTheme.colorScheme.background,
-                    contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                ) { padding ->
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .padding(padding)
-                            .consumeWindowInsets(padding) // 시스템 UI에 의해 가려지는 영역 이미 처리했음을 하위 컴포저블에 알리는 수정자
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(
-                                    WindowInsetsSides.Horizontal
-                                )
+            ) { padding ->
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                        .consumeWindowInsets(padding)
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(
+                                WindowInsetsSides.Horizontal
                             )
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
                     ) {
-                        var shouldShowTopAppBar = false
-
-                        if (appState.mainNavigationState.currentKey in appState.mainNavigationState.topLevelKeys) {
-                            shouldShowTopAppBar = true
-
-                            val destination = TOP_LEVEL_NAV_ITEMS[appState.mainNavigationState.currentTopLevelKey] ?: error("Top level nav item not found for ${appState.mainNavigationState.currentTopLevelKey}")
-
-                            TopAppBar(
-                                title = { Text(destination.title()) }
-                            )
+                        val entryProvider = entryProvider {
+                            homeEntryProvider(mainNavigator)
+                            downLoadEntryProvider(mainNavigator)
+                            settingEntryProvider(mainNavigator)
                         }
 
-                        Box(
-                            modifier = Modifier.consumeWindowInsets(
-                                if (shouldShowTopAppBar) {
-                                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-                                } else {
-                                    WindowInsets(0, 0, 0, 0)
-                                }
-                            )
-                        ) {
-                            val entryProvider = entryProvider {
-                                homeEntryProvider(mainNavigator)
-                                downLoadEntryProvider(mainNavigator)
-                                settingEntryProvider(mainNavigator)
-                            }
-
-                            NavDisplay(
-                                entries = appState.mainNavigationState.toEntries(entryProvider),
-                                onBack = { mainNavigator.goBack() }
-                            )
-                        }
+                        NavDisplay(
+                            entries = appState.mainNavigationState.toEntries(entryProvider),
+                            onBack = { mainNavigator.goBack() }
+                        )
                     }
                 }
             }

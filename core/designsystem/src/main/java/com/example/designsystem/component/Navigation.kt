@@ -56,16 +56,20 @@ fun NonggleNavigationBar(
 
 @Composable
 fun NonggleMobileNavigationScaffold(
-    navigationBarItems: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
+    navigationBarItems: @Composable RowScope.() -> Unit,
+    showBottomBar: Boolean,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
+        topBar = {},
         modifier = modifier,
         containerColor = Color.Transparent,
         bottomBar = {
-            NonggleNavigationBar {
-                navigationBarItems()
+            if(showBottomBar) {
+                NonggleNavigationBar {
+                    navigationBarItems()
+                }
             }
         },
     ) { paddingValues ->
