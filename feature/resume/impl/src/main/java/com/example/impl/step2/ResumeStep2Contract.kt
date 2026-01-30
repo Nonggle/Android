@@ -1,4 +1,4 @@
-package com.example.impl.step2
+package com.example.feature.resume.impl.step2
 
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent

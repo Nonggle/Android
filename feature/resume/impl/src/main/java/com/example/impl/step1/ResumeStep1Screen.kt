@@ -48,7 +48,7 @@ import com.example.feature.resume.impl.component.Picker
 import com.example.feature.resume.impl.component.certificationChipItem
 import com.example.feature.resume.impl.component.genderSelectButton
 import com.example.feature.resume.impl.component.rememberPickerState
-import com.example.impl.step1.Gender
+import com.example.feature.resume.impl.step1.Gender
 
 //@Composable
 //internal fun ResumeStep1Screen() {

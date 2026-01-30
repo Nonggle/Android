@@ -1,4 +1,4 @@
-package com.example.impl.main
+package com.example.feature.resume.impl.main
 
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent

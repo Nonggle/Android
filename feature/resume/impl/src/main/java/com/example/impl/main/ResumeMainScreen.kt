@@ -1,4 +1,4 @@
-package com.example.impl.main
+package com.example.feature.resume.impl.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +20,7 @@ import com.example.core.designsystem.component.NonggleTab
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step1.ResumeStep1Screen
-import com.example.impl.main.ResumeTab.Companion.getByValue
+import com.example.feature.resume.impl.main.ResumeTab.Companion.getByValue
 import kotlinx.coroutines.launch
 /// TODO: 완료시 토스트메시지 띄우기
 

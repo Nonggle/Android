@@ -1,4 +1,4 @@
-package com.example.api
+package com.example.feature.resume.api
 
 import org.junit.Test
 

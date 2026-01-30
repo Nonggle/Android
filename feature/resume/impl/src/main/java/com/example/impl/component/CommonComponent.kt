@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.component.OutlinedButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
-import com.example.impl.step1.Gender
+import com.example.feature.resume.impl.step1.Gender
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 

@@ -1,4 +1,4 @@
-package com.example.impl.step4
+package com.example.feature.resume.impl.step4
 
 class ResumeStep4Screen {
 }
