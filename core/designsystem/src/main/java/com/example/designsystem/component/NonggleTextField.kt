@@ -91,6 +91,7 @@ fun NonggleTextField(
                     unfocusedContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
+                    cursorColor = NonggleTheme.colorScheme.m1
                 ),
             )
             TextFieldType.Outlined -> OutlinedTextField(
@@ -124,6 +125,7 @@ fun NonggleTextField(
                     disabledContainerColor = containerColor,
                     unfocusedContainerColor = containerColor,
                     errorContainerColor = containerColor,
+                    cursorColor = NonggleTheme.colorScheme.m1
                 )
             )
         }
