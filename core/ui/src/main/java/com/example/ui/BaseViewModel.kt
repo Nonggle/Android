@@ -38,7 +38,9 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
 
     /// public Functions
     protected fun updateState(reduce: State.() -> State) {
-        _uiState.update { it.reduce() }
+        viewModelScope.launch {
+            _uiState.update(reduce)
+        }
     }
 
     fun setEvent(event: Event) {
