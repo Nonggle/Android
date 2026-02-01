@@ -65,7 +65,7 @@ fun FullButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
     title: String,
-    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn,
+    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black),
 ) {
     NonggleButton(
         modifier = modifier,
@@ -129,7 +129,7 @@ fun ContainedButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
     titleText: String,
-    titleTextStyle: TextStyle,
+    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black),
     contentPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 13.dp),
     backgroundColor: Color = NonggleTheme.colorScheme.m1,
     disableBackGroundColor: Color = NonggleTheme.colorScheme.g4,
@@ -174,7 +174,7 @@ fun OutlinedButton(
             Text(
                 textAlign = TextAlign.Center,
                 text = titleText,
-                style = NonggleTheme.typography.b4_btn
+                style = NonggleTheme.typography.b4_btn.copy(color = if (isSelect) NonggleTheme.colorScheme.m1 else NonggleTheme.colorScheme.g3)
             )
         }
     )
