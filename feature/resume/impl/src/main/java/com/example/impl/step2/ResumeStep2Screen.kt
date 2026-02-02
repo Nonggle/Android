@@ -19,28 +19,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.core.designsystem.component.NonggleBottomSheet
 import com.example.core.designsystem.component.OutlinedIconButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
+import com.example.feature.resume.impl.step1.ResumeStep1Event
+import com.example.feature.resume.impl.step1.ResumeStep1State
+import com.example.feature.resume.impl.step1.ResumeStep1ViewModel
+import com.example.impl.component.SubTitleText
+import com.example.impl.component.TitleText
 
-//@Composable
-//internal fun ResumeSte2Screen() {
-//
-//}
+@Composable
+internal fun ResumeSte2Screen(
+    modifier: Modifier = Modifier,
+    viewModel: ResumeStep2ViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var isShowBottomSheet by remember { mutableStateOf(false) }
+
+}
 
 @Composable
 internal fun ResumeStep2Screen(
-    totalPeriod: String,
+    modifier: Modifier = Modifier,
+    uiState: ResumeStep2State,
+    onEvent: (ResumeStep2Event) -> Unit = {},
 ) {
-    var isShowBottomSheet by remember { mutableStateOf(false) }
-
-    if (isShowBottomSheet) {
-        NonggleBottomSheet(
-            onDismissRequest = { isShowBottomSheet = false },
-
-            )
-    }
 
     LazyColumn(
         modifier = Modifier
@@ -48,11 +54,11 @@ internal fun ResumeStep2Screen(
             .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
         item {
-            titleText(
+            TitleText(
                 modifier = Modifier.padding(bottom = 8.dp),
                 titleStringResId = R.string.resume2Screen_Title_careerTitle,
             )
-            subTitleText(
+            SubTitleText(
                 modifier = Modifier.padding(bottom = 16.dp),
                 subTitleStringResId = R.string.resume2Screen_Title_careerSubTitle
             )
@@ -79,27 +85,4 @@ internal fun ResumeStep2Screen(
             )
         }
     }
-}
-
-@Composable
-private fun titleText(
-    modifier: Modifier = Modifier,
-    titleStringResId: Int,
-) {
-    Text(
-        modifier = modifier,
-        text = stringResource(id = titleStringResId),
-        style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.black)
-    )
-}
-
-@Composable
-private fun subTitleText(
-    modifier: Modifier = Modifier,
-    subTitleStringResId: Int,
-) {
-    Text(
-        text = stringResource(id = subTitleStringResId),
-        style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
-    )
 }

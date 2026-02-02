@@ -135,8 +135,6 @@ private fun ResumeStep1Content(
                         indication = LocalIndication.current,
                         onClick = onProfileImageClick
                     ),
-                    //.clickable { onProfileImageClick() },
-
                 contentAlignment = Alignment.Center
             ) {
                 if (uiState.info.profileImageUrl != null) {
@@ -157,7 +155,6 @@ private fun ResumeStep1Content(
                                 indication = LocalIndication.current,
                                 onClick = { onEvent(ResumeStep1Event.RemoveProfileImage) }
                             ),
-                            //.clickable { onEvent(ResumeStep1Event.RemoveProfileImage) },
                         painter = painterResource(R.drawable.xcircle),
                         contentDescription = null,
                     )
