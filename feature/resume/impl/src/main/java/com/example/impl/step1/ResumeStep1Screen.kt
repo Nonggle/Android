@@ -1,87 +1,111 @@
 package com.example.feature.resume.impl.step1
 
-import android.content.Context
-import androidx.compose.foundation.BorderStroke
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.Uri
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.core.designsystem.component.ContainedButton
-import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.component.NonggleTextField
-import com.example.core.designsystem.component.OutlinedButton
 import com.example.core.designsystem.component.TextFieldType
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
-import com.example.feature.resume.impl.component.Picker
-import com.example.feature.resume.impl.component.certificationChipItem
-import com.example.feature.resume.impl.component.genderSelectButton
-import com.example.feature.resume.impl.component.rememberPickerState
+import com.example.feature.resume.impl.component.BirthDatePickerBottomSheet
+import com.example.feature.resume.impl.component.certificateSelectBox
+import com.example.feature.resume.impl.component.certificationInput
+import com.example.feature.resume.impl.component.dateSelectBox
+import com.example.feature.resume.impl.component.genderSelectBox
 
+/**
+ * 상태와 로직을 모두 관리하는 'Stateful' 컨테이너 컴포저블
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ResumeStep1Screen() {
-    ResumeStep1Screen(
-        context = LocalContext.current,
-        profileImageUrl = null,
-        navigateToGallery = {},
-        removeProfileImage = {},
-        birthDate = "",
+internal fun ResumeStep1Screen(
+    modifier: Modifier = Modifier,
+    viewModel: ResumeStep1ViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let { viewModel.setEvent(ResumeStep1Event.SelectImage(it)) }
+        }
+    )
+
+    // BottomSheet와 관련된 UI 상태는 Screen 레벨에서 관리
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val birthDateBottomSheetState = rememberModalBottomSheetState()
+
+    ResumeStep1Content(
+        modifier = modifier,
+        uiState = uiState, // 1. 상태 객체를 통째로 전달
+        onEvent = viewModel::setEvent, // 2. 이벤트 핸들러를 단일 통로로 전달
+        onProfileImageClick = { // 3. UI 로직(런처 실행)은 여기서 처리
+            imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        },
+        showBottomSheet = showBottomSheet,
+        birthDateBottomSheetState = birthDateBottomSheetState,
+        onBirthDateClick = { showBottomSheet = true },
+        onBirthDatePickerDismiss = { showBottomSheet = false }
     )
 }
 
+/**
+ * 오직 UI를 그리는 책임만 가지는 'Stateless' 프리젠터 컴포저블
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ResumeStep1Screen(
-    context: Context,
-    profileImageUrl: Uri?,
-    navigateToGallery: () -> Unit,
-    removeProfileImage: () -> Unit,
-    birthDate: String,
-    selectUserCertificate: Boolean = false,
-    haveCertificate: Boolean = false,
+private fun ResumeStep1Content(
+    modifier: Modifier = Modifier,
+    uiState: ResumeStep1State,
+    onEvent: (ResumeStep1Event) -> Unit = {},
+    onProfileImageClick: () -> Unit = {},
+    showBottomSheet: Boolean = false,
+    birthDateBottomSheetState: SheetState,
+    onBirthDateClick: () -> Unit = {},
+    onBirthDatePickerDismiss: () -> Unit = {},
 ) {
-    var userName by rememberSaveable { mutableStateOf("") }
+    if (showBottomSheet) {
+        BirthDatePickerBottomSheet(
+            sheetState = birthDateBottomSheetState,
+            selectBirthDate = { date -> onEvent(ResumeStep1Event.BirthDateChanged(date)) },
+            onDismissRequest = onBirthDatePickerDismiss
+        )
+    }
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp)
     ) {
@@ -98,52 +122,74 @@ internal fun ResumeStep1Screen(
                 style = NonggleTheme.typography.b2_sub,
                 color = NonggleTheme.colorScheme.g2,
             )
-            // 갤러리 이미지 표시 위젯
             Box(
                 modifier = Modifier
-                    .size(96.dp)
                     .padding(top = 16.dp)
+                    .size(96.dp)
                     .background(
-                        color = NonggleTheme.colorScheme.g4,
+                        color = NonggleTheme.colorScheme.g_line_light,
                         shape = RoundedCornerShape(16.dp)
                     )
-                    .clickable {
-                        navigateToGallery()
-                    },
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource()},
+                        indication = LocalIndication.current,
+                        onClick = onProfileImageClick
+                    ),
+                    //.clickable { onProfileImageClick() },
+
                 contentAlignment = Alignment.Center
             ) {
-                profileImageUrl?.let { uri ->
+                if (uiState.info.profileImageUrl != null) {
                     AsyncImage(
                         modifier = Modifier.fillMaxSize(),
-                        error = painterResource(R.drawable.imageupload),
+                        model = uiState.info.profileImageUrl,
+                        contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        model = uri,
+                        error = painterResource(R.drawable.imageupload),
                         placeholder = painterResource(R.drawable.imageupload),
+                    )
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.TopEnd)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource()},
+                                indication = LocalIndication.current,
+                                onClick = { onEvent(ResumeStep1Event.RemoveProfileImage) }
+                            ),
+                            //.clickable { onEvent(ResumeStep1Event.RemoveProfileImage) },
+                        painter = painterResource(R.drawable.xcircle),
                         contentDescription = null,
                     )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.imageupload),
+                        contentDescription = null
+                    )
                 }
-                Image(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .align(Alignment.TopEnd)
-                        .clickable {
-                            removeProfileImage()
-                        },
-                    painter = painterResource(R.drawable.xcircle),
-                    contentDescription = null,
-                )
             }
-            // 프로필 이미지
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(R.string.resume1Screen_nameTitle),
                 style = NonggleTheme.typography.b2_sub,
                 color = NonggleTheme.colorScheme.g1,
             )
-            nameInputField(
-                value = userName,
-                onValueChange = { userName = it },
-                onClear = { userName = "" }
+            NonggleTextField(
+                modifier = Modifier
+                    .padding(bottom = 14.dp)
+                    .wrapContentHeight(),
+                textFieldType = TextFieldType.Standard,
+                value = uiState.info.userName,
+                onValueChange = { userName -> onEvent(ResumeStep1Event.UserNameChanged(userName)) },
+                trailingIcon = {
+                    if (uiState.info.userName.isNotEmpty()) {
+                        NonggleIconButton(
+                            ImageResourceId = R.drawable.xcircle,
+                            onClick = { onEvent(ResumeStep1Event.UserNameCleared) }
+                        )
+                    }
+                },
+                hintTextResId = R.string.resume1Screen_HintText_writeUserName,
             )
             Text(
                 modifier = Modifier.padding(top = 32.dp),
@@ -151,7 +197,12 @@ internal fun ResumeStep1Screen(
                 style = NonggleTheme.typography.b2_sub,
                 color = NonggleTheme.colorScheme.g1,
             )
-            birthDateSelectBox(birthDate = birthDate)
+            dateSelectBox(
+                hintText = stringResource(R.string.resume1Screen_birthDateSubTitle),
+                selectDate = uiState.info.birthDate,
+                onClick = onBirthDateClick,
+                paddingValues = PaddingValues(top = 8.dp)
+            )
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(R.string.resume1Screen_genderTitle),
@@ -160,8 +211,8 @@ internal fun ResumeStep1Screen(
             )
             genderSelectBox(
                 modifier = Modifier.padding(top = 12.dp),
-                onSelectUserGender = {},
-                isSelect = selectUserCertificate
+                onSelectGender = { gender -> onEvent(ResumeStep1Event.SelectGender(gender)) },
+                selectGenderResult = uiState.info.gender
             )
             Text(
                 modifier = Modifier.padding(top = 32.dp),
@@ -170,280 +221,20 @@ internal fun ResumeStep1Screen(
                 color = NonggleTheme.colorScheme.g1
             )
             certificateSelectBox(
-                modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),
-                onClick = {},
-                haveCertificate = haveCertificate /// FIXME
+                modifier = Modifier.padding(top = 12.dp),
+                onClickExistCertificationInfo = { exist -> onEvent(ResumeStep1Event.ExistCertification(exist)) },
+                isCertificationExist = uiState.certificationExist
             )
-            if (haveCertificate) {
-
-            }
-        }
-    }
-}
-
-@Composable
-private fun nameInputField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    onClear: () -> Unit
-) {
-
-    NonggleTextField(
-        modifier = Modifier
-            .padding(bottom = 14.dp)
-            .wrapContentHeight(),
-        textFieldType = TextFieldType.Standard,
-        value = value,
-        onValueChange = onValueChange,
-        trailingIcon = {
-            if (value.isNotEmpty()) {
-                NonggleIconButton(
-                    ImageResourceId = R.drawable.xcircle,
-                    onClick = onClear
-                )
-            }
-        },
-        hintTextResId = R.string.resume1Screen_HintText_writeUserName,
-    )
-}
-
-@Composable
-private fun birthDateSelectBox(
-    birthDate: String
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-            .border(
-                BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
-                shape = RoundedCornerShape(4.dp)
-            )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = LocalIndication.current,
-                onClick = { /* 생년월일 선택 필드 */ }
-            )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = birthDate,
-                style = NonggleTheme.typography.b1_main,
-                textAlign = TextAlign.Start
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.date),
-                contentDescription = null,
-            )
-        }
-    }
-}
-
-@Composable
-private fun BirthDateSelectContent(
-    modifier: Modifier = Modifier,
-    years: List<String>,
-    months: List<String>,
-    days: List<String>,
-    onClick: (String) -> Unit,
-    onDismissRequest: () -> Unit,
-) {
-    val yearValues = remember { years }
-    val yearPickerState = rememberPickerState()
-    val monthValues = remember { months }
-    val monthPickerState = rememberPickerState()
-    val dayValues = remember { days }
-    val dayPickerState = rememberPickerState()
-
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            modifier = Modifier.padding(bottom = 32.dp),
-            text = stringResource(R.string.resume1Screen_birthDateTitle),
-            textAlign = TextAlign.Start,
-            style = NonggleTheme.typography.b1_main,
-            color = NonggleTheme.colorScheme.black
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Picker(
-                state = yearPickerState,
-                items = yearValues,
-                visibleItemsCount = 3,
-                modifier = Modifier.weight(0.3f),
-                textModifier = Modifier.padding(10.dp),
-            )
-            Picker(
-                state = monthPickerState,
-                items = monthValues,
-                visibleItemsCount = 3,
-                modifier = Modifier.weight(0.3f),
-                textModifier = Modifier.padding(10.dp),
-            )
-            Picker(
-                state = dayPickerState,
-                items = dayValues,
-                visibleItemsCount = 3,
-                modifier = Modifier.weight(0.3f),
-                textModifier = Modifier.padding(10.dp),
-            )
-            FullButton(
-                modifier = Modifier.padding(top = 32.dp, bottom = 32.dp),
-                onClick = {
-                    onClick("${yearPickerState.selectedItem}${monthPickerState.selectedItem}${dayPickerState.selectedItem}")
-                    onDismissRequest()
-                },
-                title = stringResource(R.string.resume1Screen_confirmBtnText)
-            )
-        }
-    }
-}
-
-@Composable
-private fun genderSelectBox(
-    modifier: Modifier = Modifier,
-    onSelectUserGender: (Gender) -> Unit,
-    isSelect: Boolean,
-) {
-    Row(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        genderSelectButton(
-            modifier = modifier
-                .weight(1f)
-                .padding(end = 16.dp),
-            text = stringResource(R.string.resume1Screen_label_women),
-            selectGender = { onSelectUserGender(Gender.FEMALE) },
-            userGender = Gender.FEMALE,
-            isSelect = isSelect,
-        )
-        genderSelectButton(
-            modifier = modifier
-                .weight(1f),
-            text = stringResource(R.string.resume1Screen_label_man),
-            selectGender = { onSelectUserGender(Gender.MALE) },
-            userGender = Gender.MALE,
-            isSelect = isSelect,
-        )
-    }
-}
-
-@Composable
-private fun certificateSelectBox(
-    modifier: Modifier = Modifier,
-    onClick: (Boolean) -> Unit,
-    haveCertificate: Boolean,
-) {
-    Row(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        OutlinedButton(
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 16.dp),
-            isSelect = haveCertificate,
-            titleText = stringResource(R.string.resume1Screen_label_havecertificate),
-            onClick = { onClick(true) },
-        )
-        OutlinedButton(
-            modifier = Modifier
-                .weight(1f),
-            isSelect = !haveCertificate,
-            titleText = stringResource(R.string.resume1Screen_label_nocertificate),
-            onClick = { onClick(false) },
-        )
-    }
-}
-
-
-@Composable
-private fun certificateDetail(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    onClear: () -> Unit,
-    certificateTypeSubmit: () -> Unit,
-    userSubmitCertificateList: List<String>,
-    removeCertificateChip: (Int) -> Unit,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            NonggleTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .wrapContentHeight(),
-                textFieldType = TextFieldType.Standard,
-                value = value,
-                onValueChange = onValueChange,
-                trailingIcon = {
-                    if (value.isNotEmpty()) {
-                        NonggleIconButton(
-                            ImageResourceId = R.drawable.xcircle,
-                            onClick = onClear
-                        )
-                    }
-                },
-                hintTextResId = R.string.resume1Screen_HintText_writeUserName,
-            )
-            //자격증 추가 버튼
-            ContainedButton(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
-                contentPadding = PaddingValues(horizontal = 30.dp, vertical = 13.dp),
-                enabled = value.isNotEmpty(),
-                onClick = certificateTypeSubmit,
-                titleText = stringResource(R.string.resume1Screen_confirmBtnText),
-                titleTextStyle = NonggleTheme.typography.b4_btn,
-            )
-        }
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 200.dp),
-            columns = GridCells.Fixed(3),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            items(
-                count = userSubmitCertificateList.size,
-                key = { index -> userSubmitCertificateList[index] }
-            ) { index ->
-                certificationChipItem(
-                    title = userSubmitCertificateList[index],
-                    removeChip = { removeCertificateChip(index) }
+            if(uiState.certificationExist == true) {
+                certificationInput(
+                    modifier = Modifier.padding(top = 12.dp),
+                    certificationName = uiState.certificationInput,
+                    certificationInput = { newValue -> onEvent(ResumeStep1Event.CertificationChanged(newValue)) },
+                    addCertificationList = { onEvent(ResumeStep1Event.AddCertification) },
+                    certificationList = uiState.info.certificationList,
+                    removeCertificationItem = { onEvent(ResumeStep1Event.ClearCertification) },
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewDateSpinner() {
-    BirthDateSelectContent(
-        years = listOf("2000", "1999", "182939"),
-        months = listOf("01", "02", "03"),
-        days = listOf("1", "2", "3"),
-        onClick = { },
-        onDismissRequest = { }
-    )
 }
