@@ -19,7 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleTab
 import com.example.core.designsystem.theme.NonggleTheme
-import com.example.designsystem.component.NonggleTopAppBar
+import com.example.core.designsystem.component.NonggleTopAppBar
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step1.ResumeStep1Screen
 import com.example.feature.resume.impl.main.ResumeTab.Companion.getByValue
@@ -97,8 +97,8 @@ internal fun ResumeMainScreen(
                 .fillMaxWidth()
                 .weight(1f),
             state = pagerState,
-        ) {page ->
-            when(getByValue(page)) {
+        ) { page ->
+            when (getByValue(page)) {
                 ResumeTab.INFO -> ResumeStep1Screen()
                 ResumeTab.CAREER -> ResumeStep1Screen()
                 ResumeTab.PORTFOLIO -> ResumeStep1Screen()
@@ -110,7 +110,9 @@ internal fun ResumeMainScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = navigateToComplete,
-            title = if(pagerState.currentPage == tabList.size - 1) stringResource(R.string.resume_complete) else stringResource(R.string.resume_nextStep)
+            title = if (pagerState.currentPage == tabList.size - 1) stringResource(R.string.resume_complete) else stringResource(
+                R.string.resume_nextStep
+            )
         )
     }
 
