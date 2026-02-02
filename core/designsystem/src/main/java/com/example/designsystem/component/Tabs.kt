@@ -50,11 +50,13 @@ fun NonggleTabRow(
         modifier = modifier,
         containerColor = NonggleTheme.colorScheme.white,
         indicator = { tabPositions ->
-            TabRowDefaults.SecondaryIndicator(
-                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                height = 2.dp,
-                color = NonggleTheme.colorScheme.m1,
-            )
+            if (selectedTabIndex < tabPositions.size) {
+                TabRowDefaults.SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                    height = 2.dp,
+                    color = NonggleTheme.colorScheme.m1,
+                )
+            }
         },
         tabs = tabs,
     )
