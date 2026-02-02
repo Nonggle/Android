@@ -2,6 +2,7 @@ package com.example.core.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,7 +55,10 @@ fun NonggleBottomSheet(
                         modifier = Modifier
                             .padding(end = 8.dp, top = 10.dp, bottom = 8.dp)
                             .size(24.dp)
-                            .clickable { onDismissRequest() },
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ) { onDismissRequest() },
                         alignment = Alignment.TopEnd,
                         painter = painterResource(id = R.drawable.close),
                         contentDescription = null
