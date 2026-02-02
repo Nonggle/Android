@@ -29,7 +29,10 @@ class AndroidDetektConventionPlugin: Plugin<Project> {
         config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
         source.setFrom(
             files(
-                "src/main/java"
+                "src/main/java",
+                "src/main/kotlin",
+                "src/test/java",
+                "src/test/kotlin",
             )
         )
         // 병렬 처리
