@@ -1,4 +1,4 @@
-package com.example.designsystem.component
+package com.example.core.designsystem.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,9 +38,9 @@ import kotlinx.coroutines.flow.map
 fun Picker(
     modifier: Modifier = Modifier,
     state: PickerState = rememberPickerState(),
-    items: List<Int>,
-    unit: String,
+    items: List<String>,
     startIndex: Int = 0,
+    unit: String,
     visibleItemsCount: Int = 3,
     textModifier: Modifier = Modifier,
 ) {
@@ -49,18 +50,17 @@ fun Picker(
     val listStartIndex =
         listScrollMiddle - listScrollMiddle % items.size - visibleItemsMiddle + startIndex
 
-    fun getItem(index: Int) = "${items[index % items.size]} ${unit}"
+    fun getItem(index: Int): String = items[index % items.size]
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
 
-    val itemHeightPixels = remember { mutableStateOf(0) }
+    val itemHeightPixels = remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val itemHeightDp = remember(itemHeightPixels.value) {
         with(density) { itemHeightPixels.value.toDp() }
     }
     val dividerColor = NonggleTheme.colorScheme.white
-
     val fadingEdgeGradient = remember(dividerColor) {
         Brush.verticalGradient(
             0f to Color.Transparent,
@@ -70,11 +70,26 @@ fun Picker(
         )
     }
 
-    LaunchedEffect(listState) {
+    // items, startIndex가 바뀌면 시작 위치를 다시 바꿔줌 년도에 따라 월/일 리스트가 동적으로 바뀌기 때문
+    LaunchedEffect(items.size, startIndex) {
+        val newStart =
+            listScrollMiddle - listScrollMiddle % items.size - visibleItemsMiddle + startIndex
+        listState.scrollToItem(newStart)
+    }
+
+    // 스크롤 위치가 변할때 선택 값 갱신
+    LaunchedEffect(listState, items) {
         snapshotFlow { listState.firstVisibleItemIndex }
-            .map { index -> getItem(index + visibleItemsMiddle) }
+            .map { firstIndex ->
+                val centerIndex = firstIndex + visibleItemsMiddle
+                val realIndex = ((centerIndex % items.size) + items.size) % items.size
+                realIndex to items[realIndex]
+            }
             .distinctUntilChanged()
-            .collect { item -> state.selectedItem = item }
+            .collect { (realIndex, value) ->
+                state.selectedIndex = realIndex
+                state.selectedItem = value
+            }
     }
 
     Box(modifier = modifier) {
@@ -92,7 +107,7 @@ fun Picker(
                     modifier = Modifier
                         .onSizeChanged { size -> itemHeightPixels.value = size.height }
                         .then(textModifier),
-                    text = getItem(index),
+                    text = "${getItem(index)} $unit",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = NonggleTheme.typography.b1_main.copy(color = NonggleTheme.colorScheme.black),
@@ -121,5 +136,6 @@ private fun Modifier.fadingEdge(brush: Brush) = this
 fun rememberPickerState() = remember { PickerState() }
 
 class PickerState {
+    var selectedIndex by mutableIntStateOf(0)
     var selectedItem by mutableStateOf("")
 }
