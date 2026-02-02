@@ -35,8 +35,7 @@ fun RowScope.NonggleNavigationBarItem(
             selectedIconColor = NonggleNavigationDefaults.navigationSelectedItemColor(),
             unselectedIconColor = NonggleNavigationDefaults.navigationContentColor(),
             selectedTextColor = NonggleNavigationDefaults.navigationSelectedItemColor(),
-            unselectedTextColor = NonggleNavigationDefaults.navigationContentColor(),
-            indicatorColor = NonggleNavigationDefaults.navigationIndicatorColor(),
+            indicatorColor = Color.Transparent
         ),
     )
 }
@@ -79,11 +78,8 @@ fun NonggleMobileNavigationScaffold(
 
 object NonggleNavigationDefaults {
     @Composable
-    fun navigationContentColor() = NonggleTheme.colorScheme.m1
+    fun navigationContentColor() = NonggleTheme.colorScheme.g1
 
     @Composable
     fun navigationSelectedItemColor() = NonggleTheme.colorScheme.m1
-
-    @Composable
-    fun navigationIndicatorColor() = NonggleTheme.colorScheme.m1
 }
