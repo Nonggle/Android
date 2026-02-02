@@ -44,6 +44,7 @@ fun Picker(
     visibleItemsCount: Int = 3,
     textModifier: Modifier = Modifier,
 ) {
+    if(items.isEmpty()) return
     val visibleItemsMiddle = visibleItemsCount / 2
     val listScrollCount = Integer.MAX_VALUE
     val listScrollMiddle = listScrollCount / 2
