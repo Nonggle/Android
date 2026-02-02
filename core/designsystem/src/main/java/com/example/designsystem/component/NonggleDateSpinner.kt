@@ -1,7 +1,7 @@
 package com.example.core.designsystem.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -53,7 +53,7 @@ fun Picker(
     fun getItem(index: Int): String = items[index % items.size]
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
-    val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+    val flingBehavior = ScrollableDefaults.flingBehavior()
 
     val itemHeightPixels = remember { mutableIntStateOf(0) }
     val density = LocalDensity.current

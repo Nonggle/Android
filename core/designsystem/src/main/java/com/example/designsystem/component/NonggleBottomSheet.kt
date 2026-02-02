@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.R
+import com.example.core.designsystem.theme.NonggleTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,25 +36,31 @@ fun NonggleBottomSheet(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
+    title: String,
     content: @Composable () -> Unit,
 ) {
     ModalBottomSheet(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
+        tonalElevation = 8.dp,
         shape = RoundedCornerShape(
             topStart = 16.dp,
             topEnd = 16.dp
         ),
+        containerColor = NonggleTheme.colorScheme.white,
+        contentColor = NonggleTheme.colorScheme.black,
         content = {
             Column(
-                modifier = Modifier.wrapContentHeight()
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(horizontal = 20.dp)
             ) {
                 Row {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
                         modifier = Modifier
-                            .padding(end = 8.dp, top = 10.dp, bottom = 8.dp)
+                            .padding(top = 10.dp, bottom = 8.dp)
                             .size(24.dp)
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
@@ -64,6 +71,10 @@ fun NonggleBottomSheet(
                         contentDescription = null
                     )
                 }
+                Text(
+                    text = title,
+                    style = NonggleTheme.typography.t3.copy(color = NonggleTheme.colorScheme.black)
+                )
                 content()
             }
         }
@@ -87,9 +98,9 @@ fun NoggleBottomSheetPreview() {
         NonggleBottomSheet(
             onDismissRequest = { showBottomSheet = false }, // 배경 클릭 또는 뒤로가기 시 닫기
             sheetState = sheetState,
+            title = "제목",
             content = {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("이것이 바텀시트의 내용입니다.")
                     Button(onClick = { showBottomSheet = false }) {
                         Text("닫기 버튼")
                     }

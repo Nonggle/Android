@@ -37,6 +37,7 @@ kakaoSdk = "2.23.2"
 google-services = "4.4.4"
 firebaseCrashlyticsPlugin = "3.0.6"
 navigation3Runtime = "1.0.0"
+foundationLayout = "1.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -89,6 +90,7 @@ navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runt
 # coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 
 
 [plugins]

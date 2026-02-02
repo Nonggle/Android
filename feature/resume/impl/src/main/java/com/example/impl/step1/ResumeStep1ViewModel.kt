@@ -3,6 +3,7 @@ package com.example.feature.resume.impl.step1
 import android.net.Uri
 import com.example.core.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +20,7 @@ class ResumeStep1ViewModel @Inject constructor() :
             is ResumeStep1Event.ExistCertification -> existCertification(event.exist)
             is ResumeStep1Event.AddCertification -> addCertification()
             is ResumeStep1Event.CertificationChanged -> certificationChanged(event.certification)
-            is ResumeStep1Event.ClearCertification -> certificationChanged("")
+            is ResumeStep1Event.RemoveCertificationChip -> removeCertificationChip(event.id)
         }
     }
 
@@ -53,9 +54,21 @@ class ResumeStep1ViewModel @Inject constructor() :
         updateState { copy(certificationInput = certificate) }
     }
 
+    private fun removeCertificationChip(id: String) {
+        updateState {
+            val certificationList = this.info.certificationList.filter { it.id != id }
+            copy(info = this.info.copy(certificationList = certificationList))
+        }
+    }
+
     private fun addCertification() {
         updateState {
-            copy(info = this.info.copy(certificationList = this.info.certificationList + certificationInput))
+            val certificationData = CertificationData(
+                id = UUID.randomUUID().toString(),
+                certificationTitle = certificationInput
+            )
+
+            copy(info = this.info.copy(certificationList = this.info.certificationList + certificationData))
         }
     }
 

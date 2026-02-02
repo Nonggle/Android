@@ -16,13 +16,18 @@ enum class Gender(val value: Int) {
     }
 }
 
+data class CertificationData(
+    val id: String,
+    val certificationTitle: String
+)
+
 data class InfoData(
     val profileImageUrl: Uri? = null,
     val userName: String = "",
     val birthDate: String = "",
     val introduction: String? = null,
     val gender: Gender? = null,
-    val certificationList: List<String> = emptyList()
+    val certificationList: List<CertificationData> = emptyList()
 )
 
 data class ResumeStep1State(
@@ -49,7 +54,7 @@ sealed interface ResumeStep1Event : UiEvent {
 
     data object AddCertification: ResumeStep1Event
 
-    data object ClearCertification: ResumeStep1Event
+    data class RemoveCertificationChip(val id: String): ResumeStep1Event
 }
 
 sealed interface ResumeStep1Effect : UiEffect {

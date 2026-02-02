@@ -232,7 +232,7 @@ private fun ResumeStep1Content(
                     certificationInput = { newValue -> onEvent(ResumeStep1Event.CertificationChanged(newValue)) },
                     addCertificationList = { onEvent(ResumeStep1Event.AddCertification) },
                     certificationList = uiState.info.certificationList,
-                    removeCertificationItem = { onEvent(ResumeStep1Event.ClearCertification) },
+                    removeCertificationItem = { onEvent(ResumeStep1Event.RemoveCertificationChip(it)) },
                 )
             }
         }

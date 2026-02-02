@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -44,6 +46,7 @@ import com.example.core.designsystem.theme.NonggleTheme
 import com.example.core.designsystem.component.Picker
 import com.example.core.designsystem.component.rememberPickerState
 import com.example.feature.resume.impl.R
+import com.example.feature.resume.impl.step1.CertificationData
 import com.example.feature.resume.impl.step1.Gender
 import java.time.LocalDate
 import java.time.YearMonth
@@ -90,7 +93,7 @@ fun dateSelectBox(
                 BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
                 shape = RoundedCornerShape(4.dp)
             )
-            .clickable (
+            .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = onClick
@@ -191,19 +194,15 @@ fun BirthDatePickerBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
+        title = stringResource(R.string.resume1Screen_birthDateTitle),
         content = {
             Column(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    modifier = Modifier.padding(bottom = 32.dp),
-                    text = stringResource(R.string.resume1Screen_birthDateTitle),
-                    textAlign = TextAlign.Start,
-                    style = NonggleTheme.typography.b1_main,
-                    color = NonggleTheme.colorScheme.black
-                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -283,12 +282,15 @@ fun certificationInput(
     certificationName: String,
     certificationInput: (String) -> Unit,
     addCertificationList: (String) -> Unit,
-    certificationList: List<String>,
-    removeCertificationItem: (Int) -> Unit
+    certificationList: List<CertificationData>,
+    removeCertificationItem: (String) -> Unit
 ) {
     Column {
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             NonggleTextField(
                 modifier = Modifier.weight(7f),
@@ -313,18 +315,20 @@ fun certificationInput(
         }
         if (certificationList.isNotEmpty()) {
             LazyVerticalGrid(
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 40.dp)
+                    .heightIn(max = 200.dp),
                 columns = GridCells.Adaptive(minSize = 128.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
                     count = certificationList.size,
-                    key = { index -> certificationList[index] }
+                    key = { index -> certificationList[index].id }
                 ) { index ->
                     certificationChipItem(
-                        title = certificationList[index],
-                        removeChip = { removeCertificationItem(index) }
+                        //modifier = Modifier.fillMaxWidth(),
+                        title = certificationList[index].certificationTitle,
+                        removeChip = { removeCertificationItem(certificationList[index].id) }
                     )
                 }
             }
@@ -342,8 +346,7 @@ fun certificationChipItem(
 ) {
     Box(
         modifier = modifier
-            .wrapContentWidth()
-            .wrapContentHeight()
+            .wrapContentSize()
             .border(
                 BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
                 shape = RoundedCornerShape(20.dp)
@@ -364,7 +367,7 @@ fun certificationChipItem(
             Image(
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .clickable (
+                    .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
                         onClick = removeChip
