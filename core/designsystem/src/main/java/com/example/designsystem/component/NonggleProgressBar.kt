@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.theme.NonggleTheme
 
 @Composable
-fun NonggleCircularProgresssBar(
+fun NonggleCircularProgressBar(
     percentage: Float,
     radius: Dp = 50.dp,
     color: Color = NonggleTheme.colorScheme.m1,
@@ -64,7 +64,7 @@ fun NonggleCircularProgresssBar(
 @Preview
 @Composable
 fun ProgressbarPreview() {
-    NonggleCircularProgresssBar(
+    NonggleCircularProgressBar(
         percentage = 0.5f,
         radius = 50.dp,
     )
