@@ -41,7 +41,7 @@ fun NonggleTextField(
     enabledColor: Color = NonggleTheme.colorScheme.g4,
     containerColor: Color = NonggleTheme.colorScheme.g4,
     trailingIcon: @Composable (() -> Unit)? = null,
-    hintTextResId: Int,
+    hintText: String,
     supportText: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -74,7 +74,7 @@ fun NonggleTextField(
                 visualTransformation = visualTransformation,
                 placeholder = {
                     Text(
-                        text = stringResource(hintTextResId),
+                        text = hintText,
                         style = NonggleTheme.typography.b1_main.copy(color = NonggleTheme.colorScheme.g3),
                     )
                 },
@@ -105,7 +105,7 @@ fun NonggleTextField(
                 shape = shape,
                 placeholder = {
                     Text(
-                        text = stringResource(hintTextResId),
+                        text = hintText,
                         style = NonggleTheme.typography.b1_main,
                         color = NonggleTheme.colorScheme.g3,
                     )

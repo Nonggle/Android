@@ -304,7 +304,7 @@ fun certificationInput(
                         )
                     }
                 },
-                hintTextResId = R.string.resume1Screen_certificateDetail_inputHintText,
+                hintText = stringResource(R.string.resume1Screen_certificateDetail_inputHintText),
             )
             ContainedButton(
                 modifier = Modifier.weight(3f),
