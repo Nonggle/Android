@@ -140,7 +140,8 @@ fun ContainedButton(
         contentColor = Color.White,
         roundedCorner = 4.dp,
         backgroundColor = backgroundColor,
-        disableContentColor = disableBackGroundColor,
+        disableContentColor = NonggleTheme.colorScheme.g3,
+        disableBackGroundColor = disableBackGroundColor,
         onClick = onClick,
         contentPadding = contentPadding,
         content = {
