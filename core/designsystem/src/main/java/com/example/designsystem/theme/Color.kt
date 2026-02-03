@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 @Immutable
-data class NonggleColors(
+class NonggleColors(
     val black: Color,
     val white: Color,
     val m1: Color,
