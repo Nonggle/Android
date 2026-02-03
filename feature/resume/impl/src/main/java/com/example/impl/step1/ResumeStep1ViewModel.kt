@@ -45,9 +45,16 @@ class ResumeStep1ViewModel @Inject constructor() :
     }
 
     private fun existCertification(exist: Boolean) {
-        updateState {
-            copy(certificationExist = exist)
+        if(exist) {
+            updateState {
+                copy(certificationExist = exist)
+            }
+        } else {
+            updateState {
+                copy(certificationExist = exist, info = this.info.copy(certificationList = emptyList()))
+            }
         }
+
     }
 
     private fun certificationChanged(certificate: String) {
