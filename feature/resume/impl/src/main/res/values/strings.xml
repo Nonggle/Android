@@ -47,4 +47,7 @@
 
     <string name="resume2Screen_BottomSheet_AddButton">추가하기</string>
 
+    <string name="resume2Screen_DialogTitle_CareerDelete">정말 삭제하시겠어요?</string>
+    <string name="resume2Screen_DialogDetail_CareerDelete">추가하신 경력이 사라져요!</string>
+
 </resources>

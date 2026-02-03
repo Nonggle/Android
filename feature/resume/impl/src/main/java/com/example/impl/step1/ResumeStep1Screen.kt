@@ -86,7 +86,7 @@ internal fun ResumeStep1Screen(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ResumeStep1Content(
+internal fun ResumeStep1Content(
     modifier: Modifier = Modifier,
     uiState: ResumeStep1State,
     onEvent: (ResumeStep1Event) -> Unit = {},
@@ -186,7 +186,7 @@ private fun ResumeStep1Content(
                         )
                     }
                 },
-                hintTextResId = R.string.resume1Screen_HintText_writeUserName,
+                hintText = stringResource(R.string.resume1Screen_HintText_writeUserName),
             )
             Text(
                 modifier = Modifier.padding(top = 32.dp),

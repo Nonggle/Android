@@ -3,7 +3,6 @@ package com.example.feature.resume.impl.step1
 import android.net.Uri
 import com.example.core.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
