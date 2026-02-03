@@ -1,11 +1,13 @@
 package com.example.core.designsystem.theme
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-data class NonggleTypography(
+@Immutable
+class NonggleTypography(
     val HintTextAppearance: TextStyle = TextStyle(
         fontFamily = spoqahanSansneo,
         fontWeight = FontWeight.Normal,
