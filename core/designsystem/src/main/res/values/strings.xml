@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NonggleResume</string>
+    <string name="dialog_Confirm_ButtonTitle">확인</string>
+    <string name="dialog_Cancel_ButtonTitle">취소</string>
 </resources>

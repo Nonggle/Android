@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -185,11 +186,12 @@ fun OutlinedButton(
 fun OutlinedIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    contentColor: Color,
-    disableContentColor: Color,
-    borderColor: Color,
+    contentColor: Color = NonggleTheme.colorScheme.g3,
+    disableContentColor: Color = NonggleTheme.colorScheme.g3,
+    borderColor: Color = NonggleTheme.colorScheme.g3,
     titleText: String,
-    titleTextStyle: TextStyle,
+    titleTextStyle: TextStyle = NonggleTheme.typography.b1_main.copy(color = contentColor),
+    icon: Painter = painterResource(id = R.drawable.right_small),
     onClick: () -> Unit
 ) {
     NonggleButton(
@@ -215,7 +217,7 @@ fun OutlinedIconButton(
                 )
                 Spacer(modifier.weight(1f))
                 Icon(
-                    painter = painterResource(id = R.drawable.right_small),
+                    painter = icon,
                     modifier = modifier.size(width = 24.dp, height = 24.dp),
                     tint = contentColor,
                     contentDescription = null,

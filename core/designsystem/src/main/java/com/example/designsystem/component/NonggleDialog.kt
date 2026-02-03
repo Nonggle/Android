@@ -50,7 +50,7 @@ fun NonggleDialog(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        modifier = Modifier.padding(bottom = 10.dp, top = 8.dp),
+                        modifier = Modifier.padding(bottom = 10.dp, top = 20.dp),
                         text = dialogTitle,
                         style = dialogTitleStyle.copy(color = dialogTitleColor)
                     )
