@@ -4,6 +4,7 @@ import android.net.Uri
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent
 import com.example.core.ui.UiState
+import java.util.UUID
 
 enum class Gender(val value: Int) {
     MALE(0), FEMALE(1);
@@ -17,7 +18,7 @@ enum class Gender(val value: Int) {
 }
 
 data class CertificationData(
-    val id: String,
+    val id: String = UUID.randomUUID().toString(),
     val certificationTitle: String
 )
 

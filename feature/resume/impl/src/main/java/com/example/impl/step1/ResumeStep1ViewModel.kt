@@ -65,7 +65,6 @@ class ResumeStep1ViewModel @Inject constructor() :
         updateState {
             if (certificationInput.trim().isEmpty()) return@updateState this
             val certificationData = CertificationData(
-                id = UUID.randomUUID().toString(),
                 certificationTitle = certificationInput.trim()
             )
 
