@@ -49,4 +49,11 @@
     <string name="resume2Screen_DialogTitle_CareerDelete">정말 삭제하시겠어요?</string>
     <string name="resume2Screen_DialogDetail_CareerDelete">추가하신 경력이 사라져요!</string>
 
+    <string name="resume3Screen_Title_Introduce">자기소개</string>
+    <string name="resume3Screen_HintText_Introduce">본인을 한문장으로 표현해주세요.</string>
+    <string name="resume3Screen_Title_personality">나의성격</string>
+    <string name="resume3Screen_HintText_personality">예) 성실함,꾸준함,긍정적</string>
+    <string name="resume3Screen_Title_extra">추가코멘트</string>
+    <string name="resume3Screen_HintText_extra">하고싶은 말이나 각오를 입력해주세요.</string>
+
 </resources>
