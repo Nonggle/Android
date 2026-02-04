@@ -231,15 +231,19 @@ fun OutlinedIconButton(
 fun NonggleIconButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    ImageResourceId: Int
+    image: Painter,
+    iconWidth: Dp = 20.dp,
+    iconHeight: Dp = 20.dp,
+    iconColor: Color = NonggleTheme.colorScheme.g3,
 ) {
     IconButton(
         onClick = onClick,
         modifier = modifier
     ) {
         Icon(
-            painter = painterResource(id = ImageResourceId),
-            modifier = modifier.size(width = 20.dp, height = 20.dp),
+            painter = image,
+            modifier = modifier.size(width = iconWidth, height = iconHeight),
+            tint = iconColor,
             contentDescription = null,
         )
     }
