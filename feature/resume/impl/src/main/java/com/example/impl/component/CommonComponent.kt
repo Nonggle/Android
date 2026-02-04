@@ -45,7 +45,7 @@ import com.example.core.designsystem.theme.NonggleTheme
 import com.example.core.designsystem.component.Picker
 import com.example.core.designsystem.component.rememberPickerState
 import com.example.feature.resume.impl.R
-import com.example.feature.resume.impl.step1.CertificationData
+import com.example.feature.resume.impl.step1.CertificationTag
 import com.example.feature.resume.impl.step1.Gender
 import java.time.LocalDate
 import java.time.YearMonth
@@ -281,7 +281,7 @@ fun certificationInput(
     certificationName: String,
     certificationInput: (String) -> Unit,
     addCertificationList: (String) -> Unit,
-    certificationList: List<CertificationData>,
+    certificationList: List<CertificationTag>,
     removeCertificationItem: (String) -> Unit
 ) {
     Column {
@@ -299,7 +299,7 @@ fun certificationInput(
                 trailingIcon = {
                     if (certificationName.isNotEmpty()) {
                         NonggleIconButton(
-                            ImageResourceId = R.drawable.xcircle,
+                            image = painterResource(R.drawable.xcircle),
                             onClick = { certificationInput("") }
                         )
                     }
@@ -307,6 +307,7 @@ fun certificationInput(
                 hintText = stringResource(R.string.resume1Screen_certificateDetail_inputHintText),
             )
             ContainedButton(
+                enabled = certificationName.isNotEmpty(),
                 modifier = Modifier.weight(3f),
                 onClick = { addCertificationList(certificationName) },
                 titleText = stringResource(R.string.resume1Screen_confirmBtnText),

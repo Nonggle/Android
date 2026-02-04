@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import com.example.core.designsystem.component.OutlinedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,17 +22,38 @@ import com.example.core.designsystem.component.OutlinedIconButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
 import com.example.impl.component.CareerBottomSheet
+import com.example.impl.component.CareerItem
 import com.example.impl.component.SubTitleText
 import com.example.impl.component.TitleText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ResumeSte2Screen(
+internal fun ResumeStep2Screen(
     modifier: Modifier = Modifier,
     viewModel: ResumeStep2ViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var isShowBottomSheet by remember { mutableStateOf(false) }
 
+    var isShowBottomSheet by remember { mutableStateOf(false) }
+    val careerBottomSheetState = rememberModalBottomSheetState()
+
+    ResumeStep2Screen(
+        modifier = modifier,
+        uiState = uiState,
+        onEvent = viewModel::setEvent,
+        showBottomSheet = isShowBottomSheet,
+        careerBottomSheetState = careerBottomSheetState,
+        careerSheetState = uiState.careerFormData,
+        onCareerSheetEvent = { sheetEvent ->
+            viewModel.setEvent(
+                ResumeStep2Event.CareerSheetEvent(
+                    sheetEvent
+                )
+            )
+        },
+        careerBottomSheetClick = { isShowBottomSheet = true },
+        careerBottomSheetDismiss = { isShowBottomSheet = false }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,13 +69,20 @@ internal fun ResumeStep2Screen(
     careerBottomSheetClick: () -> Unit = {},
     careerBottomSheetDismiss: () -> Unit = {},
 ) {
-    if(showBottomSheet) {
+    if (showBottomSheet) {
         CareerBottomSheet(
             sheetState = careerBottomSheetState,
             uiState = careerSheetState,
             onEvent = onCareerSheetEvent,
             onDismissRequest = careerBottomSheetDismiss
         )
+    }
+
+    /// TODO: 경력 아이템 추가할 때마다 파생상태 계산되도록
+    val totalCareer by remember {
+        derivedStateOf {
+
+        }
     }
 
     LazyColumn(
@@ -74,21 +104,30 @@ internal fun ResumeStep2Screen(
                 isSelect = true,
                 enabled = false,
                 onClick = {}, // do nothing
-                titleText = "totalPeriod"
+                titleText = "총 ${uiState.totalCareer[0]}년 ${uiState.totalCareer[1]}개월 ${uiState.totalCareer[2]}일"
             )
         }
-//            this.items {
-//                // 경력 리스트 위치
-//            }
+        items(
+            count = uiState.careerList.size,
+            key = { index -> uiState.careerList[index].id },
+            itemContent = {index ->
+                CareerItem(
+                    careerItemTitle = uiState.careerList[index].careerDescription,
+                    careerItemDetail = uiState.careerList[index].careerDetail,
+                    careerItemId = uiState.careerList[index].id,
+                    careerPeriod = "", // TODO: 경력 기간 표시 로직 구현 에정,
+                    deleteCareerItem = { onEvent(ResumeStep2Event.DeleteCareerItem(uiState.careerList[index].id)) }
+                )
+            }
+        )
         item {
             OutlinedIconButton(
-                modifier = Modifier.padding(bottom = 32.dp),
                 contentColor = NonggleTheme.colorScheme.g3,
                 disableContentColor = NonggleTheme.colorScheme.g3,
                 borderColor = NonggleTheme.colorScheme.g_line,
                 titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
                 titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
-                onClick = { careerBottomSheetClick() }
+                onClick = careerBottomSheetClick
             )
         }
     }

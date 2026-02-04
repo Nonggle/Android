@@ -70,12 +70,12 @@ class ResumeStep1ViewModel @Inject constructor() :
     private fun addCertification() {
         updateState {
             if (certificationInput.trim().isEmpty()) return@updateState this
-            val certificationData = CertificationData(
+            val certificationTag = CertificationTag(
                 certificationTitle = certificationInput.trim()
             )
 
             copy(
-                info = info.copy(certificationList = info.certificationList + certificationData),
+                info = info.copy(certificationList = info.certificationList + certificationTag),
                 certificationInput = ""
             )
         }

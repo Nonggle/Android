@@ -272,20 +272,6 @@ fun CareerBottomSheet(
                             textFieldType = TextFieldType.Standard,
                             value = uiState.careerDetail,
                             onValueChange = { onEvent(CareerBottomSheetEvent.CareerDetailInput(it)) },
-                            trailingIcon = {
-                                if (uiState.careerDetail.isNotEmpty()) {
-                                    NonggleIconButton(
-                                        image = painterResource(R.drawable.xcircle),
-                                        onClick = {
-                                            onEvent(
-                                                CareerBottomSheetEvent.CareerDetailInput(
-                                                    ""
-                                                )
-                                            )
-                                        }
-                                    )
-                                }
-                            },
                             hintText = stringResource(R.string.resume2Screen_HintText_careerContent),
                         )
                     }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -40,8 +41,8 @@ fun NonggleBottomSheet(
     content: @Composable () -> Unit,
 ) {
     ModalBottomSheet(
-        modifier = modifier,
         onDismissRequest = onDismissRequest,
+        sheetGesturesEnabled = false,
         sheetState = sheetState,
         tonalElevation = 8.dp,
         shape = RoundedCornerShape(
@@ -50,10 +51,10 @@ fun NonggleBottomSheet(
         ),
         containerColor = NonggleTheme.colorScheme.white,
         contentColor = NonggleTheme.colorScheme.black,
+        contentWindowInsets = {WindowInsets(top = 0)},
         content = {
             Column(
-                modifier = Modifier
-                    .wrapContentHeight()
+                modifier = modifier
                     .padding(horizontal = 20.dp)
             ) {
                 Row {

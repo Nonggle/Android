@@ -181,7 +181,7 @@ internal fun ResumeStep1Content(
                 trailingIcon = {
                     if (uiState.info.userName.isNotEmpty()) {
                         NonggleIconButton(
-                            ImageResourceId = R.drawable.xcircle,
+                            image = painterResource(R.drawable.xcircle),
                             onClick = { onEvent(ResumeStep1Event.UserNameCleared) }
                         )
                     }

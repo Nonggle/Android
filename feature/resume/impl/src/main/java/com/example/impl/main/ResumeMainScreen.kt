@@ -24,6 +24,7 @@ import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step1.ResumeStep1Screen
 import com.example.feature.resume.impl.main.ResumeTab.Companion.getByValue
 import com.example.feature.resume.impl.step2.ResumeStep2Screen
+import com.example.feature.resume.impl.step3.ResumeStep3Screen
 import kotlinx.coroutines.launch
 /// TODO: 완료시 토스트메시지 띄우기
 
@@ -102,7 +103,7 @@ internal fun ResumeMainScreen(
             when (getByValue(page)) {
                 ResumeTab.INFO -> ResumeStep1Screen()
                 ResumeTab.CAREER -> ResumeStep2Screen()
-                ResumeTab.PORTFOLIO -> ResumeStep1Screen()
+                ResumeTab.PORTFOLIO -> ResumeStep3Screen()
                 else -> {}
             }
         }

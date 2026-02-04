@@ -1,6 +1,7 @@
 package com.example.feature.resume.impl.step1
 
 import android.net.Uri
+import androidx.compose.runtime.Stable
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent
 import com.example.core.ui.UiState
@@ -17,7 +18,8 @@ enum class Gender(val value: Int) {
     }
 }
 
-data class CertificationData(
+@Stable
+data class CertificationTag(
     val id: String = UUID.randomUUID().toString(),
     val certificationTitle: String
 )
@@ -28,7 +30,7 @@ data class InfoData(
     val birthDate: String = "",
     val introduction: String? = null,
     val gender: Gender? = null,
-    val certificationList: List<CertificationData> = emptyList()
+    val certificationList: List<CertificationTag> = emptyList()
 )
 
 data class ResumeStep1State(
