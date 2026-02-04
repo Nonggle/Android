@@ -1,18 +1,25 @@
 package com.example.impl.component
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,6 +88,15 @@ fun CareerBottomSheet(
 
     val stateHolder = rememberExposedMenuStateHolder()
 
+    val enableSubmit by remember {
+        derivedStateOf {
+            uiState.careerDescription.isNotEmpty()
+                    && uiState.careerDetail.isNotEmpty()
+                    && uiState.careerStartDate.isNotEmpty()
+                    && (uiState.careerEndDate != null || uiState.careerPeriod != null)
+        }
+    }
+
     if (showStartDateDialog) {
         PeridSettingDialog(
             onDismiss = { showStartDateDialog = false },
@@ -96,7 +112,7 @@ fun CareerBottomSheet(
         )
     }
 
-    if(showDismissBottomSheetDialog) {
+    if (showDismissBottomSheetDialog) {
         CareerItemDeleteDialog(
             onDismiss = { showDismissBottomSheetDialog = false },
             onConfirm = {
@@ -108,15 +124,13 @@ fun CareerBottomSheet(
     }
 
     NonggleBottomSheet(
-        modifier = modifier,
+        modifier = modifier.fillMaxHeight(0.8f),
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         title = stringResource(R.string.resume2Screen_Title_careerAddTitle),
         content = {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentHeight()
+
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -146,7 +160,7 @@ fun CareerBottomSheet(
                             trailingIcon = {
                                 if (uiState.careerDescription.isNotEmpty()) {
                                     NonggleIconButton(
-                                        ImageResourceId = R.drawable.xcircle,
+                                        image = painterResource(R.drawable.xcircle),
                                         onClick = {
                                             onEvent(
                                                 CareerBottomSheetEvent.CareerDescriptionInput(
@@ -204,14 +218,15 @@ fun CareerBottomSheet(
                                     modifier = modifier
                                         .padding(end = 16.dp)
                                         .weight(1f),
-                                    titleText = stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate),
+                                    titleText = uiState.careerStartDate.ifEmpty { stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate) },
                                     onClick = { showStartDateDialog = true },
                                     icon = painterResource(id = R.drawable.date)
                                 )
                                 OutlinedIconButton(
                                     modifier = modifier
                                         .weight(1f),
-                                    titleText = stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate),
+                                    titleText = uiState.careerEndDate
+                                        ?: stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate),
                                     onClick = { showEndDateDialog = true },
                                     icon = painterResource(id = R.drawable.date)
                                 )
@@ -222,7 +237,7 @@ fun CareerBottomSheet(
                                     modifier = modifier
                                         .padding(end = 16.dp)
                                         .weight(1f),
-                                    titleText = stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate),
+                                    titleText = uiState.careerStartDate.ifEmpty { stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate) },
                                     onClick = { showStartDateDialog = true },
                                     icon = painterResource(id = R.drawable.date)
                                 )
@@ -260,7 +275,7 @@ fun CareerBottomSheet(
                             trailingIcon = {
                                 if (uiState.careerDetail.isNotEmpty()) {
                                     NonggleIconButton(
-                                        ImageResourceId = R.drawable.xcircle,
+                                        image = painterResource(R.drawable.xcircle),
                                         onClick = {
                                             onEvent(
                                                 CareerBottomSheetEvent.CareerDetailInput(
@@ -279,12 +294,12 @@ fun CareerBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
-                    enabled = uiState.careerAddAvailable,
+                    enabled = enableSubmit,
+                    title = stringResource(R.string.resume2Screen_BottomSheet_AddButton),
                     onClick = {
                         onEvent(CareerBottomSheetEvent.AddCareerItem(uiState))
                         onDismissRequest()
                     },
-                    title = stringResource(R.string.resume2Screen_BottomSheet_AddButton),
                 )
             }
         }
@@ -339,6 +354,7 @@ fun PeridSettingDialog(
                 ?: maxYear.toString()
             val m = monthItems.getOrNull(monthPickerState.selectedIndex) ?: "01"
             onDateInput("$y-$m")
+            onDismiss()
         },
         dialogTitle = stringResource(if (isStartDateDialog) R.string.resume2Screen_label_WorkStart else R.string.resume2Screen_label_WorkEnd),
         dialogContent = {
@@ -383,6 +399,61 @@ fun CareerItemDeleteDialog(
             )
         }
     )
+}
+
+@Composable
+fun CareerItem(
+    modifier: Modifier = Modifier,
+    careerItemTitle: String,
+    careerItemDetail: String,
+    careerItemId: String,
+    careerPeriod: String,
+    deleteCareerItem: (String) -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .background(color = NonggleTheme.colorScheme.g4)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier.wrapContentWidth()
+            ) {
+                Text(
+                    text = careerItemTitle,
+                    style = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black)
+                )
+                Text(
+                    modifier = Modifier.padding(top = 12.dp),
+                    text = careerPeriod,
+                    style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
+                )
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = careerItemDetail,
+                    style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
+                )
+            }
+            NonggleIconButton(
+                onClick = {}, // TODO: 편집 기능 구현 예정
+                image = painterResource(R.drawable.pencil),
+                iconColor = NonggleTheme.colorScheme.g2,
+                iconWidth = 24.dp,
+                iconHeight = 24.dp
+            )
+            NonggleIconButton(
+                onClick = { deleteCareerItem(careerItemId) },
+                image = painterResource(R.drawable.xcircle),
+                iconColor = NonggleTheme.colorScheme.g2,
+                iconWidth = 24.dp,
+                iconHeight = 24.dp
+            )
+        }
+    }
 }
 
 
