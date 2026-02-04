@@ -71,9 +71,10 @@ fun FullButton(
     NonggleButton(
         modifier = modifier,
         enabled = enabled,
-        contentColor = Color.White,
+        contentColor = NonggleTheme.colorScheme.white,
         backgroundColor = NonggleTheme.colorScheme.m1,
-        disableContentColor = NonggleTheme.colorScheme.m3,
+        disableBackGroundColor = NonggleTheme.colorScheme.m3,
+        disableContentColor = NonggleTheme.colorScheme.white,
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 20.dp),
         content = {
@@ -200,15 +201,14 @@ fun OutlinedIconButton(
         contentColor = contentColor,
         disableContentColor = disableContentColor,
         roundedCorner = 4.dp,
-        backgroundColor = borderColor,
+        backgroundColor = NonggleTheme.colorScheme.white,
         border = BorderStroke(width = 1.dp, color = borderColor),
         onClick = onClick,
-        contentPadding = PaddingValues(vertical = 16.dp),
+        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp),
         content = {
             Row(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .padding(all = 16.dp),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
