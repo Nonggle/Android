@@ -4,7 +4,6 @@
     <string name="resume_basicTitle">기본정보</string>
     <string name="resume_careerTitle">경력사항</string>
     <string name="resume_portfolioTitle">자기소개</string>
-    <string name="resume_conditionTitle">희망조건</string>
     <string name="resume_nextStep">다음</string>
     <string name="resume_complete">완료</string>
 
