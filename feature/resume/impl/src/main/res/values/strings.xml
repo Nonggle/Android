@@ -23,7 +23,7 @@
     <string name="resume1Screen_label_certificate">자격증</string>
     <string name="resume1Screen_label_havecertificate">있음</string>
     <string name="resume1Screen_label_nocertificate">없음</string>
-        <string name="resume1Screen_certificateDetail_inputHintText">자격증을 입력해주세요.</string>
+    <string name="resume1Screen_certificateDetail_inputHintText">자격증을 입력해주세요.</string>
     <string name="resume1Screen_confirmBtnText">확인</string>
 
     <string name="resume2Screen_Title_careerTitle">경력사항</string>
