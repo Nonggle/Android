@@ -9,8 +9,7 @@ import com.example.feature.resume.impl.R
 enum class ResumeTab(val value: Int) {
     INFO(0),       // 기본 정보
     CAREER(1),     // 경력
-    PORTFOLIO(2),  // 포트폴리오
-    CONDITION(3);  // 희망 조건
+    PORTFOLIO(2);  // 포트폴리오
 
     companion object {
         private val map = ResumeTab.entries.associateBy(ResumeTab::value)
@@ -23,7 +22,7 @@ enum class ResumeTab(val value: Int) {
 // 이력서 화면의 전체적인 UI 상태 (훨씬 단순해짐)
 data class ResumeMainState(
     val selectedTab: ResumeTab = ResumeTab.INFO,
-    val tabList: List<Int> = listOf(R.string.resume_basicTitle, R.string.resume_careerTitle, R.string.resume_portfolioTitle, R.string.resume_conditionTitle)
+    val tabList: List<Int> = listOf(R.string.resume_basicTitle, R.string.resume_careerTitle, R.string.resume_portfolioTitle)
 ) : UiState
 
 sealed interface ResumeMainEvent: UiEvent {
