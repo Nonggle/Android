@@ -18,14 +18,15 @@ class ResumeStep2ViewModel @Inject constructor() :
     private fun handleCareerSheetEvent(careerSheetEvent: CareerBottomSheetEvent) {
         when (careerSheetEvent) {
             // 근무 시작일 선택
-            is CareerBottomSheetEvent.SelectCareerStartDate -> {
-                updateState { copy(careerFormData = this.careerFormData.copy(careerStartDate = careerSheetEvent.date)) }
-            }
-
-            // 근무 종료일 선택 (1개월 이상)
-            is CareerBottomSheetEvent.SelectCareerEndDate -> {
-                updateState { copy(careerFormData = this.careerFormData.copy(careerEndDate = careerSheetEvent.date)) }
-            }
+            // FIXME: 경력 합산방식 변경 후 수정 예정
+//            is CareerBottomSheetEvent.SelectCareerStartDate -> {
+//                updateState { copy(careerFormData = this.careerFormData.copy(careerStartDate = careerSheetEvent.date)) }
+//            }
+//
+//            // 근무 종료일 선택 (1개월 이상)
+//            is CareerBottomSheetEvent.SelectCareerEndDate -> {
+//                updateState { copy(careerFormData = this.careerFormData.copy(careerEndDate = careerSheetEvent.date)) }
+//            }
 
             // 작성한 이력정보 삭제
             is CareerBottomSheetEvent.DeleteCareerItem -> {
@@ -44,6 +45,8 @@ class ResumeStep2ViewModel @Inject constructor() :
 
             // 경력 작성 완료 후 리스트 추가
             is CareerBottomSheetEvent.AddCareerItem -> {updateState { copy(careerList = this.careerList + careerSheetEvent.data) }}
+
+            else -> {}
         }
     }
 

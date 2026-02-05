@@ -106,7 +106,7 @@ fun NonggleTextField(
                 ),
             )
             TextFieldType.Outlined -> OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 enabled = enabled,
                 readOnly = readOnly,
                 value = value,
@@ -119,6 +119,7 @@ fun NonggleTextField(
                         onValueChange(newText)
                     }
                 },
+                containerColor = NonggleTheme.colorScheme.white,
                 supportingText = supportText,
                 textStyle = textStyle.copy(color = textColor),
                 shape = shape,

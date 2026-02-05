@@ -8,6 +8,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -59,104 +61,99 @@ internal fun ResumeStep3Screen(
     uiState: ResumeStep3State,
     onEvent: (ResumeStep3Event) -> Unit = {},
 ) {
-    LazyColumn(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp)
     ) {
-        item {
-            Text(
-                modifier = Modifier.padding(top = 24.dp),
-                text = stringResource(R.string.resume3Screen_Title_Introduce),
-                style = NonggleTheme.typography.b2_sub,
-                color = NonggleTheme.colorScheme.g1,
-            )
+        NonggleTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
+            label = {
+                Text(
+                    modifier = Modifier.padding(top = 24.dp),
+                    text = stringResource(R.string.resume3Screen_Title_Introduce),
+                    style = NonggleTheme.typography.b2_sub,
+                    color = NonggleTheme.colorScheme.g1,
+                )
+            },
+            textFieldType = TextFieldType.Standard,
+            value = uiState.introduce ?: "",
+            onValueChange = {value -> onEvent(ResumeStep3Event.IntroduceChanged(value))},
+            trailingIcon = {
+                if (!uiState.introduce.isNullOrEmpty()) {
+                    NonggleIconButton(
+                        image = painterResource(R.drawable.xcircle),
+                        onClick = { onEvent(ResumeStep3Event.IntroduceChanged("")) }
+                    )
+                }
+            },
+            hintText = stringResource(R.string.resume3Screen_HintText_Introduce),
+        )
+        Text(
+            modifier = Modifier.padding(top = 32.dp),
+            text = stringResource(R.string.resume3Screen_Title_personality),
+            style = NonggleTheme.typography.b2_sub,
+            color = NonggleTheme.colorScheme.g1,
+        )
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(top = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             NonggleTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
+                modifier = Modifier.weight(7f),
                 textFieldType = TextFieldType.Standard,
-                value = uiState.introduce ?: "",
-                onValueChange = {value -> onEvent(ResumeStep3Event.IntroduceChanged(value))},
+                value = uiState.personality ?: "",
+                onValueChange = {value -> onEvent(ResumeStep3Event.PersonalityInput(value))},
                 trailingIcon = {
-                    if (!uiState.introduce.isNullOrEmpty()) {
+                    if (!uiState.personality.isNullOrEmpty()) {
                         NonggleIconButton(
                             image = painterResource(R.drawable.xcircle),
-                            onClick = { onEvent(ResumeStep3Event.IntroduceChanged("")) }
+                            onClick = { onEvent(ResumeStep3Event.PersonalityInput("")) }
                         )
                     }
                 },
-                hintText = stringResource(R.string.resume3Screen_HintText_Introduce),
+                hintText = stringResource(R.string.resume3Screen_HintText_personality),
             )
-            Text(
-                modifier = Modifier.padding(top = 32.dp),
-                text = stringResource(R.string.resume3Screen_Title_personality),
-                style = NonggleTheme.typography.b2_sub,
-                color = NonggleTheme.colorScheme.g1,
-            )
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(top = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                NonggleTextField(
-                    modifier = Modifier.weight(7f),
-                    textFieldType = TextFieldType.Standard,
-                    value = uiState.personality ?: "",
-                    onValueChange = {value -> onEvent(ResumeStep3Event.PersonalityInput(value))},
-                    trailingIcon = {
-                        if (!uiState.personality.isNullOrEmpty()) {
-                            NonggleIconButton(
-                                image = painterResource(R.drawable.xcircle),
-                                onClick = { onEvent(ResumeStep3Event.PersonalityInput("")) }
-                            )
-                        }
-                    },
-                    hintText = stringResource(R.string.resume3Screen_HintText_personality),
-                )
-                ContainedButton(
-                    modifier = Modifier.weight(3f),
-                    enabled = uiState.personality.isNullOrEmpty(),
-                    onClick = { onEvent(ResumeStep3Event.AddPersonalityChip) },
-                    titleText = stringResource(R.string.resume1Screen_confirmBtnText),
-                )
-            }
-            if(uiState.personalityList.isNotEmpty()) {
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .heightIn(max = 200.dp),
-                    columns = GridCells.Adaptive(minSize = 128.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(
-                        count = uiState.personalityList.size,
-                        key = { index -> uiState.personalityList[index].id }
-                    ) { index ->
-                        NonggleChip(
-                            title = uiState.personalityList[index].personality,
-                            removeChip = { onEvent(ResumeStep3Event.RemovePersonalityChip(uiState.personalityList[index].id)) }
-                        )
-                    }
-                }
-            }
-            Text(
-                modifier = Modifier.padding(top = 32.dp),
-                text = stringResource(R.string.resume3Screen_Title_extra),
-                style = NonggleTheme.typography.b2_sub,
-                color = NonggleTheme.colorScheme.g1,
-            )
-            NonggleTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(144.dp),
-                textFieldType = TextFieldType.Standard,
-                value = uiState.introduceDetail ?: "",
-                onValueChange = {value -> onEvent(ResumeStep3Event.IntroduceDetailInput(value))},
-                hintText = stringResource(R.string.resume3Screen_HintText_extra),
+            ContainedButton(
+                modifier = Modifier.weight(3f),
+                enabled = !uiState.personality.isNullOrEmpty(),
+                onClick = { onEvent(ResumeStep3Event.AddPersonalityChip) },
+                titleText = stringResource(R.string.resume1Screen_confirmBtnText),
             )
         }
+        if(uiState.personalityList.isNotEmpty()) {
+            FlowRow(
+               modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
+                uiState.personalityList.forEach { item ->
+                    NonggleChip(
+                        title = item.personality,
+                        removeChip = { onEvent(ResumeStep3Event.RemovePersonalityChip(item.id)) }
+                    )
+                }
+            }
+        }
+        Text(
+            modifier = Modifier.padding(top = 32.dp, bottom = 4.dp),
+            text = stringResource(R.string.resume3Screen_Title_extra),
+            style = NonggleTheme.typography.b2_sub,
+            color = NonggleTheme.colorScheme.g1,
+        )
+        NonggleTextField(
+            modifier = Modifier
+                .height(144.dp),
+            textFieldType = TextFieldType.Outlined,
+            maxLines = 10,
+            maxLength = 100,
+            value = uiState.introduceDetail ?: "",
+            onValueChange = {value -> onEvent(ResumeStep3Event.IntroduceDetailInput(value))},
+            hintText = stringResource(R.string.resume3Screen_HintText_extra),
+        )
     }
 }
