@@ -119,7 +119,6 @@ fun NonggleTextField(
                         onValueChange(newText)
                     }
                 },
-                containerColor = NonggleTheme.colorScheme.white,
                 supportingText = supportText,
                 textStyle = textStyle.copy(color = textColor),
                 shape = shape,

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="HomeScreen_MainTitle">%1$s!님\n원하시는 이력서를\n출력해보세요!</string>
+    <string name="HomeScreen_Download_NotExist">다운로드 중인 문서가 없습니다!</string>
+    <string name="HomeScreen_Navigate_ResumeWriting">다운로드 중인 문서가 없습니다!</string>
+</resources>
