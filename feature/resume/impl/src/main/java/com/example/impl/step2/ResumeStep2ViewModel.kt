@@ -37,12 +37,6 @@ class ResumeStep2ViewModel @Inject constructor() :
                 updateState { copy(careerFormData = this.careerFormData.copy(careerDescription = careerSheetEvent.description)) }
             }
 
-            // 경력 1개월 이상 여부 설정
-            is CareerBottomSheetEvent.SelectCareerPeriodOverOneMonth -> {updateState { copy(careerFormData = this.careerFormData.copy(isCareerOverOneMonth = careerSheetEvent.isOverOneMonth)) }}
-
-            // 경력 1개월 이하일때 근무 일 수 선택
-            is CareerBottomSheetEvent.SelectCareerPeriodDate -> {updateState { copy(careerFormData = this.careerFormData.copy(careerPeriod = careerSheetEvent.date)) }}
-
             // 작업 상세 내용 작성
             is CareerBottomSheetEvent.CareerDetailInput -> {
                 updateState { copy(careerFormData = this.careerFormData.copy(careerDetail = careerSheetEvent.detail)) }
@@ -51,5 +45,9 @@ class ResumeStep2ViewModel @Inject constructor() :
             // 경력 작성 완료 후 리스트 추가
             is CareerBottomSheetEvent.AddCareerItem -> {updateState { copy(careerList = this.careerList + careerSheetEvent.data) }}
         }
+    }
+
+    private fun getDiffYearMonth() {
+
     }
 }

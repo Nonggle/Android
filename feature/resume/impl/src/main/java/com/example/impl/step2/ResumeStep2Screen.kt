@@ -1,6 +1,8 @@
 package com.example.feature.resume.impl.step2
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,6 +73,7 @@ internal fun ResumeStep2Screen(
 ) {
     if (showBottomSheet) {
         CareerBottomSheet(
+            modifier = Modifier,
             sheetState = careerBottomSheetState,
             uiState = careerSheetState,
             onEvent = onCareerSheetEvent,
@@ -85,50 +88,52 @@ internal fun ResumeStep2Screen(
         }
     }
 
-    LazyColumn(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
-        item {
-            TitleText(
-                modifier = Modifier.padding(bottom = 8.dp),
-                titleStringResId = R.string.resume2Screen_Title_careerTitle,
-            )
-            SubTitleText(
-                modifier = Modifier.padding(bottom = 16.dp),
-                subTitleStringResId = R.string.resume2Screen_Title_careerSubTitle
-            )
-            OutlinedButton(
-                modifier = Modifier.padding(bottom = 32.dp),
-                isSelect = true,
-                enabled = false,
-                onClick = {}, // do nothing
-                titleText = "총 ${uiState.totalCareer[0]}년 ${uiState.totalCareer[1]}개월 ${uiState.totalCareer[2]}일"
-            )
-        }
-        items(
-            count = uiState.careerList.size,
-            key = { index -> uiState.careerList[index].id },
-            itemContent = {index ->
-                CareerItem(
-                    careerItemTitle = uiState.careerList[index].careerDescription,
-                    careerItemDetail = uiState.careerList[index].careerDetail,
-                    careerItemId = uiState.careerList[index].id,
-                    careerPeriod = "", // TODO: 경력 기간 표시 로직 구현 에정,
-                    deleteCareerItem = { onEvent(ResumeStep2Event.DeleteCareerItem(uiState.careerList[index].id)) }
-                )
-            }
+        TitleText(
+            modifier = Modifier.padding(bottom = 8.dp),
+            titleStringResId = R.string.resume2Screen_Title_careerTitle,
         )
-        item {
-            OutlinedIconButton(
-                contentColor = NonggleTheme.colorScheme.g3,
-                disableContentColor = NonggleTheme.colorScheme.g3,
-                borderColor = NonggleTheme.colorScheme.g_line,
-                titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
-                titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
-                onClick = careerBottomSheetClick
+        SubTitleText(
+            modifier = Modifier.padding(bottom = 16.dp),
+            subTitleStringResId = R.string.resume2Screen_Title_careerSubTitle
+        )
+        OutlinedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp),
+            isSelect = true,
+            enabled = false,
+            onClick = {}, // do nothing
+            titleText = "" /// FIXME: 경력 합산방식 변경후 수정 예정
+        )
+        LazyColumn(
+
+        ) {
+            items(
+                count = uiState.careerList.size,
+                key = { index -> uiState.careerList[index].id },
+                itemContent = {index ->
+                    CareerItem(
+                        careerItemTitle = uiState.careerList[index].careerDescription,
+                        careerItemDetail = uiState.careerList[index].careerDetail,
+                        careerItemId = uiState.careerList[index].id,
+                        careerPeriod = "", // TODO: 경력 기간 표시 로직 구현 에정,
+                        deleteCareerItem = { onEvent(ResumeStep2Event.DeleteCareerItem(uiState.careerList[index].id)) }
+                    )
+                }
             )
         }
+        OutlinedIconButton(
+            contentColor = NonggleTheme.colorScheme.g3,
+            disableContentColor = NonggleTheme.colorScheme.g3,
+            borderColor = NonggleTheme.colorScheme.g_line,
+            titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
+            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
+            onClick = careerBottomSheetClick
+        )
     }
 }

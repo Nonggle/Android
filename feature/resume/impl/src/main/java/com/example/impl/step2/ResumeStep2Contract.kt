@@ -4,14 +4,22 @@ import androidx.compose.runtime.Stable
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent
 import com.example.core.ui.UiState
+import java.time.LocalDate
+import java.time.Period
 import java.util.UUID
+
+@Stable
+data class YearMonthDayDiff(
+    val years: Int = 0,
+    val months: Int = 0,
+    val days: Int = 0,
+)
+
 @Stable
 data class CareerFormData(
     val id: String = UUID.randomUUID().toString(),
-    val isCareerOverOneMonth: Boolean? = null,
-    val careerStartDate: String = "",
-    val careerEndDate: String? = null,
-    val careerPeriod: String? = null,
+    val careerStartDate: LocalDate? = null,
+    val careerEndDate: LocalDate? = null,
     val careerDescription: String = "",
     val careerDetail: String = "",
 )
@@ -20,16 +28,17 @@ data class ResumeStep2State(
     val isLoading: Boolean = true,
     val careerFormData: CareerFormData = CareerFormData(),
     val careerList: List<CareerFormData> = emptyList(),
-    val totalCareer: Array<Int> = Array(3, {0})
+    val totalCareer: YearMonthDayDiff = YearMonthDayDiff(),
+
+    // ui에 표시하기 위한 용도의 데이터
+    val careerStartDate: String = "",
+    val careerEndDate: String = "",
 ): UiState
 
 sealed interface CareerBottomSheetEvent: UiEvent {
     data class CareerDescriptionInput(val description: String): CareerBottomSheetEvent
-    data class SelectCareerPeriodOverOneMonth(val isOverOneMonth: Boolean): CareerBottomSheetEvent
     data class SelectCareerStartDate(val date: String): CareerBottomSheetEvent
     data class SelectCareerEndDate(val date: String): CareerBottomSheetEvent
-
-    data class SelectCareerPeriodDate(val date: String): CareerBottomSheetEvent
 
     data class CareerDetailInput(val detail: String): CareerBottomSheetEvent
 

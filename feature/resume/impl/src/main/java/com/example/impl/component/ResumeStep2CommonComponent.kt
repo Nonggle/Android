@@ -76,6 +76,9 @@ fun CareerBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
     uiState: CareerFormData,
+    careerStartDate: String? = null, // ui에 표시하기 위해 파싱한 문자열
+    careerEndDate: String? = null,  // ui에 표시하기 위해 파싱한 문자열
+    careerPeriod: String? = null,   // ui에 표시하기 위해 파싱한 문자열
     onEvent: (CareerBottomSheetEvent) -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
@@ -84,14 +87,12 @@ fun CareerBottomSheet(
     var showEndDateDialog by remember { mutableStateOf(false) }
     var showDismissBottomSheetDialog by remember { mutableStateOf(false) }
 
-    val stateHolder = rememberExposedMenuStateHolder()
-
     val enableSubmit by remember {
         derivedStateOf {
             uiState.careerDescription.isNotEmpty()
                     && uiState.careerDetail.isNotEmpty()
-                    && uiState.careerStartDate.isNotEmpty()
-                    && (uiState.careerEndDate != null || uiState.careerPeriod != null)
+                    && uiState.careerStartDate != null
+                    && (uiState.careerEndDate != null)
         }
     }
 
@@ -127,153 +128,78 @@ fun CareerBottomSheet(
         onDismissRequest = onDismissRequest,
         title = stringResource(R.string.resume2Screen_Title_careerAddTitle),
         content = {
-            Column(
-
-            ) {
-                LazyColumn(
+            Column {
+                Text(
+                    text = stringResource(id = R.string.resume2Screen_SubTitle_careerDescribeTitle),
+                    style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1)
+                )
+                NonggleTextField(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(top = 40.dp, start = 20.dp, end = 20.dp),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.resume2Screen_SubTitle_careerDescribeTitle),
-                            style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1)
-                        )
-                        NonggleTextField(
-                            modifier = Modifier
-                                .padding(top = 4.dp)
-                                .fillMaxWidth(),
-                            textFieldType = TextFieldType.Standard,
-                            value = uiState.careerDescription,
-                            onValueChange = {
-                                onEvent(
-                                    CareerBottomSheetEvent.CareerDescriptionInput(
-                                        it
-                                    )
-                                )
-                            },
-                            trailingIcon = {
-                                if (uiState.careerDescription.isNotEmpty()) {
-                                    NonggleIconButton(
-                                        image = painterResource(R.drawable.xcircle),
-                                        onClick = {
-                                            onEvent(
-                                                CareerBottomSheetEvent.CareerDescriptionInput(
-                                                    ""
-                                                )
-                                            )
-                                        }
+                        .padding(top = 4.dp)
+                        .fillMaxWidth(),
+                    textFieldType = TextFieldType.Standard,
+                    value = uiState.careerDescription,
+                    onValueChange = {
+                        onEvent(CareerBottomSheetEvent.CareerDescriptionInput(it))
+                    },
+                    trailingIcon = {
+                        if (uiState.careerDescription.isNotEmpty()) {
+                            NonggleIconButton(
+                                image = painterResource(R.drawable.xcircle),
+                                onClick = {
+                                    onEvent(
+                                        CareerBottomSheetEvent.CareerDescriptionInput(
+                                            ""
+                                        )
                                     )
                                 }
-                            },
-                            hintText = stringResource(R.string.resume2Screen_HintText_careerDescribe),
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 32.dp),
-                            text = stringResource(id = R.string.resume2Screen_Title_careerPeriod),
-                            style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1)
-                        )
-                        // 작업 기간 1개월 이상 여부 고르는 버튼
-                        Row(
-                            modifier = modifier.fillMaxWidth()
-                        ) {
-                            OutlinedButton(
-                                modifier = modifier
-                                    .padding(end = 16.dp)
-                                    .weight(1f),
-                                titleText = stringResource(R.string.resume2Screen_label_LessOneMonth),
-                                onClick = {
-                                    onEvent(
-                                        CareerBottomSheetEvent.SelectCareerPeriodOverOneMonth(
-                                            false
-                                        )
-                                    )
-                                },
-                                isSelect = uiState.isCareerOverOneMonth == false,
-                            )
-                            OutlinedButton(
-                                modifier = modifier.weight(1f),
-                                titleText = stringResource(R.string.resume2Screen_label_MoreOneMonth),
-                                onClick = {
-                                    onEvent(
-                                        CareerBottomSheetEvent.SelectCareerPeriodOverOneMonth(
-                                            true
-                                        )
-                                    )
-                                },
-                                isSelect = uiState.isCareerOverOneMonth == true,
                             )
                         }
-                        // 1개월 이상일 경우 보여지는 기간 선택 위젯
-                        if (uiState.isCareerOverOneMonth == true) {
-                            Row(
-                                modifier = modifier.fillMaxWidth()
-                            ) {
-                                OutlinedIconButton(
-                                    modifier = modifier
-                                        .padding(end = 16.dp)
-                                        .weight(1f),
-                                    titleText = uiState.careerStartDate.ifEmpty { stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate) },
-                                    onClick = { showStartDateDialog = true },
-                                    icon = painterResource(id = R.drawable.date)
-                                )
-                                OutlinedIconButton(
-                                    modifier = modifier
-                                        .weight(1f),
-                                    titleText = uiState.careerEndDate
-                                        ?: stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate),
-                                    onClick = { showEndDateDialog = true },
-                                    icon = painterResource(id = R.drawable.date)
-                                )
-                            }
-                        } else { // 1개월 미만일때
-                            Row(modifier = modifier.fillMaxWidth()) {
-                                OutlinedIconButton(
-                                    modifier = modifier
-                                        .padding(end = 16.dp)
-                                        .weight(1f),
-                                    titleText = uiState.careerStartDate.ifEmpty { stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate) },
-                                    onClick = { showStartDateDialog = true },
-                                    icon = painterResource(id = R.drawable.date)
-                                )
-                                NonggleDropDown(
-                                    modifier = modifier.weight(1f),
-                                    onClick = { stateHolder.onEnabled(true) },
-                                    title = uiState.careerPeriod
-                                        ?: stringResource(R.string.resume2Screen_label_CareerPeriodSelectOnlyDate),
-                                    stateHolder = stateHolder,
-                                    selectValue = {
-                                        onEvent(
-                                            CareerBottomSheetEvent.SelectCareerPeriodDate(
-                                                stateHolder.value
-                                            )
-                                        )
-                                    },
-                                    icon = painterResource(R.drawable.caretdown),
-                                    titleColor = NonggleTheme.colorScheme.g3
-                                )
-                            }
-                        }
-                        Text(
-                            modifier = Modifier.padding(top = 32.dp),
-                            text = stringResource(id = R.string.resume2Screen_Title_careerContent),
-                            style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1)
-                        )
-                        NonggleTextField(
-                            modifier = Modifier
-                                .padding(top = 12.dp, bottom = 20.dp)
-                                .fillMaxWidth()
-                                .height(144.dp),
-                            textFieldType = TextFieldType.Standard,
-                            value = uiState.careerDetail,
-                            onValueChange = { onEvent(CareerBottomSheetEvent.CareerDetailInput(it)) },
-                            hintText = stringResource(R.string.resume2Screen_HintText_careerContent),
-                        )
-                    }
-                }
+                    },
+                    hintText = stringResource(R.string.resume2Screen_HintText_careerDescribe),
+                )
+                Text(
+                    modifier = Modifier.padding(top = 32.dp),
+                    text = stringResource(id = R.string.resume2Screen_Title_careerPeriod),
+                    style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1)
+                )
+// FIXME: 달력이 포함된 다이얼로그로 시작, 종료날짜 선택하도록 수정
+//                Row(
+//                    modifier = modifier
+//                        .fillMaxWidth()
+//                        .padding(top = 8.dp)
+//                ) {
+//                    OutlinedIconButton(
+//                        modifier = modifier
+//                            .padding(end = 16.dp)
+//                            .weight(1f),
+//                        titleText = uiState.careerStartDate.ifEmpty { stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate) },
+//                        onClick = { showStartDateDialog = true },
+//                        icon = painterResource(id = R.drawable.date)
+//                    )
+//                    OutlinedIconButton(
+//                        modifier = modifier
+//                            .weight(1f),
+//                        titleText = if(uiState.careerEndDate != null) careerEndDate else stringResource(R.string.resume2Screen_label_CareerPeriodSelectDate),
+//                        onClick = { showEndDateDialog = true },
+//                        icon = painterResource(id = R.drawable.date)
+//                    )
+//                }
+                Text(
+                    modifier = Modifier.padding(top = 32.dp),
+                    text = stringResource(id = R.string.resume2Screen_Title_careerContent),
+                    style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1)
+                )
+                NonggleTextField(
+                    modifier = Modifier
+                        .padding(top = 12.dp, bottom = 20.dp)
+                        .fillMaxWidth()
+                        .height(144.dp),
+                    textFieldType = TextFieldType.Standard,
+                    value = uiState.careerDetail,
+                    onValueChange = { onEvent(CareerBottomSheetEvent.CareerDetailInput(it)) },
+                    hintText = stringResource(R.string.resume2Screen_HintText_careerContent),
+                )
                 FullButton(
                     modifier = Modifier
                         .fillMaxWidth()

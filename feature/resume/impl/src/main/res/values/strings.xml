@@ -33,13 +33,10 @@
     <string name="resume2Screen_HintText_careerDescribe">경력을 소개해주세요. 예)사과따기</string>
 
     <string name="resume2Screen_Title_careerPeriod">작업기간</string>
-    <string name="resume2Screen_label_LessOneMonth">1개월 미만</string>
-    <string name="resume2Screen_label_MoreOneMonth">1개월 이상</string>
     <string name="resume2Screen_label_WorkStart">근무시작일</string>
     <string name="resume2Screen_label_WorkEnd">근무종료일</string>
 
     <string name="resume2Screen_label_CareerPeriodSelectDate">년 월 선택</string>
-    <string name="resume2Screen_label_CareerPeriodSelectOnlyDate">근무 일 선택</string>
 
     <string name="resume2Screen_Title_careerContent">작업 내용</string>
     <string name="resume2Screen_HintText_careerContent">업무 내용을 상세히 입력해주세요.</string>
