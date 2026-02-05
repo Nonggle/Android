@@ -7,10 +7,14 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -83,7 +87,12 @@ class MainActivity : ComponentActivity() {
                 NonggleTheme(
                     darkTheme = themeSettings.darkTheme,
                 ) {
-                    NonggleApp(appState)
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = NonggleTheme.colorScheme.white
+                    ) {
+                        NonggleApp(appState)
+                    }
                 }
             }
         }
