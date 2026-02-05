@@ -36,6 +36,7 @@ import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.component.NonggleTextField
 import com.example.core.designsystem.component.TextFieldType
 import com.example.core.designsystem.theme.NonggleTheme
+import com.example.designsystem.component.NonggleChip
 import com.example.feature.resume.impl.R
 
 @Composable
@@ -134,7 +135,7 @@ internal fun ResumeStep3Screen(
                         count = uiState.personalityList.size,
                         key = { index -> uiState.personalityList[index].id }
                     ) { index ->
-                        personalityChipItem(
+                        NonggleChip(
                             title = uiState.personalityList[index].personality,
                             removeChip = { onEvent(ResumeStep3Event.RemovePersonalityChip(uiState.personalityList[index].id)) }
                         )
@@ -155,48 +156,6 @@ internal fun ResumeStep3Screen(
                 value = uiState.introduceDetail ?: "",
                 onValueChange = {value -> onEvent(ResumeStep3Event.IntroduceDetailInput(value))},
                 hintText = stringResource(R.string.resume3Screen_HintText_extra),
-            )
-        }
-    }
-}
-
-/// TODO: 디자인시스템으로 칩 공통화
-@Composable
-fun personalityChipItem(
-    modifier: Modifier = Modifier,
-    title: String,
-    removeChip: () -> Unit,
-) {
-    Box(
-        modifier = modifier
-            .wrapContentSize()
-            .border(
-                BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
-                shape = RoundedCornerShape(20.dp)
-            )
-            .background(
-                color = NonggleTheme.colorScheme.g4,
-                shape = RoundedCornerShape(20.dp)
-            )
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 11.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = NonggleTheme.typography.b2_sub
-            )
-            Image(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = removeChip
-                    ),
-                painter = painterResource(R.drawable.xcircle),
-                contentDescription = null,
             )
         }
     }

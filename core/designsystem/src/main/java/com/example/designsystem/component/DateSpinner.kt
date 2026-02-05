@@ -26,9 +26,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.theme.NonggleTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -45,6 +44,7 @@ fun Picker(
     textModifier: Modifier = Modifier,
 ) {
     if(items.isEmpty()) return
+    val itemHeight = 48.dp
     val visibleItemsMiddle = visibleItemsCount / 2
     val listScrollCount = Integer.MAX_VALUE
     val listScrollMiddle = listScrollCount / 2
@@ -54,12 +54,6 @@ fun Picker(
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
     val flingBehavior = ScrollableDefaults.flingBehavior()
-
-    val itemHeightPixels = remember { mutableIntStateOf(0) }
-    val density = LocalDensity.current
-    val itemHeightDp = remember(itemHeightPixels.value) {
-        with(density) { itemHeightPixels.value.toDp() }
-    }
     val dividerColor = NonggleTheme.colorScheme.white
     val fadingEdgeGradient = remember(dividerColor) {
         Brush.verticalGradient(
@@ -96,7 +90,7 @@ fun Picker(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(itemHeightDp * visibleItemsCount)
+                .height(itemHeight * visibleItemsCount)
                 .fadingEdge(fadingEdgeGradient),
             state = listState,
             flingBehavior = flingBehavior,
@@ -105,7 +99,7 @@ fun Picker(
             items(listScrollCount) { index ->
                 Text(
                     modifier = Modifier
-                        .onSizeChanged { size -> itemHeightPixels.value = size.height }
+                        .height(itemHeight)
                         .then(textModifier),
                     text = "${getItem(index)} $unit",
                     maxLines = 1,
@@ -115,11 +109,11 @@ fun Picker(
             }
         }
         HorizontalDivider(
-            modifier = Modifier.offset(y = itemHeightDp * visibleItemsMiddle),
+            modifier = Modifier.offset(y = itemHeight * visibleItemsMiddle),
             color = NonggleTheme.colorScheme.m1,
         )
         HorizontalDivider(
-            modifier = Modifier.offset(y = itemHeightDp * (visibleItemsMiddle + 1)),
+            modifier = Modifier.offset(y = itemHeight * (visibleItemsMiddle + 1)),
             color = NonggleTheme.colorScheme.m1,
         )
     }

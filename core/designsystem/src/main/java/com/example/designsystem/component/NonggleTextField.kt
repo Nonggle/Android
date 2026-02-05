@@ -1,5 +1,6 @@
 package com.example.core.designsystem.component
 
+import android.health.connect.datatypes.units.Length
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.core.designsystem.R
 import com.example.core.designsystem.theme.NonggleTheme
 
 @Composable
@@ -49,6 +53,7 @@ fun NonggleTextField(
     isError: Boolean = false,
     isSuccess: Boolean = false,
     maxLines: Int = 1,
+    maxLength: Int? = null,
     shape: RoundedCornerShape = RoundedCornerShape(10.dp),
     label: @Composable (() -> Unit)? = null,
 ) {
@@ -57,18 +62,24 @@ fun NonggleTextField(
         horizontalAlignment = Alignment.Start
     ) {
         label?.let {
-            Spacer(modifier = Modifier.height(8.dp))
             it()
+            Spacer(modifier = Modifier.height(4.dp))
         }
         when(textFieldType) {
             TextFieldType.Standard -> TextField(
-                modifier = Modifier
-                    .padding(PaddingValues(start = 4.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)),
                 value = value,
                 supportingText = supportText,
                 enabled = enabled,
                 isError = isError,
-                onValueChange = onValueChange,
+                onValueChange = {newText ->
+                    if(maxLength != null) {
+                        if(newText.length <= maxLength) {
+                            onValueChange(newText)
+                        }
+                    } else {
+                        onValueChange(newText)
+                    }
+                },
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 visualTransformation = visualTransformation,
@@ -99,7 +110,15 @@ fun NonggleTextField(
                 enabled = enabled,
                 readOnly = readOnly,
                 value = value,
-                onValueChange = onValueChange,
+                onValueChange = {newText ->
+                    if(maxLength != null) {
+                        if(newText.length <= maxLength) {
+                            onValueChange(newText)
+                        }
+                    } else {
+                        onValueChange(newText)
+                    }
+                },
                 supportingText = supportText,
                 textStyle = textStyle.copy(color = textColor),
                 shape = shape,
@@ -134,4 +153,45 @@ fun NonggleTextField(
 
 enum class TextFieldType {
     Standard, Outlined
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NonggleStandardTextFieldPreview() {
+    NonggleTextField(
+        label = {
+            Text(
+                text = "레이블",
+                style = NonggleTheme.typography.b2_sub,
+                color = NonggleTheme.colorScheme.g1,
+            )
+        },
+        textFieldType = TextFieldType.Standard,
+        value = "이름 입력",
+        onValueChange = { },
+        trailingIcon = {
+            NonggleIconButton(
+                image = painterResource(R.drawable.xcircle),
+                onClick = { }
+            )
+        },
+        hintText = "힌트",
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NonggleOutlinedTextFieldPreview() {
+    NonggleTextField(
+        textFieldType = TextFieldType.Outlined,
+        value = "이름 입력",
+        onValueChange = { },
+        trailingIcon = {
+            NonggleIconButton(
+                image = painterResource(R.drawable.xcircle),
+                onClick = { }
+            )
+        },
+        hintText = "힌트",
+    )
 }

@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -65,10 +66,10 @@ fun FullButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
     title: String,
-    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black),
+    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.white),
 ) {
     NonggleButton(
-        modifier = modifier,
+        modifier = modifier.clip(RoundedCornerShape(4.dp)),
         enabled = enabled,
         contentColor = NonggleTheme.colorScheme.white,
         backgroundColor = NonggleTheme.colorScheme.m1,
@@ -130,18 +131,20 @@ fun ContainedButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
     titleText: String,
-    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black),
+    titleTextStyle: TextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.white),
     contentPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 13.dp),
     backgroundColor: Color = NonggleTheme.colorScheme.m1,
-    disableBackGroundColor: Color = NonggleTheme.colorScheme.g4,
+    contentColor: Color = NonggleTheme.colorScheme.white,
+    disableBackGroundColor: Color = NonggleTheme.colorScheme.m3,
+    disableContentColor: Color = NonggleTheme.colorScheme.white
 ) {
     NonggleButton(
         modifier = modifier,
         enabled = enabled,
-        contentColor = Color.White,
+        contentColor = contentColor,
         roundedCorner = 4.dp,
         backgroundColor = backgroundColor,
-        disableContentColor = NonggleTheme.colorScheme.g3,
+        disableContentColor = disableContentColor,
         disableBackGroundColor = disableBackGroundColor,
         onClick = onClick,
         contentPadding = contentPadding,
@@ -237,11 +240,11 @@ fun NonggleIconButton(
 ) {
     IconButton(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier.size(width = iconWidth, height = iconHeight),
     ) {
         Icon(
+            modifier = Modifier.size(width = iconWidth, height = iconHeight),
             painter = image,
-            modifier = modifier.size(width = iconWidth, height = iconHeight),
             tint = iconColor,
             contentDescription = null,
         )

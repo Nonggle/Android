@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import com.example.core.ui.UiEffect
 import com.example.core.ui.UiEvent
 import com.example.core.ui.UiState
+import java.time.LocalDate
 import java.util.UUID
 
 enum class Gender(val value: Int) {
@@ -27,16 +28,16 @@ data class CertificationTag(
 data class InfoData(
     val profileImageUrl: Uri? = null,
     val userName: String = "",
-    val birthDate: String = "",
+    val birthDate: LocalDate? = null,
     val introduction: String? = null,
     val gender: Gender? = null,
     val certificationList: List<CertificationTag> = emptyList()
 )
 
 data class ResumeStep1State(
-    val isLoading: Boolean = true,
     val certificationExist: Boolean? = null,
     val certificationInput: String = "",
+    val birthDate: String = "",
     val info: InfoData = InfoData()
 ) : UiState
 
@@ -47,7 +48,7 @@ sealed interface ResumeStep1Event : UiEvent {
     data object UserNameCleared: ResumeStep1Event
     data object RemoveProfileImage: ResumeStep1Event
 
-    data class BirthDateChanged(val date: String): ResumeStep1Event
+    data class BirthDateChanged(val birthDate: LocalDate): ResumeStep1Event
 
     data class SelectGender(val gender: Gender): ResumeStep1Event
 
@@ -61,5 +62,4 @@ sealed interface ResumeStep1Event : UiEvent {
 }
 
 sealed interface ResumeStep1Effect : UiEffect {
-
 }

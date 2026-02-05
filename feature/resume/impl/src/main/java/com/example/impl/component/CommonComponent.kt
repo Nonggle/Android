@@ -2,23 +2,18 @@ package com.example.feature.resume.impl.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -44,6 +39,7 @@ import com.example.core.designsystem.component.TextFieldType
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.core.designsystem.component.Picker
 import com.example.core.designsystem.component.rememberPickerState
+import com.example.designsystem.component.NonggleChip
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step1.CertificationTag
 import com.example.feature.resume.impl.step1.Gender
@@ -60,7 +56,7 @@ fun genderSelectBox(
         modifier = modifier.fillMaxWidth()
     ) {
         OutlinedButton(
-            modifier = modifier
+            modifier = Modifier
                 .padding(end = 16.dp)
                 .weight(1f),
             titleText = stringResource(R.string.resume1Screen_label_women),
@@ -68,7 +64,7 @@ fun genderSelectBox(
             isSelect = selectGenderResult == Gender.FEMALE,
         )
         OutlinedButton(
-            modifier = modifier.weight(1f),
+            modifier = Modifier.weight(1f),
             titleText = stringResource(R.string.resume1Screen_label_man),
             onClick = { onSelectGender(Gender.MALE) },
             isSelect = selectGenderResult == Gender.MALE,
@@ -79,13 +75,14 @@ fun genderSelectBox(
 // 날짜 선택 박스로 공통으로 쓰일 컴포넌트
 @Composable
 fun dateSelectBox(
+    modifier: Modifier = Modifier,
     hintText: String,
     selectDate: String,
     onClick: () -> Unit,
     paddingValues: PaddingValues
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(paddingValues)
             .border(
@@ -93,8 +90,6 @@ fun dateSelectBox(
                 shape = RoundedCornerShape(4.dp)
             )
             .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
                 onClick = onClick
             )
     ) {
@@ -106,7 +101,7 @@ fun dateSelectBox(
         ) {
             Text(
                 text = selectDate.ifEmpty { hintText },
-                style = NonggleTheme.typography.b1_main,
+                style = NonggleTheme.typography.b1_main.copy(color = if(selectDate.isEmpty()) NonggleTheme.colorScheme.g3 else NonggleTheme.colorScheme.black),
                 textAlign = TextAlign.Start
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -123,7 +118,7 @@ fun dateSelectBox(
 fun BirthDatePickerBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
-    selectBirthDate: (String) -> Unit = {},
+    selectBirthDate: (LocalDate) -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
     val maxDate = LocalDate.now()
@@ -230,20 +225,22 @@ fun BirthDatePickerBottomSheet(
                         textModifier = Modifier.padding(10.dp),
                         unit = "일"
                     )
-                    FullButton(
-                        modifier = Modifier.padding(top = 32.dp, bottom = 32.dp),
-                        onClick = {
-                            val y = yearItems.getOrNull(yearPickerState.selectedIndex)
-                                ?: maxYear.toString()
-                            val m = monthItems.getOrNull(monthPickerState.selectedIndex) ?: "01"
-                            val d = dayItems.getOrNull(dayPickerState.selectedIndex) ?: "01"
-
-                            selectBirthDate("$y-$m-$d")
-                            onDismissRequest()
-                        },
-                        title = stringResource(R.string.resume1Screen_confirmBtnText)
-                    )
                 }
+                FullButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp, bottom = 32.dp),
+                    onClick = {
+                        val y = yearItems.getOrNull(yearPickerState.selectedIndex)
+                            ?: maxYear.toString()
+                        val m = monthItems.getOrNull(monthPickerState.selectedIndex) ?: "01"
+                        val d = dayItems.getOrNull(dayPickerState.selectedIndex) ?: "01"
+
+                        selectBirthDate(LocalDate.of(y.toInt(), m.toInt(), d.toInt()))
+                        onDismissRequest()
+                    },
+                    title = stringResource(R.string.resume1Screen_confirmBtnText)
+                )
             }
         }
     )
@@ -259,7 +256,7 @@ fun certificateSelectBox(
         modifier = modifier.fillMaxWidth()
     ) {
         OutlinedButton(
-            modifier = modifier
+            modifier = Modifier
                 .padding(end = 16.dp)
                 .weight(1f),
             titleText = stringResource(R.string.resume1Screen_label_havecertificate),
@@ -267,7 +264,7 @@ fun certificateSelectBox(
             isSelect = isCertificationExist == true,
         )
         OutlinedButton(
-            modifier = modifier.weight(1f),
+            modifier = Modifier.weight(1f),
             titleText = stringResource(R.string.resume1Screen_label_nocertificate),
             onClick = { onClickExistCertificationInfo(false) },
             isSelect = isCertificationExist == false,
@@ -314,69 +311,20 @@ fun certificationInput(
             )
         }
         if (certificationList.isNotEmpty()) {
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .padding(top = 8.dp, bottom = 40.dp)
-                    .heightIn(max = 200.dp),
-                columns = GridCells.Adaptive(minSize = 128.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            FlowRow(
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                items(
-                    count = certificationList.size,
-                    key = { index -> certificationList[index].id }
-                ) { index ->
-                    certificationChipItem(
-                        //modifier = Modifier.fillMaxWidth(),
-                        title = certificationList[index].certificationTitle,
-                        removeChip = { removeCertificationItem(certificationList[index].id) }
+                certificationList.forEach { item ->
+                    NonggleChip(
+                        title = item.certificationTitle,
+                        removeChip = { removeCertificationItem(item.id) }
                     )
                 }
             }
         }
     }
 
-}
-
-
-@Composable
-fun certificationChipItem(
-    modifier: Modifier = Modifier,
-    title: String,
-    removeChip: () -> Unit,
-) {
-    Box(
-        modifier = modifier
-            .wrapContentSize()
-            .border(
-                BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
-                shape = RoundedCornerShape(20.dp)
-            )
-            .background(
-                color = NonggleTheme.colorScheme.g4,
-                shape = RoundedCornerShape(20.dp)
-            )
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 11.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = NonggleTheme.typography.b2_sub
-            )
-            Image(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = removeChip
-                    ),
-                painter = painterResource(R.drawable.xcircle),
-                contentDescription = null,
-            )
-        }
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

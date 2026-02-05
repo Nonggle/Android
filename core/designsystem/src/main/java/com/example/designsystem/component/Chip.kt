@@ -3,7 +3,6 @@ package com.example.designsystem.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -13,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.R
 import com.example.core.designsystem.component.NonggleIconButton
@@ -24,9 +24,8 @@ fun NonggleChip(
     title: String,
     removeChip: () -> Unit,
 ) {
-    Box(
+    Row(
         modifier = modifier
-            .wrapContentSize()
             .border(
                 BorderStroke(1.dp, NonggleTheme.colorScheme.g_line),
                 shape = RoundedCornerShape(20.dp)
@@ -35,19 +34,19 @@ fun NonggleChip(
                 color = NonggleTheme.colorScheme.g4,
                 shape = RoundedCornerShape(20.dp)
             )
+            .padding(horizontal = 16.dp, vertical = 11.dp)
+            .wrapContentSize(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 11.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = NonggleTheme.typography.b2_sub
-            )
-            NonggleIconButton(
-                image = painterResource(R.drawable.xcircle),
-                onClick = removeChip
-            )
-        }
+        Text(
+            text = title,
+            style = NonggleTheme.typography.b2_sub,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        NonggleIconButton(
+            image = painterResource(R.drawable.xcircle),
+            onClick = removeChip
+        )
     }
 }
