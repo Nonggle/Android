@@ -57,5 +57,9 @@ gradlePlugin {
             id = "example.nonggle.android.detekt"
             implementationClass = "AndroidDetektConventionPlugin"
         }
+        register("androidKtor") {
+            id = "example.nonggle.android.ktor"
+            implementationClass = "AndroidKtorConventionPlugin"
+        }
     }
 }
