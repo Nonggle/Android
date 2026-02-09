@@ -1,4 +1,4 @@
-package com.example.data.util
+package com.example.core.data.util
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -7,9 +7,9 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest.Builder
 import androidx.core.content.getSystemService
-import com.example.common.network.Dispatcher
+import com.example.core.common.network.Dispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
-import com.example.common.network.NonggleDispatchers.IO
+import com.example.core.common.network.NonggleDispatchers.IO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

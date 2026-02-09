@@ -1,0 +1,13 @@
+plugins {
+    alias(libs.plugins.example.nonggle.android.library)
+    alias(libs.plugins.example.nonggle.android.serialization)
+    alias(libs.plugins.example.nonggle.android.detekt)
+}
+
+android {
+    namespace = "com.example.feature.home.api"
+}
+
+dependencies {
+    implementation(libs.navigation3.runtime)
+}

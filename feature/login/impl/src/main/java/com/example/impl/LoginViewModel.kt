@@ -1,7 +1,7 @@
-package com.example.impl
+package com.example.feature.login.impl
 
 import androidx.lifecycle.viewModelScope
-import com.example.ui.BaseViewModel
+import com.example.core.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

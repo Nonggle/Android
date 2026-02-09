@@ -7,15 +7,19 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.data.util.NetworkMonitor
-import com.example.designsystem.theme.NonggleTheme
+import com.example.core.data.util.NetworkMonitor
+import com.example.core.designsystem.theme.NonggleTheme
 import com.example.nonggleresume.ui.NonggleApp
 import com.example.nonggleresume.ui.rememberNonggleAppState
 import com.example.nonggleresume.util.isSystemInDarkTheme
@@ -27,7 +31,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -79,12 +82,17 @@ class MainActivity : ComponentActivity() {
             val appState = rememberNonggleAppState(networkMonitor = networkMonitor)
 
             CompositionLocalProvider(
-                //LocalAnalyticsHelper provides analyticsHelper, //여기에 firebase analytics를 연동할 수 있지 않을까
+                // LocalAnalyticsHelper provides analyticsHelper, //여기에 firebase analytics를 연동할 수 있지 않을까
             ) {
                 NonggleTheme(
                     darkTheme = themeSettings.darkTheme,
                 ) {
-                    NonggleApp(appState)
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = NonggleTheme.colorScheme.white
+                    ) {
+                        NonggleApp(appState)
+                    }
                 }
             }
         }
@@ -102,7 +110,6 @@ class MainActivity : ComponentActivity() {
 private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
 
 private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
-
 
 data class ThemeSettings(
     val darkTheme: Boolean,

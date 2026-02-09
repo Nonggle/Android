@@ -1,4 +1,4 @@
-package com.example.common.result
+package com.example.core.common.result
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

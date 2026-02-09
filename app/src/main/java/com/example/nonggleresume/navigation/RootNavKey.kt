@@ -1,7 +1,11 @@
 package com.example.nonggleresume.navigation
 import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
 
-sealed interface RootNavKey: NavKey {
-    data object LoginNavKey: RootNavKey
-    data object MainNavKey: RootNavKey
+@Serializable
+sealed interface RootNavKey : NavKey {
+    @Serializable
+    data object LoginNavKey : RootNavKey
+    @Serializable
+    data object MainNavKey : RootNavKey
 }

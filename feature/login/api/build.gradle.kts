@@ -1,8 +1,13 @@
 plugins {
-    alias(libs.plugins.example.nonggle.android.feature.ui)
+    alias(libs.plugins.example.nonggle.android.library)
     alias(libs.plugins.example.nonggle.android.serialization)
+    alias(libs.plugins.example.nonggle.android.detekt)
 }
 
 android {
-    namespace = "com.example.api"
+    namespace = "com.example.feature.login.api"
+}
+
+dependencies {
+    implementation(libs.navigation3.runtime)
 }

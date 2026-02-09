@@ -1,4 +1,4 @@
-package com.example.designsystem
+package com.example.core.designsystem
 
 import org.junit.Test
 

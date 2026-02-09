@@ -4,19 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.data.util.NetworkMonitor
-import com.example.home.navigation.HomeNavKey
-import com.example.navigation.NavigationState
-import com.example.navigation.rememberNavigationState
+import com.example.core.data.util.NetworkMonitor
+import com.example.core.navigation.NavigationState
+import com.example.core.navigation.rememberNavigationState
+import com.example.feature.home.api.HomeNavKey
 import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
@@ -41,18 +39,17 @@ fun rememberNonggleAppState(
     }
 }
 
-
 @Stable
 class NonggleAppState(
     val mainNavigationState: NavigationState,
     coroutineScope: CoroutineScope,
     networkMonitor: NetworkMonitor,
 ) {
-    private val _isLogin = MutableStateFlow(false)
+    private val _isLogin = MutableStateFlow(true)
 
     val rootNavState: StateFlow<RootNavKey> =
         _isLogin.map { login ->
-            if(login) RootNavKey.MainNavKey else RootNavKey.LoginNavKey
+            if (login) RootNavKey.MainNavKey else RootNavKey.LoginNavKey
         }.stateIn(
             scope = coroutineScope,
             started = SharingStarted.Eagerly,
@@ -74,5 +71,4 @@ class NonggleAppState(
     fun goMain() {
         _isLogin.value = true
     }
-
 }

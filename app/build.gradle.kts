@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.example.nonggle.android.application.compose)
     alias(libs.plugins.example.nonggle.android.hilt)
+    alias(libs.plugins.example.nonggle.android.detekt)
 }
 
 fun getSecretKey(key: String): String {
@@ -61,7 +62,8 @@ dependencies {
 
     implementation(project(":feature:login:api"))
     implementation(project(":feature:login:impl"))
-    implementation(project(":feature:home"))
+    implementation(project(":feature:home:api"))
+    implementation(project(":feature:home:impl"))
     implementation(project(":feature:download"))
     implementation(project(":feature:setting"))
 }

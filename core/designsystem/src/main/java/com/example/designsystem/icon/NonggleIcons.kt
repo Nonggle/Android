@@ -1,10 +1,6 @@
-package com.example.designsystem.icon
+package com.example.core.designsystem.icon
 
-import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import com.example.designsystem.R
+import com.example.core.designsystem.R
 
 object NonggleIcons {
     val homeUnselected = R.drawable.home_unselect

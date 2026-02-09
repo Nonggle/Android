@@ -1,8 +1,7 @@
-package com.example.designsystem.component
+package com.example.core.designsystem.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -11,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.core.designsystem.theme.NonggleTheme
 
 @Composable
 fun RowScope.NonggleNavigationBarItem(
@@ -35,8 +35,7 @@ fun RowScope.NonggleNavigationBarItem(
             selectedIconColor = NonggleNavigationDefaults.navigationSelectedItemColor(),
             unselectedIconColor = NonggleNavigationDefaults.navigationContentColor(),
             selectedTextColor = NonggleNavigationDefaults.navigationSelectedItemColor(),
-            unselectedTextColor = NonggleNavigationDefaults.navigationContentColor(),
-            indicatorColor = NonggleNavigationDefaults.navigationIndicatorColor(),
+            indicatorColor = Color.Transparent
         ),
     )
 }
@@ -56,16 +55,20 @@ fun NonggleNavigationBar(
 
 @Composable
 fun NonggleMobileNavigationScaffold(
-    navigationBarItems: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
+    navigationBarItems: @Composable RowScope.() -> Unit,
+    showBottomBar: Boolean,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
+        topBar = {},
         modifier = modifier,
         containerColor = Color.Transparent,
         bottomBar = {
-            NonggleNavigationBar {
-                navigationBarItems()
+            if(showBottomBar) {
+                NonggleNavigationBar {
+                    navigationBarItems()
+                }
             }
         },
     ) { paddingValues ->
@@ -75,11 +78,8 @@ fun NonggleMobileNavigationScaffold(
 
 object NonggleNavigationDefaults {
     @Composable
-    fun navigationContentColor() = MaterialTheme.colorScheme.onSurfaceVariant
+    fun navigationContentColor() = NonggleTheme.colorScheme.g1
 
     @Composable
-    fun navigationSelectedItemColor() = MaterialTheme.colorScheme.onPrimaryContainer
-
-    @Composable
-    fun navigationIndicatorColor() = MaterialTheme.colorScheme.primaryContainer
+    fun navigationSelectedItemColor() = NonggleTheme.colorScheme.m1
 }
