@@ -102,7 +102,7 @@ fun NonggleTextField(
                 ),
             )
             TextFieldType.Outlined -> OutlinedTextField(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 enabled = enabled,
                 readOnly = readOnly,
                 value = value,
@@ -154,40 +154,44 @@ enum class TextFieldType {
 @Preview(showBackground = true)
 @Composable
 fun NonggleStandardTextFieldPreview() {
-    NonggleTextField(
-        label = {
-            Text(
-                text = "레이블",
-                style = NonggleTheme.typography.b2_sub,
-                color = NonggleTheme.colorScheme.g1,
-            )
-        },
-        textFieldType = TextFieldType.Standard,
-        value = "이름 입력",
-        onValueChange = { },
-        trailingIcon = {
-            NonggleIconButton(
-                image = painterResource(R.drawable.xcircle),
-                onClick = { }
-            )
-        },
-        hintText = "힌트",
-    )
+    NonggleTheme {
+        NonggleTextField(
+            label = {
+                Text(
+                    text = "레이블",
+                    style = NonggleTheme.typography.b2_sub,
+                    color = NonggleTheme.colorScheme.g1,
+                )
+            },
+            textFieldType = TextFieldType.Standard,
+            value = "이름 입력",
+            onValueChange = { },
+            trailingIcon = {
+                NonggleIconButton(
+                    image = painterResource(R.drawable.xcircle),
+                    onClick = { }
+                )
+            },
+            hintText = "힌트",
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun NonggleOutlinedTextFieldPreview() {
-    NonggleTextField(
-        textFieldType = TextFieldType.Outlined,
-        value = "이름 입력",
-        onValueChange = { },
-        trailingIcon = {
-            NonggleIconButton(
-                image = painterResource(R.drawable.xcircle),
-                onClick = { }
-            )
-        },
-        hintText = "힌트",
-    )
+    NonggleTheme {
+        NonggleTextField(
+            textFieldType = TextFieldType.Outlined,
+            value = "이름 입력",
+            onValueChange = { },
+            trailingIcon = {
+                NonggleIconButton(
+                    image = painterResource(R.drawable.xcircle),
+                    onClick = { }
+                )
+            },
+            hintText = "힌트",
+        )
+    }
 }
