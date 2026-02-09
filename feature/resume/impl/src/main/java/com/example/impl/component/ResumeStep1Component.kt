@@ -15,36 +15,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.component.ContainedButton
-import com.example.core.designsystem.component.FullButton
-import com.example.core.designsystem.component.NonggleBottomSheet
+import com.example.core.designsystem.component.DatePickerModal
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.component.NonggleTextField
 import com.example.core.designsystem.component.OutlinedButton
 import com.example.core.designsystem.component.TextFieldType
 import com.example.core.designsystem.theme.NonggleTheme
-import com.example.core.designsystem.component.Picker
-import com.example.core.designsystem.component.rememberPickerState
 import com.example.designsystem.component.NonggleChip
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step1.CertificationTag
 import com.example.feature.resume.impl.step1.Gender
 import java.time.LocalDate
-import java.time.YearMonth
 
 @Composable
 fun genderSelectBox(
@@ -115,134 +107,17 @@ fun dateSelectBox(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BirthDatePickerBottomSheet(
+fun BirthDateSelectDialog(
     modifier: Modifier = Modifier,
-    sheetState: SheetState,
-    selectBirthDate: (LocalDate) -> Unit = {},
-    onDismissRequest: () -> Unit = {},
+    onDateSelected: (LocalDate) -> Unit,
+    onDismiss: () -> Unit,
+    datePickerState: DatePickerState
 ) {
-    val maxDate = LocalDate.now()
-    val minYear = 1900
-    val maxYear = maxDate.year
-
-    val yearItems: List<String> = remember(maxYear) {
-        (minYear..maxYear).map { it.toString() }
-    }
-
-    val monthItemsAll: List<String> = remember {
-        (1..12).map { "%02d".format(it) }
-    }
-
-    val yearPickerState = rememberPickerState()
-    val monthPickerState = rememberPickerState()
-    val dayPickerState = rememberPickerState()
-
-    // 현재 선택된 값(없으면 안전한 기본값)
-    val selectedYear: Int =
-        yearItems.getOrNull(yearPickerState.selectedIndex)?.toIntOrNull() ?: maxYear
-
-    // 선택년도가 올해면 현시점 월까지만 아니라면 12월까지 리스트에 포함
-    val monthItems: List<String> = remember(selectedYear, maxDate) {
-        if (selectedYear == maxYear) {
-            (1..maxDate.monthValue).map { "%02d".format(it) }
-        } else {
-            monthItemsAll
-        }
-    }
-
-    // monthItems가 줄어들 때 선택 인덱스가 범위를 벗어나면 보정
-    LaunchedEffect(monthItems.size) {
-        if (monthItems.isNotEmpty() && monthPickerState.selectedIndex > monthItems.lastIndex) {
-            monthPickerState.selectedIndex = monthItems.lastIndex
-        }
-    }
-
-    val selectedMonth: Int =
-        monthItems.getOrNull(monthPickerState.selectedIndex)?.toIntOrNull() ?: 1
-
-    //선택된 년/월에 맞는 일 계산
-    val dayInSelectedMonth: Int = remember(selectedYear, selectedMonth) {
-        YearMonth.of(selectedYear, selectedMonth).lengthOfMonth()
-    }
-
-    val lastSelectableDay: Int =
-        remember(selectedYear, selectedMonth, maxDate, dayInSelectedMonth) {
-            if (selectedYear == maxYear && selectedMonth == maxDate.monthValue) {
-                minOf(maxDate.dayOfMonth, dayInSelectedMonth)
-            } else {
-                dayInSelectedMonth
-            }
-        }
-
-    val dayItems: List<String> = remember(selectedYear, selectedMonth, lastSelectableDay) {
-        (1..lastSelectableDay).map { "%02d".format(it) }
-    }
-
-    LaunchedEffect(dayItems.size) {
-        if (dayItems.isNotEmpty() && dayPickerState.selectedIndex > dayItems.lastIndex) {
-            dayPickerState.selectedIndex = dayItems.lastIndex
-        }
-    }
-
-    NonggleBottomSheet(
+    DatePickerModal(
         modifier = modifier,
-        sheetState = sheetState,
-        onDismissRequest = onDismissRequest,
-        title = stringResource(R.string.resume1Screen_birthDateTitle),
-        content = {
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Picker(
-                        state = yearPickerState,
-                        items = yearItems,
-                        visibleItemsCount = 3,
-                        modifier = Modifier.weight(0.3f),
-                        textModifier = Modifier.padding(10.dp),
-                        unit = "년"
-                    )
-                    Picker(
-                        state = monthPickerState,
-                        items = monthItems,
-                        visibleItemsCount = 3,
-                        modifier = Modifier.weight(0.3f),
-                        textModifier = Modifier.padding(10.dp),
-                        unit = "월"
-                    )
-                    Picker(
-                        state = dayPickerState,
-                        items = dayItems,
-                        visibleItemsCount = 3,
-                        modifier = Modifier.weight(0.3f),
-                        textModifier = Modifier.padding(10.dp),
-                        unit = "일"
-                    )
-                }
-                FullButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 32.dp, bottom = 32.dp),
-                    onClick = {
-                        val y = yearItems.getOrNull(yearPickerState.selectedIndex)
-                            ?: maxYear.toString()
-                        val m = monthItems.getOrNull(monthPickerState.selectedIndex) ?: "01"
-                        val d = dayItems.getOrNull(dayPickerState.selectedIndex) ?: "01"
-
-                        selectBirthDate(LocalDate.of(y.toInt(), m.toInt(), d.toInt()))
-                        onDismissRequest()
-                    },
-                    title = stringResource(R.string.resume1Screen_confirmBtnText)
-                )
-            }
-        }
+        onDateSelected = onDateSelected,
+        onDismiss = onDismiss,
+        datePickerState = datePickerState
     )
 }
 
@@ -326,16 +201,3 @@ fun certificationInput(
     }
 
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun birthDateSpinnerPreview() {
-    val sheetState = rememberModalBottomSheetState()
-    NonggleTheme {
-        BirthDatePickerBottomSheet(
-            sheetState = sheetState,
-        )
-    }
-}
-

@@ -20,10 +20,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,7 +45,7 @@ import com.example.core.designsystem.component.NonggleTextField
 import com.example.core.designsystem.component.TextFieldType
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
-import com.example.feature.resume.impl.component.BirthDatePickerBottomSheet
+import com.example.feature.resume.impl.component.BirthDateSelectDialog
 import com.example.feature.resume.impl.component.certificateSelectBox
 import com.example.feature.resume.impl.component.certificationInput
 import com.example.feature.resume.impl.component.dateSelectBox
@@ -61,6 +61,9 @@ internal fun ResumeStep1Screen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
+    val datePickerState = rememberDatePickerState()
+
+    var showDateSelectDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.certificationExist, uiState.info.certificationList.size) {
         if(uiState.certificationExist == true) {
@@ -75,9 +78,7 @@ internal fun ResumeStep1Screen(
         }
     )
 
-    // BottomSheet와 관련된 UI 상태는 Screen 레벨에서 관리
-    var showBottomSheet by remember { mutableStateOf(false) }
-    val birthDateBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
 
     ResumeStep1Screen(
         modifier = modifier,
@@ -86,10 +87,10 @@ internal fun ResumeStep1Screen(
         onProfileImageClick = {
             imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         },
-        showBottomSheet = showBottomSheet,
-        birthDateBottomSheetState = birthDateBottomSheetState,
-        onBirthDateClick = { showBottomSheet = true },
-        onBirthDatePickerDismiss = { showBottomSheet = false },
+        showDateSelectDialog = showDateSelectDialog,
+        datePickerState = datePickerState,
+        onBirthDateClick = { showDateSelectDialog = true },
+        onBirthDatePickerDismiss = { showDateSelectDialog = false },
         scrollState = scrollState
     )
 }
@@ -101,17 +102,17 @@ internal fun ResumeStep1Screen(
     uiState: ResumeStep1State,
     onEvent: (ResumeStep1Event) -> Unit = {},
     onProfileImageClick: () -> Unit = {},
-    showBottomSheet: Boolean = false,
-    birthDateBottomSheetState: SheetState,
+    showDateSelectDialog: Boolean = false,
+    datePickerState: DatePickerState,
     onBirthDateClick: () -> Unit = {},
     onBirthDatePickerDismiss: () -> Unit = {},
     scrollState: ScrollState,
 ) {
-    if (showBottomSheet) {
-        BirthDatePickerBottomSheet(
-            sheetState = birthDateBottomSheetState,
-            selectBirthDate = { date -> onEvent(ResumeStep1Event.BirthDateChanged(date)) },
-            onDismissRequest = onBirthDatePickerDismiss
+    if (showDateSelectDialog) {
+        BirthDateSelectDialog(
+            datePickerState = datePickerState,
+            onDateSelected = { date -> onEvent(ResumeStep1Event.BirthDateChanged(date)) },
+            onDismiss = onBirthDatePickerDismiss
         )
     }
 

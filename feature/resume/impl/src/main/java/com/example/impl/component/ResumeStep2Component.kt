@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -33,14 +31,10 @@ import com.example.core.designsystem.component.NonggleBottomSheet
 import com.example.core.designsystem.component.NonggleDialog
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.component.NonggleTextField
-import com.example.core.designsystem.component.OutlinedButton
-import com.example.core.designsystem.component.OutlinedIconButton
 import com.example.core.designsystem.component.Picker
 import com.example.core.designsystem.component.TextFieldType
 import com.example.core.designsystem.component.rememberPickerState
 import com.example.core.designsystem.theme.NonggleTheme
-import com.example.designsystem.component.NonggleDropDown
-import com.example.designsystem.component.rememberExposedMenuStateHolder
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step2.CareerBottomSheetEvent
 import com.example.feature.resume.impl.step2.CareerFormData
