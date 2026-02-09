@@ -60,11 +60,12 @@ class ResumeStep2ViewModel @Inject constructor() :
     private fun deleteCareerItem(id: String) {
 
         updateState {
-            val startDate = careerList.find { it.id == id }?.careerStartDate
-            val endDate = careerList.find { it.id == id }?.careerEndDate
-
+            val target = careerList.find { it.id == id } ?: return@updateState this
+            val period = if(target.careerStartDate != null && target.careerEndDate != null) {
+                Period.between(target.careerStartDate, target.careerEndDate)
+            } else Period.ZERO
             copy(
-                totalCareer = totalCareer.minus(Period.between(startDate, endDate)),
+                totalCareer = totalCareer.minus(period),
                 careerList = this.careerList.filter { it.id != id }
             )
         }
