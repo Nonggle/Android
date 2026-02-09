@@ -110,7 +110,7 @@ fun NonggleTextField(
                 enabled = enabled,
                 readOnly = readOnly,
                 value = value,
-                onValueChange = {newText ->
+                onValueChange = { newText ->
                     if(maxLength != null) {
                         if(newText.length <= maxLength) {
                             onValueChange(newText)
@@ -119,7 +119,6 @@ fun NonggleTextField(
                         onValueChange(newText)
                     }
                 },
-                containerColor = NonggleTheme.colorScheme.white,
                 supportingText = supportText,
                 textStyle = textStyle.copy(color = textColor),
                 shape = shape,
