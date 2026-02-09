@@ -10,7 +10,7 @@ import com.example.feature.resume.impl.navigation.resumeEntryProvider
 fun EntryProviderScope<NavKey>.homeEntryProvider(navigator: Navigator) {
     entry<HomeNavKey> {
         HomeScreen(
-            navigateToResume = navigator::navigateToResume,
+            navigateToResumeWritingScreen = navigator::navigateToResume,
         )
     }
     resumeEntryProvider(navigator)
