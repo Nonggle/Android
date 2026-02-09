@@ -10,5 +10,5 @@ fun getDateTimeFormatter(date: LocalDate): String {
 }
 
 fun getPeriodFormatter(period: Period): String {
-    return "${period.years}년 ${period.months}월 ${period.days}일"
+    return "${period.years}년 ${period.months}개월 ${period.days}일"
 }
