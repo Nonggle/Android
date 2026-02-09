@@ -2,6 +2,7 @@ package com.example.feature.resume.impl.step2
 
 import com.example.core.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Period
 import javax.inject.Inject
 
 @HiltViewModel
@@ -11,22 +12,21 @@ class ResumeStep2ViewModel @Inject constructor() :
     override fun onEvent(event: ResumeStep2Event) {
         when (event) {
             is ResumeStep2Event.CareerSheetEvent -> handleCareerSheetEvent(event.event)
-            is ResumeStep2Event.DeleteCareerItem -> updateState { copy(careerList = this.careerList.filter { it.id != event.id }) }
+            is ResumeStep2Event.DeleteCareerItem -> deleteCareerItem(event.id)
         }
     }
 
     private fun handleCareerSheetEvent(careerSheetEvent: CareerBottomSheetEvent) {
         when (careerSheetEvent) {
             // 근무 시작일 선택
-            // FIXME: 경력 합산방식 변경 후 수정 예정
-//            is CareerBottomSheetEvent.SelectCareerStartDate -> {
-//                updateState { copy(careerFormData = this.careerFormData.copy(careerStartDate = careerSheetEvent.date)) }
-//            }
-//
-//            // 근무 종료일 선택 (1개월 이상)
-//            is CareerBottomSheetEvent.SelectCareerEndDate -> {
-//                updateState { copy(careerFormData = this.careerFormData.copy(careerEndDate = careerSheetEvent.date)) }
-//            }
+            is CareerBottomSheetEvent.SelectCareerStartDate -> {
+                updateState { copy(careerFormData = this.careerFormData.copy(careerStartDate = careerSheetEvent.date)) }
+            }
+
+            // 근무 종료일 선택
+            is CareerBottomSheetEvent.SelectCareerEndDate -> {
+                updateState { copy(careerFormData = this.careerFormData.copy(careerEndDate = careerSheetEvent.date)) }
+            }
 
             // 작성한 이력정보 삭제
             is CareerBottomSheetEvent.DeleteCareerItem -> {
@@ -44,13 +44,29 @@ class ResumeStep2ViewModel @Inject constructor() :
             }
 
             // 경력 작성 완료 후 리스트 추가
-            is CareerBottomSheetEvent.AddCareerItem -> {updateState { copy(careerList = this.careerList + careerSheetEvent.data) }}
+            is CareerBottomSheetEvent.AddCareerItem -> addCareerItem(careerSheetEvent.data)
 
-            else -> {}
         }
     }
 
-    private fun getDiffYearMonth() {
+    private fun addCareerItem(data: CareerFormData) {
+        updateState { copy(
+            careerList = this.careerList + data,
+            careerFormData = CareerFormData(),
+            totalCareer = totalCareer.plus(Period.between(data.careerStartDate, data.careerEndDate))
+        ) }
+    }
 
+    private fun deleteCareerItem(id: String) {
+
+        updateState {
+            val startDate = careerList.find { it.id == id }?.careerStartDate
+            val endDate = careerList.find { it.id == id }?.careerEndDate
+
+            copy(
+                totalCareer = totalCareer.minus(Period.between(startDate, endDate)),
+                careerList = this.careerList.filter { it.id != id }
+            )
+        }
     }
 }

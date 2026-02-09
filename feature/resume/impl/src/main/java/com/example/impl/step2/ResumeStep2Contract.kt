@@ -9,13 +9,6 @@ import java.time.Period
 import java.util.UUID
 
 @Stable
-data class YearMonthDayDiff(
-    val years: Int = 0,
-    val months: Int = 0,
-    val days: Int = 0,
-)
-
-@Stable
 data class CareerFormData(
     val id: String = UUID.randomUUID().toString(),
     val careerStartDate: LocalDate? = null,
@@ -28,17 +21,13 @@ data class ResumeStep2State(
     val isLoading: Boolean = true,
     val careerFormData: CareerFormData = CareerFormData(),
     val careerList: List<CareerFormData> = emptyList(),
-    val totalCareer: YearMonthDayDiff = YearMonthDayDiff(),
-
-    // ui에 표시하기 위한 용도의 데이터
-    val careerStartDate: String = "",
-    val careerEndDate: String = "",
+    val totalCareer: Period = Period.of(0,0,0),
 ): UiState
 
 sealed interface CareerBottomSheetEvent: UiEvent {
     data class CareerDescriptionInput(val description: String): CareerBottomSheetEvent
-    data class SelectCareerStartDate(val date: String): CareerBottomSheetEvent
-    data class SelectCareerEndDate(val date: String): CareerBottomSheetEvent
+    data class SelectCareerStartDate(val date: LocalDate): CareerBottomSheetEvent
+    data class SelectCareerEndDate(val date: LocalDate): CareerBottomSheetEvent
 
     data class CareerDetailInput(val detail: String): CareerBottomSheetEvent
 

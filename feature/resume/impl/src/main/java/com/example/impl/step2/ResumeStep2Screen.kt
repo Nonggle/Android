@@ -1,5 +1,6 @@
 package com.example.feature.resume.impl.step2
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +11,6 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import com.example.core.designsystem.component.OutlinedButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +27,8 @@ import com.example.impl.component.CareerBottomSheet
 import com.example.impl.component.CareerItem
 import com.example.impl.component.SubTitleText
 import com.example.impl.component.TitleText
+import com.example.impl.util.getPeriodFormatter
+import java.time.Period
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +39,9 @@ internal fun ResumeStep2Screen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var isShowBottomSheet by remember { mutableStateOf(false) }
-    val careerBottomSheetState = rememberModalBottomSheetState()
+    val careerBottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     ResumeStep2Screen(
         modifier = modifier,
@@ -73,19 +77,14 @@ internal fun ResumeStep2Screen(
 ) {
     if (showBottomSheet) {
         CareerBottomSheet(
-            modifier = Modifier,
             sheetState = careerBottomSheetState,
             uiState = careerSheetState,
             onEvent = onCareerSheetEvent,
-            onDismissRequest = careerBottomSheetDismiss
+            onDismissRequest = {
+                onCareerSheetEvent(CareerBottomSheetEvent.DeleteCareerItem)
+                careerBottomSheetDismiss()
+            }
         )
-    }
-
-    /// TODO: 경력 아이템 추가할 때마다 파생상태 계산되도록
-    val totalCareer by remember {
-        derivedStateOf {
-
-        }
     }
 
     Column(
@@ -108,10 +107,11 @@ internal fun ResumeStep2Screen(
             isSelect = true,
             enabled = false,
             onClick = {}, // do nothing
-            titleText = "" /// FIXME: 경력 합산방식 변경후 수정 예정
+            titleText = getPeriodFormatter(uiState.totalCareer)
         )
         LazyColumn(
-
+            modifier = Modifier.padding(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
                 count = uiState.careerList.size,
@@ -121,7 +121,7 @@ internal fun ResumeStep2Screen(
                         careerItemTitle = uiState.careerList[index].careerDescription,
                         careerItemDetail = uiState.careerList[index].careerDetail,
                         careerItemId = uiState.careerList[index].id,
-                        careerPeriod = "", // TODO: 경력 기간 표시 로직 구현 에정,
+                        careerPeriod = getPeriodFormatter(period = Period.between(uiState.careerList[index].careerStartDate, uiState.careerList[index].careerEndDate)),
                         deleteCareerItem = { onEvent(ResumeStep2Event.DeleteCareerItem(uiState.careerList[index].id)) }
                     )
                 }

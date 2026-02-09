@@ -73,6 +73,7 @@ fun NonggleDialog(
                         ContainedButton(
                             modifier = Modifier.weight(1f),
                             titleText = stringResource(R.string.dialog_Cancel_ButtonTitle),
+                            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black),
                             backgroundColor = NonggleTheme.colorScheme.g4,
                             onClick = onDismiss
                         )

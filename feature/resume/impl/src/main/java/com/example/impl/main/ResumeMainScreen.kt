@@ -27,6 +27,8 @@ import com.example.feature.resume.impl.step2.ResumeStep2Screen
 import com.example.feature.resume.impl.step3.ResumeStep3Screen
 import kotlinx.coroutines.launch
 /// TODO: 완료시 토스트메시지 띄우기
+/// TODO: 매 step에서 다음 tab으로 넘어갈때 roomdb에 저장 기능 추후 구현
+/// TODO: 이력서 모두 작성 완료시 서버 저장 기능 추후 구현
 
 @Composable
 internal fun ResumeMainScreen(
