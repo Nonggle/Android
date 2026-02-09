@@ -140,14 +140,16 @@ fun DatePickerModal(
 @Preview(showBackground = true)
 @Composable
 fun DialogPreview() {
-    NonggleDialog(
-        onDismiss = {},
-        onConfirm = {},
-        dialogTitle = "제목",
-        dialogContent = {
-            Text(text = "다이얼로그 내용")
-        }
-    )
+    NonggleTheme {
+        NonggleDialog(
+            onDismiss = {},
+            onConfirm = {},
+            dialogTitle = "제목",
+            dialogContent = {
+                Text(text = "다이얼로그 내용")
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -155,9 +157,11 @@ fun DialogPreview() {
 @Composable
 fun DatepickerDialog() {
     val state = rememberDatePickerState()
-    DatePickerModal(
-        onDateSelected = {},
-        onDismiss = {},
-        datePickerState = state
-    )
+    NonggleTheme {
+        DatePickerModal(
+            onDateSelected = {},
+            onDismiss = {},
+            datePickerState = state
+        )
+    }
 }
