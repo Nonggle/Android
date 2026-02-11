@@ -1,6 +1,11 @@
 plugins {
-    alias(libs.plugins.example.nonggle.module.jvm.library)
+    alias(libs.plugins.example.nonggle.android.library)
+    alias(libs.plugins.example.nonggle.android.hilt)
     alias(libs.plugins.example.nonggle.android.detekt)
+}
+
+android {
+    namespace = "com.nonggle.network"
 }
 
 dependencies {
@@ -10,4 +15,5 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.auth)
+    testImplementation(libs.junit.junit)
 }
