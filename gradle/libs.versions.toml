@@ -42,6 +42,9 @@ firebaseCrashlyticsPlugin = "3.0.6"
 material3 = "1.4.0-alpha02"
 material = "1.13.0"
 
+# tink
+tink = "1.20.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -106,6 +109,9 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-client-auth = {module = "io.ktor:ktor-client-auth", version.ref = "ktor"}
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+#crypto
+google-tink-android = { module = "com.google.crypto.tink:tink-android", version.ref = "tink" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
