@@ -50,6 +50,9 @@ tink = "1.20.0"
 #mockk
 mockk = "1.14.9"
 
+#lottie
+lottie = "6.7.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -127,6 +130,9 @@ io-mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 #coroutines
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+# lottie
+airbnb-lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
