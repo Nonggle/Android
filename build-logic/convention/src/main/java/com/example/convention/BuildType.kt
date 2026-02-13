@@ -46,12 +46,14 @@ internal fun Project.configureBuildTypes(
 //localProperties.require("DEBUG_API_URL")
 private fun BuildType.configureDebugBuildType() {
     buildConfigField("String", "BASE_URL", "\"DEBUG_API_URL\"")
+    buildConfigField("String", "VERSION_NAME", "\"1.0.0\"")
 }
 
 private fun BuildType.configureReleaseBuildType(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     buildConfigField("String", "BASE_URL", "\"RELEASE_API_URL\"")
+    buildConfigField("String", "VERSION_NAME", "\"1.0.0\"")
 
     isMinifyEnabled = true
     proguardFiles(
