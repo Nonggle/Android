@@ -10,5 +10,5 @@ android {
 
 dependencies {
     implementation(libs.google.tink.android)
-    implementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.androidx.junit.ktx)
 }
