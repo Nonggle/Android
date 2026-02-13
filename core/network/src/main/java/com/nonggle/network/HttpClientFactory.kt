@@ -30,7 +30,6 @@ object HttpClientFactory {
 
     // 1. 토큰 갱신용 클라이언트를 만드는 명시적인 함수
     fun createAuthHttpClient(): HttpClient {
-        // 기존 createBaseClient 로직을 여기에 사용
         return createBaseClient(
             baseUrl = NetworkConfig.baseUrl,
             timeoutMs = NetworkConfig.TIMEOUT_MS,

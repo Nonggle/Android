@@ -20,5 +20,9 @@ dependencies {
     implementation(libs.ktor.client.auth)
     testImplementation(libs.junit.junit)
 
+    testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.io.mockk.mockk)
+    testImplementation(libs.coroutines.test)
+
     implementation(project(":core:auth"))
 }
