@@ -21,7 +21,7 @@ androidxSavedStateCompose = "1.4.0"
 kotlinxSerializationJson = "1.6.3"
 detekt = "1.23.8"
 coil = "3.3.0"
-ktor = "3.0.0-beta-2"
+ktor = "3.4.0"
 coroutines = "1.10.2"
 
 
