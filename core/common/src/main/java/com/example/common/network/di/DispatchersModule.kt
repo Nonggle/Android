@@ -1,8 +1,7 @@
 package com.example.common.network.di
 
-import com.example.core.common.network.Dispatcher
-import com.example.core.common.network.NonggleDispatchers.IO
-import com.example.core.common.network.NonggleDispatchers.Default
+import com.nonggle.common.network.DefaultDispatcher
+import com.nonggle.common.network.IoDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,10 +13,10 @@ import kotlinx.coroutines.Dispatchers
 @InstallIn(SingletonComponent::class)
 object DispatchersModule {
     @Provides
-    @Dispatcher(IO)
+    @IoDispatcher
     fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
-    @Dispatcher(Default)
+    @DefaultDispatcher
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }

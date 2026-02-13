@@ -1,7 +1,6 @@
-package com.example.core.common.network.di
+package com.nonggle.core.common.network.di
 
-import com.example.core.common.network.Dispatcher
-import com.example.core.common.network.NonggleDispatchers.Default
+import com.nonggle.common.network.DefaultDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +22,6 @@ internal object CoroutineScopesModule {
     @Singleton
     @ApplicationScope
     fun providesCoroutineScope(
-        @Dispatcher(Default) dispatcher: CoroutineDispatcher,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 }
