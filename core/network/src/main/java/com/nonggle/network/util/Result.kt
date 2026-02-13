@@ -31,6 +31,8 @@ suspend inline fun <reified T> safeApiCall(
         ApiResult.Error(ApiError.Serialization)
     } catch (e: IOException) {
         ApiResult.Error(ApiError.Network)
+    } catch (e: kotlinx.coroutines.CancellationException) {
+        throw e
     } catch (e: Exception) {
         ApiResult.Error(ApiError.Unknown)
     }
