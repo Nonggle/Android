@@ -1,5 +1,6 @@
-package com.nonggle.network
+package com.nonggle.network.service
 
+import com.nonggle.network.di.AuthClient
 import com.nonggle.network.model.TokenRequest
 import com.nonggle.network.model.TokenResponse
 import io.ktor.client.HttpClient
