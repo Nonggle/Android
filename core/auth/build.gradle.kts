@@ -11,4 +11,7 @@ android {
 dependencies {
     implementation(libs.google.tink.android)
     androidTestImplementation(libs.androidx.junit.ktx)
+    ksp(libs.hilt.compiler)
+
+    implementation(project(":core:common"))
 }

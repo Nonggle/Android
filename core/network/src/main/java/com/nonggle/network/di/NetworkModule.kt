@@ -1,11 +1,11 @@
 package com.nonggle.network.di
 
+import com.example.common.result.AuthEventBus
+import com.example.common.result.DefaultAuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.HttpClientFactory
 import com.nonggle.network.service.KtorRefreshTokenService
 import com.nonggle.network.service.RefreshTokenService
-import com.nonggle.network.util.AuthEventBus
-import com.nonggle.network.util.DefaultAuthEventBus
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

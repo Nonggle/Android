@@ -1,10 +1,10 @@
 package com.nonggle.network
 
+import com.example.common.result.AuthEvent
+import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.model.TokenResponse
 import com.nonggle.network.service.RefreshTokenService
-import com.nonggle.network.util.AuthEvent
-import com.nonggle.network.util.AuthEventBus
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond

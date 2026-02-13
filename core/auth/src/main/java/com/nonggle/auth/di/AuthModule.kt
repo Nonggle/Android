@@ -8,11 +8,13 @@ import com.google.crypto.tink.RegistryConfiguration
 import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
 import com.nonggle.auth.TinkTokenManager
+import com.nonggle.common.network.IoDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -54,6 +56,7 @@ object AuthModule {
     @Singleton
     fun provideTokenManager(
         prefs: SharedPreferences,
-        aead: Aead
-    ): TokenManager = TinkTokenManager(prefs, aead)
+        aead: Aead,
+        @IoDispatcher io: CoroutineDispatcher
+    ): TokenManager = TinkTokenManager(prefs, aead, io)
 }

@@ -6,10 +6,14 @@ import com.nonggle.auth.di.TokenManager
 import javax.inject.Inject
 import androidx.core.content.edit
 import com.google.crypto.tink.Aead
+import com.nonggle.common.network.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 class TinkTokenManager @Inject constructor(
     private val prefs: SharedPreferences,
-    private val aead: Aead
+    private val aead: Aead,
+    @IoDispatcher private val io: CoroutineDispatcher
 ) : TokenManager {
         private companion object {
             const val KEY_ACCESS = "access_token"
@@ -34,24 +38,36 @@ class TinkTokenManager @Inject constructor(
             )
             String(plainBytes, Charsets.UTF_8)
         } catch (_: Throwable) {
-            // 복호화 실패(키셋 변경/손상 등)면 안전하게 토큰 무효화
-            deleteToken()
             null
         }
     }
 
-    override fun getAccessToken(): String? = decryptOrNull(KEY_ACCESS)
-    override fun getRefreshToken(): String? = decryptOrNull(KEY_REFRESH)
+    override suspend fun getAccessToken(): String? = withContext(io) {
+        val token = decryptOrNull(KEY_ACCESS)
+        if (token == null && prefs.contains(KEY_ACCESS)) {
+            // "저장돼있는데 복호화 실패" 케이스 → 안전하게 무효화
+            deleteToken()
+        }
+        token
+    }
 
-    override fun saveTokens(accessToken: String, refreshToken: String) {
+    override suspend fun getRefreshToken(): String? = withContext(io) {
+        val token = decryptOrNull(KEY_REFRESH)
+        if (token == null && prefs.contains(KEY_REFRESH)) {
+            deleteToken()
+        }
+        token
+    }
+
+    override suspend fun saveTokens(accessToken: String, refreshToken: String) = withContext(io) {
         prefs.edit {
             putString(KEY_ACCESS, encrypt(accessToken, KEY_ACCESS))
-                .putString(KEY_REFRESH, encrypt(refreshToken, KEY_REFRESH))
+            putString(KEY_REFRESH, encrypt(refreshToken, KEY_REFRESH))
         }
     }
 
-    override fun deleteToken() {
-        prefs.edit { remove(KEY_ACCESS).remove(KEY_REFRESH) }
+    override suspend fun deleteToken() = withContext(io) {
+        prefs.edit { remove(KEY_ACCESS); remove(KEY_REFRESH) }
     }
 
 }

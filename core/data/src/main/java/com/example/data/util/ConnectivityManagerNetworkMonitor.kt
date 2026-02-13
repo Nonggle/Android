@@ -7,9 +7,8 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest.Builder
 import androidx.core.content.getSystemService
-import com.example.core.common.network.Dispatcher
+import com.nonggle.common.network.IoDispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
-import com.example.core.common.network.NonggleDispatchers.IO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 internal class ConnectivityManagerNetworkMonitor @Inject constructor(
     @ApplicationContext private val context: Context,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ): NetworkMonitor {
     override val isOnline: Flow<Boolean> = callbackFlow {
         val connectivityManager = context.getSystemService<ConnectivityManager>()
@@ -63,6 +62,3 @@ internal class ConnectivityManagerNetworkMonitor @Inject constructor(
         return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
-
-//1. 여기서 channel.trySend 하는 이유는 flow로 수집된 값을 곧장 구독자가 없어도 방출하기 위해서 사용한거지?
-//2.  network 연결 유실마다 - 하는 이유는 뭐야?

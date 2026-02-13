@@ -1,14 +1,12 @@
-package com.example.core.common.network
+package com.nonggle.common.network
 
 
 import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Qualifier
-@Retention(RUNTIME)
-annotation class Dispatcher(val nonggleDispatcher: NonggleDispatchers)
+@Retention(AnnotationRetention.BINARY)
+annotation class IoDispatcher
 
-enum class NonggleDispatchers {
-    Default,
-    IO,
-}
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultDispatcher
