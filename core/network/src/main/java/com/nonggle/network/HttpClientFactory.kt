@@ -2,10 +2,10 @@ package com.nonggle.network
 
 import io.ktor.client.plugins.logging.Logger
 import android.util.Log
+import com.example.common.result.AuthEvent
+import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.service.RefreshTokenService
-import com.nonggle.network.util.AuthEvent
-import com.nonggle.network.util.AuthEventBus
 import com.nonggle.network.util.NetworkConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp

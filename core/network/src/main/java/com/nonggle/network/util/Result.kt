@@ -1,9 +1,12 @@
 package com.nonggle.network.util
 
+import com.example.common.result.ApiError
+import com.example.common.result.ApiResult
+import java.io.IOException
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
-import kotlinx.io.IOException
+import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
 
 suspend inline fun <reified T> safeApiCall(
@@ -31,7 +34,7 @@ suspend inline fun <reified T> safeApiCall(
         ApiResult.Error(ApiError.Serialization)
     } catch (e: IOException) {
         ApiResult.Error(ApiError.Network)
-    } catch (e: kotlinx.coroutines.CancellationException) {
+    } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
         ApiResult.Error(ApiError.Unknown)

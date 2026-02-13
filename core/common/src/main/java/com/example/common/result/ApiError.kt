@@ -1,4 +1,4 @@
-package com.nonggle.network.util
+package com.example.common.result
 
 sealed interface ApiResult<out T> {
     data class Success<T>(val data: T) : ApiResult<T>

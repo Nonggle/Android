@@ -1,13 +1,13 @@
 package com.nonggle.auth.di
 
 interface TokenManager {
-    fun getAccessToken(): String?
-    fun getRefreshToken(): String?
+    suspend fun getAccessToken(): String?
+    suspend fun getRefreshToken(): String?
 
-    fun saveTokens(accessToken: String, refreshToken: String)
+    suspend fun saveTokens(accessToken: String, refreshToken: String)
 
-    fun deleteToken()
+    suspend fun deleteToken()
 
-    fun hasAccessToken(): Boolean = !getAccessToken().isNullOrEmpty()
-    fun hasRefreshToken(): Boolean = !getRefreshToken().isNullOrEmpty()
+    suspend fun hasAccessToken(): Boolean = !getAccessToken().isNullOrEmpty()
+    suspend fun hasRefreshToken(): Boolean = !getRefreshToken().isNullOrEmpty()
 }
