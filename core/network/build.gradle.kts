@@ -6,6 +6,9 @@ plugins {
 
 android {
     namespace = "com.nonggle.network"
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -16,4 +19,6 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.auth)
     testImplementation(libs.junit.junit)
+
+    implementation(project(":core:auth"))
 }
