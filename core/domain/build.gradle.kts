@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(libs.javax.inject)
 }

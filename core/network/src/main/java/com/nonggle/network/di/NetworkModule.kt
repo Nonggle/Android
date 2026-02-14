@@ -6,6 +6,8 @@ import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.HttpClientFactory
 import com.nonggle.network.service.AuthService
 import com.nonggle.network.service.KtorRefreshTokenService
+import com.nonggle.network.service.LoginService
+import com.nonggle.network.service.LoginServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,13 +41,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRefreshTokenService(
-        @AuthClient authClient: HttpClient,
-        @ApiClient apiClient: HttpClient
-    ): AuthService = KtorRefreshTokenService(authClient, apiClient)
-
-    @Provides
-    @Singleton
     @ApiClient
     fun provideApiClient(
         tokenManager: TokenManager,
@@ -54,4 +49,16 @@ object NetworkModule {
     ): HttpClient {
         return HttpClientFactory.createApiClient(tokenManager, refreshTokenService, authEventBus)
     }
+
+    @Provides
+    @Singleton
+    fun provideRefreshTokenService(
+        @AuthClient authClient: HttpClient,
+    ): AuthService = KtorRefreshTokenService(authClient)
+
+    @Provides
+    @Singleton
+    fun provideLoginService(
+        @ApiClient baseClient: HttpClient,
+    ): LoginService = LoginServiceImpl(baseClient)
 }

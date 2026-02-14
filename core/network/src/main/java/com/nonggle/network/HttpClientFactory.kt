@@ -130,6 +130,7 @@ object HttpClientFactory {
 
             defaultRequest {
                 url(baseUrl)
+                Log.d("TTAG", "여기에서 ${baseUrl}")
                 header("App-Version", NetworkConfig.APP_VERSION)
                 contentType(ContentType.Application.Json)
             }

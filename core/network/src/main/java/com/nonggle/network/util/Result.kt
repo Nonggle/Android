@@ -1,5 +1,6 @@
 package com.nonggle.network.util
 
+import android.util.Log
 import com.nonggle.model.AppError
 import com.nonggle.model.AppResult
 import java.io.IOException
@@ -29,10 +30,13 @@ suspend inline fun <reified T> safeApiCall(
             AppResult.Error(error)
         }
     } catch (e: HttpRequestTimeoutException) {
+        Log.e("API_DEBUG", e.message.toString())
         AppResult.Error(AppError.Timeout)
     } catch (e: SerializationException) {
+        Log.e("API_DEBUG", "SerializationException", e)
         AppResult.Error(AppError.Serialization)
     } catch (e: IOException) {
+        Log.e("API_DEBUG", "IOException", e)
         AppResult.Error(AppError.Network)
     } catch (e: CancellationException) {
         throw e
