@@ -1,6 +1,7 @@
 package com.nonggle.network.service
 
 import com.nonggle.model.AppResult
+import com.nonggle.network.di.ApiClient
 import com.nonggle.network.di.AuthClient
 import com.nonggle.network.model.auth.TokenRequestDto
 import com.nonggle.network.model.auth.TokenResponseDto
@@ -16,7 +17,7 @@ interface LoginService {
 }
 
 class LoginServiceImpl @Inject constructor(
-    @AuthClient private val baseClient: HttpClient,
+    @ApiClient private val baseClient: HttpClient,
 ): LoginService {
     override suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto> {
         return safeApiCall<TokenResponseDto> {
