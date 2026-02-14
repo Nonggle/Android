@@ -20,8 +20,6 @@ class LoginRepositoryImpl @Inject constructor(
         // AuthService를 통해 API를 호출합니다.
         val apiResult = loginService.kakaoLogin(accessToken)
 
-        Log.d("TTAG", "${apiResult}")
-
         // API 호출 결과가 성공일 때만 토큰을 저장합니다.
         if (apiResult is AppResult.Success) {
             val tokenResponse = apiResult.data
