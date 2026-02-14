@@ -1,7 +1,7 @@
 package com.nonggle.network.util
 
-import com.example.common.result.ApiError
-import com.example.common.result.ApiResult
+import com.nonggle.model.AppError
+import com.nonggle.model.AppResult
 import java.io.IOException
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
@@ -11,32 +11,32 @@ import kotlinx.serialization.SerializationException
 
 suspend inline fun <reified T> safeApiCall(
     crossinline block: suspend () -> HttpResponse
-): ApiResult<T> {
+): AppResult<T> {
     return try {
         val response = block()
         val code = response.status.value
 
         if (code in 200..299) {
             val body: T = response.body()
-            ApiResult.Success(body)
+            AppResult.Success(body)
         } else {
             // status 기반 매핑
             val error = when (code) {
-                401 -> ApiError.Unauthorized
-                403 -> ApiError.Forbidden
-                else -> ApiError.Http(code, response.status.description)
+                401 -> AppError.Unauthorized
+                403 -> AppError.Forbidden
+                else -> AppError.Http(code, response.status.description)
             }
-            ApiResult.Error(error)
+            AppResult.Error(error)
         }
     } catch (e: HttpRequestTimeoutException) {
-        ApiResult.Error(ApiError.Timeout)
+        AppResult.Error(AppError.Timeout)
     } catch (e: SerializationException) {
-        ApiResult.Error(ApiError.Serialization)
+        AppResult.Error(AppError.Serialization)
     } catch (e: IOException) {
-        ApiResult.Error(ApiError.Network)
+        AppResult.Error(AppError.Network)
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
-        ApiResult.Error(ApiError.Unknown)
+        AppResult.Error(AppError.Unknown)
     }
 }
