@@ -1,5 +1,4 @@
 import com.example.convention.hiltExtension
-import com.example.convention.libs
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
