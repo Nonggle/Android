@@ -4,8 +4,10 @@ import com.example.common.result.AuthEventBus
 import com.example.common.result.DefaultAuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.HttpClientFactory
+import com.nonggle.network.service.AuthService
 import com.nonggle.network.service.KtorRefreshTokenService
-import com.nonggle.network.service.RefreshTokenService
+import com.nonggle.network.service.LoginService
+import com.nonggle.network.service.LoginServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,18 +41,24 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRefreshTokenService(
-        @AuthClient authClient: HttpClient
-    ): RefreshTokenService = KtorRefreshTokenService(authClient)
-
-    @Provides
-    @Singleton
     @ApiClient
     fun provideApiClient(
         tokenManager: TokenManager,
-        refreshTokenService: RefreshTokenService,
+        refreshTokenService: AuthService,
         authEventBus: AuthEventBus,
     ): HttpClient {
         return HttpClientFactory.createApiClient(tokenManager, refreshTokenService, authEventBus)
     }
+
+    @Provides
+    @Singleton
+    fun provideRefreshTokenService(
+        @AuthClient authClient: HttpClient,
+    ): AuthService = KtorRefreshTokenService(authClient)
+
+    @Provides
+    @Singleton
+    fun provideLoginService(
+        @ApiClient baseClient: HttpClient,
+    ): LoginService = LoginServiceImpl(baseClient)
 }

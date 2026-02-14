@@ -2,13 +2,16 @@ package com.example.feature.login.impl
 
 import androidx.lifecycle.viewModelScope
 import com.example.core.ui.BaseViewModel
+import com.example.domain.usecase.KakaoLoginUseCase
+import com.nonggle.model.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val kakaoLoginManager: KakaoLoginManager
+    private val kakaoLoginManager: KakaoLoginManager,
+    private val loginUseCase: KakaoLoginUseCase
 ) : BaseViewModel<LoginEvent, LoginState, LoginEffect>(
     initialState = LoginState()
 ) {
@@ -24,11 +27,7 @@ class LoginViewModel @Inject constructor(
             updateState {copy(isLoading = true)}
             kakaoLoginManager.kakaoLogin()
                 .onSuccess {
-                    updateState {
-                        copy(
-                            loginState = LoginUiState.LoginSuccess,
-                        )
-                    }
+                    getToken(it.accessToken)
                 }
                 .onFailure {
                     updateState {
@@ -36,6 +35,23 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             updateState {copy(isLoading = false)}
+        }
+    }
+
+    private fun getToken(accessToken: String) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+
+            when (val result = loginUseCase(accessToken)) {
+                is AppResult.Success -> {
+                    updateState { copy(isLoading = false, loginState = LoginUiState.LoginSuccess) }
+                }
+
+                is AppResult.Error -> {
+                    // 여기서 AppError 타입별 분기 가능
+                    updateState { copy(isLoading = false, loginState = LoginUiState.LoginFail) }
+                }
+            }
         }
     }
 }

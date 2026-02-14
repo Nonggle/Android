@@ -6,7 +6,6 @@ import com.example.core.ui.UiState
 
 sealed interface LoginUiState {
     data object Idle: LoginUiState // 로그인 이전
-    data object Loading: LoginUiState
 
     data object LoginSuccess: LoginUiState
 
