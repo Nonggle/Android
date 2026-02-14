@@ -20,17 +20,21 @@ suspend inline fun <reified T> safeApiCall(
         val response = block()
         val httpCode = response.status.value
 
-        // 서버 응답은 ApiResponse<T> 형태로 온다
-        val envelope: ApiResponse<T> = response.body()
-
-        // 1) HTTP 성공 + 서버 success=true => data를 T로 파싱 성공한 상태
-        if (response.status.isSuccess() && envelope.success) {
-            val data = envelope.data
-                ?: return AppResult.Error(AppError.Serialization) // success인데 data 없음
-            AppResult.Success(data)
+        if(response.status.isSuccess()) {
+            val envelope: ApiResponse<T> = response.body()
+            if(envelope.success) {
+                val data = envelope.data
+                    ?: return AppResult.Error(AppError.Serialization) // success인데 data 없음
+                AppResult.Success(data)
+            } else {
+                val errorMsg = envelope.error?.message
+                AppResult.Error(AppError.Http(httpCode, errorMsg))
+            }
         } else {
             // 2) 서버에서 error가 내려오면 그걸 우선 반영
-            val serverError = envelope.error
+            val envelope = runCatching { response.body<ApiResponse<T>>() }.getOrNull()
+            val serverError = envelope?.error
+
             if (serverError != null) {
                 // 서버 error.code를 그대로 쓰거나, httpCode와 함께 묶어서 쓰는 방식 중 택1
                 val mapped = when (serverError.code) {
