@@ -3,7 +3,7 @@ package com.nonggle.network
 import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
-import com.nonggle.network.model.TokenResponse
+import com.nonggle.network.model.auth.TokenResponse
 import com.nonggle.network.service.RefreshTokenService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine

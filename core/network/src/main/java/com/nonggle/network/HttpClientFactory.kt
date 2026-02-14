@@ -5,7 +5,7 @@ import android.util.Log
 import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
-import com.nonggle.network.service.RefreshTokenService
+import com.nonggle.network.service.AuthService
 import com.nonggle.network.util.NetworkConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -39,7 +39,7 @@ object HttpClientFactory {
 
     fun createApiClient(
         tokenManager: TokenManager,
-        refreshTokenService: RefreshTokenService,
+        refreshTokenService: AuthService,
         authEventBus: AuthEventBus,
     ): HttpClient {
         val refreshMutex = Mutex()

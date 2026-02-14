@@ -1,4 +1,4 @@
-package com.nonggle.network.model
+package com.nonggle.network.model.auth
 
 import kotlinx.serialization.Serializable
 
