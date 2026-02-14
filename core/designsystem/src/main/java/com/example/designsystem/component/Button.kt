@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.core.designsystem.R
@@ -247,6 +248,170 @@ fun NonggleIconButton(
             painter = image,
             tint = iconColor,
             contentDescription = null,
+        )
+    }
+}
+
+@Preview("NonggleButton (Light)", showBackground = true)
+@Composable
+private fun NonggleButtonPreview() {
+    NonggleTheme {
+        NonggleButton(
+            contentColor = NonggleTheme.colorScheme.white,
+            backgroundColor = NonggleTheme.colorScheme.m1,
+            onClick = { /*TODO*/ }
+        ) {
+            Text("Nonggle Button")
+        }
+    }
+}
+
+// --- FullButton Previews ---
+
+@Preview("FullButton Enabled (Light)", showBackground = true)
+@Composable
+private fun FullButtonEnabledPreview() {
+    NonggleTheme {
+        FullButton(
+            modifier = Modifier.fillMaxWidth(),
+            enabled = true,
+            onClick = { },
+            title = "Enabled Full Button"
+        )
+    }
+}
+
+@Preview("FullButton Disabled (Light)", showBackground = true)
+@Composable
+private fun FullButtonDisabledPreview() {
+    NonggleTheme {
+        FullButton(
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false,
+            onClick = { },
+            title = "Disabled Full Button"
+        )
+    }
+}
+
+@Preview("FullButton Enabled (Dark)", showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun FullButtonEnabledDarkPreview() {
+    NonggleTheme(darkTheme = true) {
+        FullButton(
+            modifier = Modifier.fillMaxWidth(),
+            enabled = true,
+            onClick = { },
+            title = "Enabled Full Button"
+        )
+    }
+}
+
+// --- ImageButton Previews ---
+
+@Preview("ImageButton (Light)", showBackground = true)
+@Composable
+private fun ImageButtonPreview() {
+    NonggleTheme {
+        ImageButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { },
+            titleText = "Login with Google",
+            contentColor = Color.Black,
+            backgroundColor = Color.White,
+            titleTextStyle = NonggleTheme.typography.b4_btn,
+            imageResource = R.drawable.right_small
+        )
+    }
+}
+
+// --- ContainedButton Previews ---
+
+@Preview("ContainedButton Enabled (Light)", showBackground = true)
+@Composable
+private fun ContainedButtonEnabledPreview() {
+    NonggleTheme {
+        ContainedButton(
+            enabled = true,
+            onClick = { },
+            titleText = "Contained Enabled"
+        )
+    }
+}
+
+@Preview("ContainedButton Disabled (Dark)", showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ContainedButtonDisabledDarkPreview() {
+    NonggleTheme(darkTheme = true) {
+        ContainedButton(
+            enabled = false,
+            onClick = { },
+            titleText = "Contained Disabled"
+        )
+    }
+}
+
+// --- OutlinedButton Previews ---
+
+@Preview("OutlinedButton Selected (Light)", showBackground = true)
+@Composable
+private fun OutlinedButtonSelectedPreview() {
+    NonggleTheme {
+        OutlinedButton(
+            isSelect = true,
+            onClick = { },
+            titleText = "Selected"
+        )
+    }
+}
+
+@Preview("OutlinedButton Unselected (Light)", showBackground = true)
+@Composable
+private fun OutlinedButtonUnselectedPreview() {
+    NonggleTheme {
+        OutlinedButton(
+            isSelect = false,
+            onClick = { },
+            titleText = "Unselected"
+        )
+    }
+}
+
+@Preview("OutlinedButton Selected (Dark)", showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun OutlinedButtonSelectedDarkPreview() {
+    NonggleTheme(darkTheme = true) {
+        OutlinedButton(
+            isSelect = true,
+            onClick = { },
+            titleText = "Selected"
+        )
+    }
+}
+
+// --- OutlinedIconButton Previews ---
+
+@Preview("OutlinedIconButton (Light)", showBackground = true)
+@Composable
+private fun OutlinedIconButtonPreview() {
+    NonggleTheme {
+        OutlinedIconButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { },
+            titleText = "Navigate to Details"
+        )
+    }
+}
+
+// --- NonggleIconButton Previews ---
+
+@Preview("NonggleIconButton (Light)", showBackground = true)
+@Composable
+private fun NonggleIconButtonPreview() {
+    NonggleTheme {
+        NonggleIconButton(
+            onClick = { },
+            image = painterResource(id = R.drawable.right_small)
         )
     }
 }
