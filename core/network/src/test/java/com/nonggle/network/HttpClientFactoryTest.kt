@@ -3,7 +3,7 @@ package com.nonggle.network
 import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
-import com.nonggle.network.model.auth.TokenResponse
+import com.nonggle.network.model.auth.TokenResponseDto
 import com.nonggle.network.service.AuthService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
@@ -70,7 +70,7 @@ class HttpClientFactoryTest {
         coEvery { tokenManager.getAccessToken() } returns "expired_access_token"
         coEvery { tokenManager.getRefreshToken() } returns "valid_refresh_token"
 
-        val newTokens = TokenResponse(userId = 1, accessToken = "new_access_token", refreshToken = "new_refresh_token")
+        val newTokens = TokenResponseDto(userId = 1, accessToken = "new_access_token", refreshToken = "new_refresh_token")
         coEvery { refreshTokenService.refresh("valid_refresh_token") } returns newTokens
 
         val apiClient = createTestApiClient(mockEngine)
