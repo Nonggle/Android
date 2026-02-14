@@ -4,7 +4,7 @@ import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.model.auth.TokenResponse
-import com.nonggle.network.service.RefreshTokenService
+import com.nonggle.network.service.AuthService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -32,7 +32,7 @@ class HttpClientFactoryTest {
 
     // 의존성들을 Mock으로 생성
     private lateinit var tokenManager: TokenManager
-    private lateinit var refreshTokenService: RefreshTokenService
+    private lateinit var refreshTokenService: AuthService
     private lateinit var authEventBus: AuthEventBus
 
     private val json = Json { ignoreUnknownKeys = true }
