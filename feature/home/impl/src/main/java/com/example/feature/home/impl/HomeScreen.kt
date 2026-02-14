@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -96,7 +97,7 @@ internal fun HomeScreen(
                     textAlign = TextAlign.Start,
                     style = NonggleTheme.typography.t1,
                 )
-                Spacer(modifier = Modifier.weight(0.3f))
+                Spacer(modifier = Modifier.height(20.dp))
                 DownloadProgressBox(
                     title = uiState.downloadResume.title,
                     updateTime = uiState.updateTime,
@@ -114,6 +115,7 @@ internal fun HomeScreen(
                 onEvent(HomeEvent.NavigateToResumeWritingScreen)
             },
         )
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 

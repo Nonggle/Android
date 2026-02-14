@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ResumeMainScreen(
     modifier: Modifier = Modifier,
+    navigateToComplete: () -> Unit,
     navigateToHome: () -> Unit,
     viewModel: ResumeMainViewModel = hiltViewModel(),
 ) {
@@ -52,14 +53,14 @@ internal fun ResumeMainScreen(
         },
         navigateToComplete = {
             if (pagerState.currentPage == uiState.tabList.size - 1) {
-                navigateToHome()
+                navigateToComplete()
             } else {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
             }
         },
-        navigateGoBack = navigateToHome
+        navigateGoBack = navigateToHome,
     )
 }
 

@@ -5,8 +5,11 @@ import com.example.core.navigation.Navigator
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ResumeNavKey : NavKey
+sealed interface ResumeNavKey : NavKey {
+    data object ResumeWrite: ResumeNavKey
+    data object ResumeComplete: ResumeNavKey
+}
 
 fun Navigator.navigateToResume() {
-    navigate(ResumeNavKey)
+    navigate(ResumeNavKey.ResumeWrite)
 }

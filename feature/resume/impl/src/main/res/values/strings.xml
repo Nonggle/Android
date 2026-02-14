@@ -53,6 +53,7 @@
     <string name="resume3Screen_Title_extra">추가코멘트</string>
     <string name="resume3Screen_HintText_extra">하고싶은 말이나 각오를 입력해주세요.</string>
 
+    <string name="resumeCompleteScreen_Title_Loading">업로드 진행중입니다!</string>
     <string name="resumeCompleteScreen_Title_Error">업로드 중 오류가 발생했습니다!</string>
     <string name="resumeCompleteScreen_label_ErrorButton">뒤로 가기</string>
     <string name="resumeCompleteScreen_label_SuccessButton">이력서 보러가기</string>
