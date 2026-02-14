@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
+import com.nonggle.model.AppResult
 import com.nonggle.network.service.AuthService
 import com.nonggle.network.util.NetworkConfig
 import io.ktor.client.HttpClient
@@ -64,29 +65,29 @@ object HttpClientFactory {
                     refreshTokens {
                         refreshMutex.withLock {
                             val refreshToken = tokenManager.getRefreshToken()
-                                ?: run {
-                                    authEventBus.emit(AuthEvent.SessionExpired)
-                                    return@withLock null
-                                }
 
-                            val result = runCatching {
-                                refreshTokenService.refresh(refreshToken)
+                            if(refreshToken == null) {
+                                authEventBus.emit(AuthEvent.SessionExpired)
+                                return@withLock null
                             }
 
-                            return@withLock result.fold(
-                                onSuccess = { tokenResponse ->
-                                    tokenManager.saveTokens(
-                                        tokenResponse.accessToken,
-                                        tokenResponse.refreshToken
-                                    )
-                                    BearerTokens(tokenResponse.accessToken, tokenResponse.refreshToken)
-                                },
-                                onFailure = {
-                                    tokenManager.deleteToken()
-                                    authEventBus.emit(AuthEvent.SessionExpired)
-                                    null
-                                }
-                            )
+                            val apiResult = refreshTokenService.refresh(refreshToken)
+
+
+                            if(apiResult is AppResult.Success) {
+                                val tokenResponse = apiResult.data
+
+                                tokenManager.saveTokens(
+                                    accessToken = tokenResponse.accessToken,
+                                    refreshToken = tokenResponse.refreshToken
+                                )
+                                BearerTokens(tokenResponse.accessToken, tokenResponse.refreshToken)
+                            } else {
+                                tokenManager.deleteToken()
+                                authEventBus.emit(AuthEvent.SessionExpired)
+                                return@withLock null
+                            }
+
                         }
                     }
 
