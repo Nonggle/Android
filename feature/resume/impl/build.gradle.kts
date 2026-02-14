@@ -20,7 +20,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
-    implementation(libs.airbnb.lottie)
+    implementation(libs.lottie.compose)
 
     implementation(project(":core:designsystem"))
     implementation(project(":feature:resume:api"))
