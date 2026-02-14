@@ -2,7 +2,6 @@ package com.nonggle.network.service
 
 import com.nonggle.model.AppResult
 import com.nonggle.network.di.ApiClient
-import com.nonggle.network.di.AuthClient
 import com.nonggle.network.model.auth.TokenRequestDto
 import com.nonggle.network.model.auth.TokenResponseDto
 import com.nonggle.network.util.safeApiCall

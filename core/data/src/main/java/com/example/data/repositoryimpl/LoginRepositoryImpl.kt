@@ -1,6 +1,5 @@
 package com.example.data.repositoryimpl
 
-import android.util.Log
 import com.example.domain.repository.LoginRepository
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.model.AppResult
