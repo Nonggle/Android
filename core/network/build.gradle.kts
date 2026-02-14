@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.example.nonggle.android.library)
     alias(libs.plugins.example.nonggle.android.hilt)
     alias(libs.plugins.example.nonggle.android.detekt)
+    alias(libs.plugins.example.nonggle.android.serialization)
 }
 
 android {
@@ -26,4 +27,5 @@ dependencies {
 
     implementation(project(":core:auth"))
     implementation(project(":core:common"))
+    implementation(project(":core:model"))
 }

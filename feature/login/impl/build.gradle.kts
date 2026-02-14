@@ -14,9 +14,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     // kakao login
     implementation(libs.kakao.user)
 
     implementation(project(":core:ui"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
     implementation(project(":feature:login:api"))
 }

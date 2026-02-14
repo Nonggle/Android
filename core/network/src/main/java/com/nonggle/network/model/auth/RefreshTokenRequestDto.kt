@@ -1,8 +1,8 @@
-package com.nonggle.network.model
+package com.nonggle.network.model.auth
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TokenRequest (
+data class RefreshTokenRequestDto (
     val refreshToken: String
 )
