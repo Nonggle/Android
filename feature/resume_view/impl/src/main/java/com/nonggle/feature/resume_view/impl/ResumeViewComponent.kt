@@ -1,7 +1,6 @@
 package com.nonggle.feature.resume_view.impl
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -23,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.Uri
@@ -57,7 +55,7 @@ fun titleDot(
 }
 
 @Composable
-fun periodCard(periodTotal: String) {
+fun typeCard(title: String) {
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -68,7 +66,7 @@ fun periodCard(periodTotal: String) {
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            text = periodTotal,
+            text = title,
             style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.m1)
         )
     }
@@ -105,7 +103,7 @@ fun careerCard(
                     style = NonggleTheme.typography.b4_btn
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                periodCard(careerPeriodTotal)
+                typeCard(careerPeriodTotal)
             }
             Text(
                 modifier = Modifier.padding(top = 10.dp),

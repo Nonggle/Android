@@ -1,9 +1,13 @@
 package com.nonggle.model
 
+import java.util.UUID
+
 data class ResumeContents(
+    val id: String,
     val userProfileImageUrl: String,
     val userName: String, // 이름
     val gender: String, // 성별
+    val userAge: String,
     val summary: String, // 한줄 요약
     val careerPeriod: String, //경력
     val careerList: List<Career>, //경력 목록
@@ -12,6 +16,7 @@ data class ResumeContents(
     val userDetailSummary: String, // 간단 자기소개
 ) {
     data class Career(
+        val id: String = UUID.randomUUID().toString(),
         val title: String, // 경력 제목
         val period: String, // 경력 기간 2xxx.xx.xx ~ 2xxx.xx.xx
         val periodTotal: String, //전체 경력 기간 x개월
@@ -19,10 +24,12 @@ data class ResumeContents(
     )
 
     data class Certificate(
+        val id: String = UUID.randomUUID().toString(),
         val certificateTitle: String //자격증 세부항목
     )
 
     data class Personality(
+        val id: String = UUID.randomUUID().toString(),
         val type: String // 사용자 성격 유형 세부항목
     )
 }
