@@ -8,6 +8,8 @@ import com.nonggle.network.service.AuthService
 import com.nonggle.network.service.KtorRefreshTokenService
 import com.nonggle.network.service.LoginService
 import com.nonggle.network.service.LoginServiceImpl
+import com.nonggle.network.service.ResumeService
+import com.nonggle.network.service.ResumeServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,4 +63,10 @@ object NetworkModule {
     fun provideLoginService(
         @ApiClient baseClient: HttpClient,
     ): LoginService = LoginServiceImpl(baseClient)
+
+    @Provides
+    @Singleton
+    fun provideResumeService(
+        @ApiClient baseClient: HttpClient,
+    ): ResumeService = ResumeServiceImpl(baseClient)
 }

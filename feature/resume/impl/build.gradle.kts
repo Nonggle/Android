@@ -25,4 +25,5 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:resume:api"))
     implementation(project(":core:ui"))
+    implementation(project(":core:domain"))
 }
