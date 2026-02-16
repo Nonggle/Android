@@ -3,7 +3,9 @@ package com.example.core.data.di
 import com.example.core.data.util.ConnectivityManagerNetworkMonitor
 import com.example.core.data.util.NetworkMonitor
 import com.example.data.repositoryimpl.LoginRepositoryImpl
+import com.example.data.repositoryimpl.ResumeDraftStore
 import com.example.domain.repository.LoginRepository
+import com.example.domain.repository.ResumeDraftStoreInterface
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,5 +27,11 @@ abstract class DataModule {
     internal abstract fun bindsLoginRepository(
         loginRepositoryImpl: LoginRepositoryImpl,
     ): LoginRepository
+
+    @Binds
+    @Singleton
+    internal abstract fun bindResumeDraftStore(
+        draftStore: ResumeDraftStore
+    ): ResumeDraftStoreInterface
 
 }
