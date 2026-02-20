@@ -42,7 +42,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
 
-            when (val result = loginUseCase(accessToken)) {
+            when (loginUseCase(accessToken)) {
                 is AppResult.Success -> {
                     updateState { copy(isLoading = false, loginState = LoginUiState.LoginSuccess) }
                 }

@@ -10,6 +10,7 @@ import com.nonggle.common.network.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
+/// 토큰 저장소 + 암호화
 class TinkTokenManager @Inject constructor(
     private val prefs: SharedPreferences,
     private val aead: Aead,

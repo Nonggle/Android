@@ -4,21 +4,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
+import com.example.domain.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     authEventBus: AuthEventBus,
+    private val loginRepository: LoginRepository,
     // TODO: Add a UseCase to check the initial login status
 ) : ViewModel() {
 
-    private val _isLoggedIn = MutableStateFlow(false) // Initial state, should be checked from storage
-    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
+    val isLoggedIn: StateFlow<Boolean> = loginRepository.isLoggedIn()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
 
     private val _uiState = MutableStateFlow<MainActivityUiState>(MainActivityUiState.Loading)
     val uiState: StateFlow<MainActivityUiState> = _uiState
@@ -30,7 +38,7 @@ class MainActivityViewModel @Inject constructor(
             // _isLoggedIn.value = authRepository.isLoggedIn()
             authEventBus.events.collect { event ->
                 if (event is AuthEvent.SessionExpired) {
-                    _isLoggedIn.value = false
+                    loginRepository.logOut()
                 }
             }
         }
