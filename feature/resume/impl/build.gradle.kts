@@ -16,6 +16,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.coroutines.test)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
@@ -25,5 +26,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:resume:api"))
     implementation(project(":core:ui"))
+    implementation(project(":core:common"))
     implementation(project(":core:domain"))
+    implementation(project(":core:model"))
 }

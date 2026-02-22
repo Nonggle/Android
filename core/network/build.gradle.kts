@@ -26,6 +26,5 @@ dependencies {
     testImplementation(libs.coroutines.test)
 
     implementation(project(":core:auth"))
-    implementation(project(":core:common"))
     implementation(project(":core:model"))
 }
