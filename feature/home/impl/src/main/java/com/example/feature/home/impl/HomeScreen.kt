@@ -91,9 +91,9 @@ internal fun HomeScreen(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                     text = stringResource(R.string.HomeScreen_MainTitle, uiState.userName),
                     textAlign = TextAlign.Start,
-                    style = NonggleTheme.typography.t1,
+                    style = NonggleTheme.typography.t2,
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(120.dp))
                 DownloadProgressBox(
                     title = uiState.downloadResume.title,
                     updateTime = uiState.updateTime,
@@ -105,7 +105,7 @@ internal fun HomeScreen(
         FullButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp, vertical = 40.dp),
             title = stringResource(R.string.HomeScreen_Navigate_ResumeWriting),
             onClick = {
                 onEvent(HomeEvent.NavigateToResumeWritingScreen)
@@ -128,7 +128,7 @@ fun DownloadProgressBox(
             .fillMaxWidth()
             .wrapContentHeight()
             .clip(shape = RoundedCornerShape(10.dp))
-            .background(color = NonggleTheme.colorScheme.white)
+            .background(color = NonggleTheme.colorScheme.m5)
     ) {
         if(isDownloadExist) {
             Row(
@@ -155,7 +155,9 @@ fun DownloadProgressBox(
             }
         } else {
             Text(
-                modifier = Modifier.align(Alignment.TopCenter),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(vertical = 30.dp),
                 text = stringResource(R.string.HomeScreen_Download_NotExist),
                 style = NonggleTheme.typography.b1_main,
                 color = NonggleTheme.colorScheme.black

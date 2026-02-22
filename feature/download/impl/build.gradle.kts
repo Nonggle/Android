@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.feature.home.impl"
+    namespace = "com.nonggle.feature.download.impl"
 }
 
 dependencies {
@@ -15,14 +15,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network.okhttp)
-
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
 
-    implementation(project(":feature:home:api"))
-    implementation(project(":feature:resume:api"))
+    implementation(project(":feature:download:api"))
 }

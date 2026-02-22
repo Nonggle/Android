@@ -25,7 +25,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.core.designsystem.component.NonggleMobileNavigationScaffold
 import com.example.core.designsystem.component.NonggleNavigationBarItem
-import com.example.download.navigation.downLoadEntryProvider
 import com.example.feature.login.api.LoginNavKey
 import com.example.feature.login.impl.navigation.LoginEntryProvider
 import com.example.core.navigation.Navigator
@@ -36,6 +35,7 @@ import com.example.feature.resume.impl.navigation.resumeEntryProvider
 import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider
+import com.nonggle.feature.download.impl.navigation.downLoadEntryProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
