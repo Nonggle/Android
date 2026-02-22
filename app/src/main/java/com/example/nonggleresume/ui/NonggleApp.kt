@@ -32,6 +32,7 @@ import com.example.core.navigation.Navigator
 import com.example.core.navigation.rememberNavigationState
 import com.example.core.navigation.toEntries
 import com.example.feature.home.impl.navigation.homeEntryProvider
+import com.example.feature.resume.impl.navigation.resumeEntryProvider
 import com.example.nonggleresume.navigation.RootNavKey
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider
@@ -99,6 +100,7 @@ internal fun NonggleApp(
                     ) {
                         val entryProvider = entryProvider {
                             homeEntryProvider(mainNavigator)
+                            resumeEntryProvider(mainNavigator)
                             downLoadEntryProvider(mainNavigator)
                             settingEntryProvider(mainNavigator)
                         }

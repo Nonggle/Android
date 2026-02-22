@@ -1,6 +1,5 @@
 package com.example.feature.home.impl.navigation
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleCircularProgressBar
 import com.example.core.designsystem.component.NonggleMainTopAppBar
@@ -40,7 +37,6 @@ import com.example.feature.home.impl.HomeEvent
 import com.example.feature.home.impl.HomeState
 import com.example.feature.home.impl.HomeViewModel
 import com.example.feature.home.impl.R
-import com.example.feature.resume.impl.step2.CareerBottomSheetEvent
 
 @Composable
 internal fun HomeScreen(
