@@ -1,6 +1,7 @@
 package com.nonggle.model
 
 data class SingleResume(
+    val id: Long = 0,
     val userName: String = "",
     val introduction: String = "",
     val gender: String = "",

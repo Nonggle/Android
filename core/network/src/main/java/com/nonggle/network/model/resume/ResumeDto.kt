@@ -32,6 +32,7 @@ data class ResumeDto(
 
 fun ResumeDto.asExternalModel(): SingleResume =
     SingleResume(
+        id = id,
         userName = userName,
         introduction = introduction ?: "",
         gender = gender ?: "",

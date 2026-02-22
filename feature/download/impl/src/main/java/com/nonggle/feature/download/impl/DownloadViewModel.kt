@@ -8,6 +8,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class Gender(val value: String) {
+    MALE("남"), FEMALE("여");
+
+    companion object {
+        fun getByName(name: String): String {
+            if (name == "MALE") {
+                return MALE.value
+            }
+            return FEMALE.value
+        }
+    }
+}
 
 @HiltViewModel
 class DownloadViewModel @Inject constructor(
@@ -19,17 +31,32 @@ class DownloadViewModel @Inject constructor(
             val result = resumeListUseCase()
             when (result) {
                 is AppResult.Success -> {
-                    updateState { copy(isLoading = false) }
-
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            resumeList = result.data,
+                            errorOcuur = false
+                        )
+                    }
                 }
 
                 is AppResult.Error -> {
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            errorOcuur = true
+                        )
+                    }
                 }
             }
         }
     }
 
     override fun onEvent(event: DownloadEvent) {
+        when (event) {
+            is DownloadEvent.RetryGetResumeList -> {
 
+            }
+        }
     }
 }
