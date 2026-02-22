@@ -53,7 +53,7 @@ fun NonggleBottomSheet(
     val scrollState = rememberScrollState()
 
     ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { /* 외부 터치 시 아무것도 하지 않음 */ },
         sheetState = sheetState,
         sheetGesturesEnabled = false,
         dragHandle = null,

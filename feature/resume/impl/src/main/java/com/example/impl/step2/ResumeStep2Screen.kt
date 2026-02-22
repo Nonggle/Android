@@ -40,7 +40,8 @@ internal fun ResumeStep2Screen(
 
     var isShowBottomSheet by remember { mutableStateOf(false) }
     val careerBottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
+        confirmValueChange = {false}
     )
 
     ResumeStep2Screen(
