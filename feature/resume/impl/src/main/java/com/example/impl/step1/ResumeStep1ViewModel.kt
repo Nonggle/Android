@@ -9,6 +9,7 @@ import com.example.domain.usecase.ImageContentReadUseCase
 import com.nonggle.model.ResumeWritingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -41,18 +42,21 @@ class ResumeStep1ViewModel @Inject constructor(
         }
         var imageMeta: ResumeWritingModel.ResumeImageMeta? = null
         viewModelScope.launch {
+            yield()
             imageMeta = imageContentReadUseCase(imageUri.toString())
+
+            if (imageMeta == null) {
+                // TODO 토스트/에러 상태
+                return@launch
+            }
+
+            updateState {
+                copy(
+                    info = this.info.copy(profileImageUrl = imageUri.toString())
+                )
+            }
+            resumeStore.update { it.copy(imageMeta = imageMeta!!) }
         }
-        if(imageMeta == null) {
-            /// TODO: 서버 업로드 실패시 토스트 메시지 처리
-            return
-        }
-        updateState {
-            copy(
-                info = this.info.copy(profileImageUrl = imageUri.toString())
-            )
-        }
-        resumeStore.update { it.copy(imageMeta = imageMeta!!) }
     }
 
     private fun removeProfileImageUri() {

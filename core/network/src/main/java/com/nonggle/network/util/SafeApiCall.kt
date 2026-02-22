@@ -7,6 +7,7 @@ import io.ktor.client.call.body
 import android.util.Log
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
 import kotlinx.serialization.SerializationException
@@ -20,9 +21,9 @@ suspend inline fun <reified T> safeApiCall(
         val response = block()
         val httpCode = response.status.value
 
-        if(response.status.isSuccess()) {
+        if (response.status.isSuccess()) {
             val envelope: ApiResponse<T> = response.body()
-            if(envelope.success) {
+            if (envelope.success) {
                 val data = envelope.data
                     ?: return AppResult.Error(AppError.Serialization) // success인데 data 없음
                 AppResult.Success(data)
@@ -31,27 +32,7 @@ suspend inline fun <reified T> safeApiCall(
                 AppResult.Error(AppError.Http(httpCode, errorMsg))
             }
         } else {
-            // 2) 서버에서 error가 내려오면 그걸 우선 반영
-            val envelope = runCatching { response.body<ApiResponse<T>>() }.getOrNull()
-            val serverError = envelope?.error
-
-            if (serverError != null) {
-                // 서버 error.code를 그대로 쓰거나, httpCode와 함께 묶어서 쓰는 방식 중 택1
-                val mapped = when (serverError.code) {
-                    401 -> AppError.Unauthorized
-                    403 -> AppError.Forbidden
-                    else -> AppError.Http(serverError.code, serverError.message)
-                }
-                AppResult.Error(mapped)
-            } else {
-                // 3) error가 없으면 HTTP status 기반 fallback
-                val mapped = when (httpCode) {
-                    401 -> AppError.Unauthorized
-                    403 -> AppError.Forbidden
-                    else -> AppError.Http(httpCode, response.status.description)
-                }
-                AppResult.Error(mapped)
-            }
+            AppResult.Error(AppError.Http(response.status.value, response.bodyAsText() ?: "Unhandled HTTP error"))
         }
         ///FIXME: 로그 삭제 예정
     } catch (e: HttpRequestTimeoutException) {

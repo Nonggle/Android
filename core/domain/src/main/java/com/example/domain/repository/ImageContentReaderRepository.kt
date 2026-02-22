@@ -5,5 +5,5 @@ import java.io.InputStream
 
 interface ImageContentReaderRepository {
     suspend fun getImageMeta(contentUri: String): ResumeWritingModel.ResumeImageMeta?
-    suspend fun openStream(contentUri: String): InputStream
+    suspend fun openStream(contentUri: String): () -> InputStream
 }

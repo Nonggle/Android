@@ -43,8 +43,10 @@ class ImageContentReaderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun openStream(contentUri: String): InputStream {
+    override suspend fun openStream(contentUri: String): () -> InputStream {
         val uri = contentUri.toUri()
-        return context.contentResolver.openInputStream(uri) ?: error("Failed to open uri=$contentUri")
+        return {
+            context.contentResolver.openInputStream(uri) ?: error("Failed to open uri=$contentUri")
+        }
     }
 }
