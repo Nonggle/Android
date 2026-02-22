@@ -1,21 +1,16 @@
 package com.example.impl.complete_resume
 
-import android.R.attr.onClick
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +33,7 @@ import com.example.feature.resume.impl.R
 internal fun CompleteResumeScreen(
     modifier: Modifier = Modifier,
     viewModel: CompleteResumeViewModel = hiltViewModel(),
-    navigateToUserResume: () -> Unit,
+    navigateToUserResume: (Long) -> Unit,
     navigateToBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -77,7 +72,8 @@ internal fun CompleteResumeScreen(
             successComposition = successComposition,
             successProgress = { successProgress },
             loadingComposition = loadingComposition,
-            loadingProgress = { loadingProgress }
+            loadingProgress = { loadingProgress },
+            id = uiState.id!!,
         )
     } else if (uiState.uploadSuccess == false) {
         FailUpLoadResumeScreen(
@@ -97,11 +93,12 @@ internal fun CompleteResumeScreen(
 internal fun SuccessUpLoadResumeScreen(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    navigateToUserResume: () -> Unit = {},
+    navigateToUserResume: (Long) -> Unit,
     successComposition: LottieComposition?,
     successProgress: () -> Float,
     loadingComposition: LottieComposition?,
     loadingProgress: () -> Float,
+    id: Long,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -144,7 +141,7 @@ internal fun SuccessUpLoadResumeScreen(
                            .fillMaxWidth()
                            .padding(horizontal = 20.dp),
                        titleText = stringResource(R.string.resumeCompleteScreen_label_SuccessButton),
-                       onClick = navigateToUserResume
+                       onClick = { navigateToUserResume(id) }
                    )
                    Spacer(modifier = Modifier.height(40.dp))
                }
@@ -229,8 +226,10 @@ fun CompletePreviewScreen() {
         SuccessUpLoadResumeScreen(
             successComposition = successComposition,
             successProgress = { successProgress },
-            loadingComposition =  loadingComposition,
-            loadingProgress = { loadingProgress }
+            loadingComposition = loadingComposition,
+            loadingProgress = { loadingProgress },
+            id = 0,
+            navigateToUserResume = {}
         )
     }
 }

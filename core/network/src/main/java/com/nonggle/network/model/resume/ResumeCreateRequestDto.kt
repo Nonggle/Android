@@ -1,18 +1,16 @@
 package com.nonggle.network.model.resume
 
+
 import com.nonggle.model.ResumeWritingModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResumeCreateRequestDto(
-    val file: ByteArray,
-    val fileName: String,
-    val mimeType: String,
     val userName: String,
     val birthDate: String,
     val introduction: String,
     val gender: String,
-    val certificationList: List<CertificationTag>,
+    val certificationList: List<CertificationTag>?,
     val careerList: List<CareerFormData>,
     val totalCareer: String,
     val introduce: String,
@@ -38,16 +36,20 @@ data class ResumeCreateRequestDto(
     )
 }
 
-fun ResumeWritingModel.asExternalModel(): ResumeCreateRequestDto =
+data class ImageMeta(
+    val uri: String,
+    val name: String,
+    val size: Long,
+    val mimeType: String
+)
+
+fun ResumeWritingModel.asNetworkModel(): ResumeCreateRequestDto =
     ResumeCreateRequestDto(
-        file = file,
-        fileName = fileName,
-        mimeType = mimeType,
         userName = userName,
-        birthDate = birthDate.toString(),
+        birthDate = birthDate,
         introduction = introduction,
         gender = gender,
-        certificationList = certificationList.map { ResumeCreateRequestDto.CertificationTag(it.certificationTitle) },
+        certificationList = certificationList?.map { ResumeCreateRequestDto.CertificationTag(it) } ?: emptyList(),
         careerList = careerList.map {
             ResumeCreateRequestDto.CareerFormData(
                 careerStartDate = it.careerStartDate.toString(),
@@ -58,7 +60,15 @@ fun ResumeWritingModel.asExternalModel(): ResumeCreateRequestDto =
         },
         totalCareer = totalCareer,
         introduceDetail = introduceDetail,
-        personalityList = personalityList.map { ResumeCreateRequestDto.PersonalityTag(it.personality) },
+        personalityList = personalityList.map { ResumeCreateRequestDto.PersonalityTag(it) },
         introduce  = introduce
 
+    )
+
+fun ResumeWritingModel.ResumeImageMeta.asNetworkModule(): ImageMeta =
+    ImageMeta(
+        uri = uri,
+        name = name,
+        size = size,
+        mimeType = mimeType
     )

@@ -4,7 +4,7 @@ import com.nonggle.model.ResumeCreateComplete
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResumeCreateResponseDto (
+data class ResumeCreateResponseDto(
     val id: Long
 )
 

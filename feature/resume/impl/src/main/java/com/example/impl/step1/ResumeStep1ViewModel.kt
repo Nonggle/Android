@@ -1,25 +1,91 @@
 package com.example.feature.resume.impl.step1
 
+import android.net.Uri
+import androidx.lifecycle.viewModelScope
+import com.example.common.utils.getDateTimeFormatter
 import com.example.core.ui.BaseViewModel
+import com.example.domain.repository.ResumeDraftStoreInterface
+import com.example.domain.usecase.ImageContentReadUseCase
+import com.nonggle.model.ResumeWritingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class ResumeStep1ViewModel @Inject constructor() :
-    BaseViewModel<ResumeStep1Event, ResumeStep1State, ResumeStep1Effect>(initialState = ResumeStep1State()) {
+class ResumeStep1ViewModel @Inject constructor(
+    private val resumeStore: ResumeDraftStoreInterface,
+    private val imageContentReadUseCase: ImageContentReadUseCase
+) : BaseViewModel<ResumeStep1Event, ResumeStep1State, ResumeStep1Effect>(initialState = ResumeStep1State()) {
     override fun onEvent(event: ResumeStep1Event) {
         when (event) {
-            is ResumeStep1Event.SelectImage -> updateState { copy(info = this.info.copy(profileImageUrl = event.imageUri)) }
-            is ResumeStep1Event.UserNameChanged ->  updateState { copy(info = this.info.copy(userName = event.userName)) }
-            is ResumeStep1Event.UserNameCleared ->  updateState { copy(info = this.info.copy(userName = "")) }
-            is ResumeStep1Event.RemoveProfileImage ->  updateState { copy(info = this.info.copy(profileImageUrl = null)) }
+            is ResumeStep1Event.SelectImage -> setProfileImageUri(event.imageUri)
+
+            is ResumeStep1Event.UserNameChanged -> userNameChanged(event.userName)
+            is ResumeStep1Event.UserNameCleared -> userNameCleared()
+            is ResumeStep1Event.RemoveProfileImage -> removeProfileImageUri()
+
             is ResumeStep1Event.BirthDateChanged -> setBirthDate(event.birthDate)
-            is ResumeStep1Event.SelectGender ->  updateState { copy(info = this.info.copy(gender = event.gender)) }
+            is ResumeStep1Event.SelectGender -> selectGender(event.gender)
             is ResumeStep1Event.ExistCertification -> existCertification(event.exist)
             is ResumeStep1Event.AddCertification -> addCertification()
             is ResumeStep1Event.CertificationChanged -> updateState { copy(certificationInput = event.certification) }
             is ResumeStep1Event.RemoveCertificationChip -> removeCertificationChip(event.id)
+        }
+    }
+
+    private fun setProfileImageUri(imageUri: Uri?) {
+        /// TODO: imageUri null일때 토스트 메시지 처리
+        if(imageUri == null) {
+            return
+        }
+        var imageMeta: ResumeWritingModel.ResumeImageMeta? = null
+        viewModelScope.launch {
+            imageMeta = imageContentReadUseCase(imageUri.toString())
+        }
+        if(imageMeta == null) {
+            /// TODO: 서버 업로드 실패시 토스트 메시지 처리
+            return
+        }
+        updateState {
+            copy(
+                info = this.info.copy(profileImageUrl = imageUri.toString())
+            )
+        }
+        resumeStore.update { it.copy(imageMeta = imageMeta!!) }
+    }
+
+    private fun removeProfileImageUri() {
+        updateState {
+            copy(
+                info = this.info.copy(
+                    profileImageUrl = null
+                )
+            )
+        }
+        resumeStore.update {
+            it.copy(imageMeta = ResumeWritingModel.ResumeImageMeta())
+        }
+    }
+
+    private fun userNameChanged(userName: String) {
+        updateState { copy(info = this.info.copy(userName = userName)) }
+        resumeStore.update {
+            it.copy(userName = userName)
+        }
+    }
+
+    private fun userNameCleared() {
+        updateState { copy(info = this.info.copy(userName = "")) }
+        resumeStore.update {
+            it.copy(userName = "")
+        }
+    }
+
+    private fun selectGender(gender: Gender) {
+        updateState { copy(info = this.info.copy(gender = gender)) }
+        resumeStore.update {
+            it.copy(gender = gender.value)
         }
     }
 
@@ -28,19 +94,28 @@ class ResumeStep1ViewModel @Inject constructor() :
         updateState {
             copy(
                 info = this.info.copy(birthDate = date),
-                birthDate = "${date.year}년 ${date.monthValue}월 ${date.dayOfMonth}일"
+                birthDate = getDateTimeFormatter(date)
             )
+        }
+        resumeStore.update {
+            it.copy(birthDate = getDateTimeFormatter(date))
         }
     }
 
     private fun existCertification(exist: Boolean) {
-        if(exist) {
+        if (exist) {
             updateState {
                 copy(certificationExist = exist)
             }
         } else {
             updateState {
-                copy(certificationExist = exist, info = this.info.copy(certificationList = emptyList()))
+                copy(
+                    certificationExist = exist,
+                    info = this.info.copy(certificationList = emptyList())
+                )
+            }
+            resumeStore.update {
+                it.copy(certificationList = null)
             }
         }
     }
@@ -50,19 +125,24 @@ class ResumeStep1ViewModel @Inject constructor() :
             val certificationList = this.info.certificationList.filter { it.id != id }
             copy(info = this.info.copy(certificationList = certificationList))
         }
+        resumeStore.update {
+            it.copy(certificationList = currentState.info.certificationList.map { it.certificationTitle })
+        }
     }
 
     private fun addCertification() {
+        val newCertificationList =
+            currentState.info.certificationList + CertificationTag(certificationTitle = currentState.certificationInput.trim())
         updateState {
-            if (certificationInput.trim().isEmpty()) return@updateState this
-            val certificationTag = CertificationTag(
-                certificationTitle = certificationInput.trim()
-            )
-
             copy(
-                info = info.copy(certificationList = info.certificationList + certificationTag),
+                info = info.copy(certificationList = newCertificationList),
                 certificationInput = ""
             )
+        }
+        resumeStore.update {
+            it.copy(certificationList = newCertificationList.map {
+                it.certificationTitle
+            })
         }
     }
 

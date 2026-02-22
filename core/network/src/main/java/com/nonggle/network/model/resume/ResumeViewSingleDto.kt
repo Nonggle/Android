@@ -8,7 +8,7 @@ data class ResumeViewSingleDto(
     val birthDate: String,
     val introduction: String,
     val gender: String,
-    val certificationList: List<String>,
+    val certificationList: List<String>?,
     val careerList: List<CareerResponseData>,
     val totalCareer: String,
     val introduce: String,

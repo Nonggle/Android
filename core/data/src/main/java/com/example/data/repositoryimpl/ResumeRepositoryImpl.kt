@@ -7,18 +7,17 @@ import com.nonggle.model.ResumeWritingModel
 import com.nonggle.model.map
 import com.nonggle.network.model.resume.ResumeCreateResponseDto
 import com.nonggle.network.model.resume.asExternalModel
+import com.nonggle.network.model.resume.asNetworkModel
+import com.nonggle.network.model.resume.asNetworkModule
 import com.nonggle.network.service.ResumeService
+import java.io.InputStream
 import javax.inject.Inject
 
 class ResumeRepositoryImpl @Inject constructor(
     private val resumeService: ResumeService
-): ResumeRepository {
-    val tmpResume: ResumeWritingModel? = null
-    fun storeStep1Data() {
-        tmpResume
-    }
-    override suspend fun createResume(resume: ResumeWritingModel): AppResult<ResumeCreateComplete> {
-        val apiResult = resumeService.createResume(resume = resume.asExternalModel())
+) : ResumeRepository {
+    override suspend fun createResume(resume: ResumeWritingModel, imageInputStream: InputStream): AppResult<ResumeCreateComplete> {
+        val apiResult = resumeService.createResume(resume = resume.asNetworkModel(), imageMeta = resume.imageMeta.asNetworkModule(), imageInputStream = imageInputStream)
         return apiResult.map(ResumeCreateResponseDto::asExternalModel)
     }
 }

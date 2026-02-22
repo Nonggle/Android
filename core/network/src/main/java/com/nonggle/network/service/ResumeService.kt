@@ -2,6 +2,7 @@ package com.nonggle.network.service
 
 import com.nonggle.model.AppResult
 import com.nonggle.network.di.ApiClient
+import com.nonggle.network.model.resume.ImageMeta
 import com.nonggle.network.model.resume.ResumeCreateRequestDto
 import com.nonggle.network.model.resume.ResumeCreateResponseDto
 import com.nonggle.network.model.resume.ResumeViewSingleDto
@@ -16,11 +17,13 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.utils.io.streams.asInput
 import kotlinx.serialization.json.Json
+import java.io.InputStream
 import javax.inject.Inject
 
 interface ResumeService {
-    suspend fun createResume(resume: ResumeCreateRequestDto): AppResult<ResumeCreateResponseDto>
+    suspend fun createResume(resume: ResumeCreateRequestDto, imageMeta: ImageMeta, imageInputStream: InputStream): AppResult<ResumeCreateResponseDto>
     suspend fun getSingleResume(resumeId: Long): AppResult<ResumeViewSingleDto>
 
     suspend fun getAllResumes(): AppResult<TotalResumesDto>
@@ -29,7 +32,8 @@ interface ResumeService {
 class ResumeServiceImpl @Inject constructor(
     @ApiClient private val baseClient: HttpClient,
 ) : ResumeService {
-    override suspend fun createResume(resume: ResumeCreateRequestDto): AppResult<ResumeCreateResponseDto> {
+
+    override suspend fun createResume(resume: ResumeCreateRequestDto, imageMeta: ImageMeta, imageInputStream: InputStream): AppResult<ResumeCreateResponseDto> {
         return safeApiCall<ResumeCreateResponseDto> {
             val jsonString = Json.encodeToString(ResumeCreateRequestDto.serializer(), resume)
 
@@ -37,6 +41,22 @@ class ResumeServiceImpl @Inject constructor(
                 setBody(
                     MultiPartFormDataContent(
                         formData {
+                            append("fileName", imageMeta.name)
+                            appendInput(
+                                key = "file",
+                                headers = Headers.build {
+                                    append(HttpHeaders.ContentType, imageMeta.mimeType)
+                                    append(
+                                        HttpHeaders.ContentDisposition,
+                                        "form-data; name=\"file\"; filename=\"${imageMeta.name}\""
+                                    )
+                                },
+                                size = imageMeta.size.takeIf { it > 0 } ?: -1L
+                            ) {
+                                // 여기서 스트림을 열어 Ktor가 청크로 읽어감
+                                imageInputStream.asInput()
+                            }
+
                             append(
                                 key = "data",
                                 value = jsonString,
@@ -45,15 +65,6 @@ class ResumeServiceImpl @Inject constructor(
                                     append(HttpHeaders.ContentDisposition, "form-data; name=\"data\"")
                                 }
                             )
-
-                            append("fileName", resume.fileName)
-                            append("file", resume.file, Headers.build {
-                                append(HttpHeaders.ContentType, resume.mimeType)
-                                append(
-                                    HttpHeaders.ContentDisposition,
-                                    "form-data; name=\"file\"; filename=\"${resume.fileName}\""
-                                )
-                            })
                         }
                     )
                 )

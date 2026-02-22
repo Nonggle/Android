@@ -1,13 +1,18 @@
 package com.example.feature.resume.impl.step2
 
+import com.example.common.utils.getPeriodFormatter
 import com.example.core.ui.BaseViewModel
+import com.example.domain.repository.ResumeDraftStoreInterface
+import com.nonggle.model.ResumeWritingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import java.time.Period
 import javax.inject.Inject
 
 @HiltViewModel
-class ResumeStep2ViewModel @Inject constructor() :
-    BaseViewModel<ResumeStep2Event, ResumeStep2State, ResumeStep2Effect>(initialState = ResumeStep2State()) {
+class ResumeStep2ViewModel @Inject constructor(
+    private val resumeStore: ResumeDraftStoreInterface
+) : BaseViewModel<ResumeStep2Event, ResumeStep2State, ResumeStep2Effect>(initialState = ResumeStep2State()) {
 
     override fun onEvent(event: ResumeStep2Event) {
         when (event) {
@@ -50,23 +55,68 @@ class ResumeStep2ViewModel @Inject constructor() :
     }
 
     private fun addCareerItem(data: CareerFormData) {
-        updateState { copy(
-            careerList = this.careerList + data,
-            careerFormData = CareerFormData(),
-            totalCareer = totalCareer.plus(Period.between(data.careerStartDate, data.careerEndDate))
-        ) }
+        val newCareerList = currentState.careerList + data
+        updateState {
+            copy(
+                careerList = this.careerList + data,
+                careerFormData = CareerFormData(),
+                totalCareer = newCareerList.map {
+                    Period.between(it.careerStartDate, it.careerEndDate)
+                }.reduce { acc, period ->
+                    acc.plus(period)
+                },
+            )
+        }
+        saveTempResume(newCareerList)
     }
 
     private fun deleteCareerItem(id: String) {
-
+        val newCareerList = currentState.careerList.filter { it.id != id }
         updateState {
-            val target = careerList.find { it.id == id } ?: return@updateState this
-            val period = if(target.careerStartDate != null && target.careerEndDate != null) {
-                Period.between(target.careerStartDate, target.careerEndDate)
-            } else Period.ZERO
             copy(
-                totalCareer = totalCareer.minus(period),
-                careerList = this.careerList.filter { it.id != id }
+                totalCareer = newCareerList.map {
+                    Period.between(it.careerStartDate, it.careerEndDate)
+                }.reduce { acc, period ->
+                    acc.plus(period)
+                },
+                careerList = newCareerList
+            )
+        }
+        deleteTempResume(newCareerList)
+    }
+
+    private fun saveTempResume(newCareerList: List<CareerFormData>) {
+        resumeStore.update {
+            it.copy(
+                careerList = newCareerList.map {
+                    ResumeWritingModel.Career(
+                        it.careerStartDate ?: LocalDate.now(),
+                        it.careerEndDate ?: LocalDate.now(),
+                        it.careerDescription,
+                        it.careerDetail
+                    )
+                },
+                totalCareer = getPeriodFormatter(newCareerList.map {
+                    Period.between(it.careerStartDate, it.careerEndDate)
+                }.reduce { acc, period -> acc.plus(period) })
+            )
+        }
+    }
+
+    private fun deleteTempResume(newCareerList: List<CareerFormData>) {
+        resumeStore.update {
+            it.copy(
+                careerList = newCareerList.map {
+                    ResumeWritingModel.Career(
+                        it.careerStartDate ?: LocalDate.now(),
+                        it.careerEndDate ?: LocalDate.now(),
+                        it.careerDescription,
+                        it.careerDetail
+                    )
+                },
+                totalCareer = getPeriodFormatter(newCareerList.map {
+                    Period.between(it.careerStartDate, it.careerEndDate)
+                }.reduce { acc, period -> acc.plus(period) })
             )
         }
     }

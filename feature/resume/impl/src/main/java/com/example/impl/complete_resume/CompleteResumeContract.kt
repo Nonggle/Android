@@ -7,13 +7,14 @@ import com.example.core.ui.UiState
 data class CompleteResumeState(
     val isLoading: Boolean = true,
     val uploadSuccess: Boolean? = null,
+    val id: Long? = null,
 ): UiState
 
 sealed interface CompleteResumeEvent: UiEvent {
-    data object NavigateToUserResume: CompleteResumeEvent
-    data object NavigateToBack: CompleteResumeEvent
 }
 
 sealed interface CompleteResumeEffect: UiEffect {
-    data class setUploadSuccess(val uploadSuccess: Boolean): CompleteResumeEffect
+    data class ShowErrorMessage(val message: String): CompleteResumeEffect
+    data object NavigateToUserResume: CompleteResumeEffect
+    data object NavigateToBack: CompleteResumeEffect
 }

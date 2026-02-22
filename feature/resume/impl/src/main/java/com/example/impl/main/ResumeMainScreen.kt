@@ -1,5 +1,6 @@
 package com.example.feature.resume.impl.main
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.core.designsystem.component.NonggleTabRow
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,6 +43,7 @@ internal fun ResumeMainScreen(
 
     val pagerState = rememberPagerState(pageCount = { uiState.tabList.size })
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     ResumeMainScreen(
         modifier = modifier,
@@ -61,6 +64,7 @@ internal fun ResumeMainScreen(
             }
         },
         navigateGoBack = navigateToHome,
+        context = context
     )
 }
 
@@ -72,7 +76,8 @@ internal fun ResumeMainScreen(
     pagerState: PagerState,
     onTabClick: (Int) -> Unit,
     navigateToComplete: () -> Unit,
-    navigateGoBack: () -> Unit
+    navigateGoBack: () -> Unit,
+    context: Context,
 ) {
 
     Column(
@@ -104,7 +109,7 @@ internal fun ResumeMainScreen(
             state = pagerState,
         ) { page ->
             when (getByValue(page)) {
-                ResumeTab.INFO -> ResumeStep1Screen()
+                ResumeTab.INFO -> ResumeStep1Screen(context = context)
                 ResumeTab.CAREER -> ResumeStep2Screen()
                 ResumeTab.PORTFOLIO -> ResumeStep3Screen()
                 else -> {}

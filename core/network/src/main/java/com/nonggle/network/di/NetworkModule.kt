@@ -1,7 +1,7 @@
 package com.nonggle.network.di
 
-import com.example.common.result.AuthEventBus
-import com.example.common.result.DefaultAuthEventBus
+import com.nonggle.network.util.AuthEventBus
+import com.nonggle.network.util.DefaultAuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.HttpClientFactory
 import com.nonggle.network.service.AuthService

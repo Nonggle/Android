@@ -1,5 +1,6 @@
 package com.example.feature.resume.impl.step1
 
+import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,6 +58,7 @@ import com.example.feature.resume.impl.component.genderSelectBox
 internal fun ResumeStep1Screen(
     modifier: Modifier = Modifier,
     viewModel: ResumeStep1ViewModel = hiltViewModel(),
+    context: Context,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -77,8 +79,6 @@ internal fun ResumeStep1Screen(
             uri?.let { viewModel.setEvent(ResumeStep1Event.SelectImage(it)) }
         }
     )
-
-
 
     ResumeStep1Screen(
         modifier = modifier,
