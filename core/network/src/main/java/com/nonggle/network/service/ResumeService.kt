@@ -5,8 +5,8 @@ import com.nonggle.network.di.ApiClient
 import com.nonggle.network.model.resume.ImageMeta
 import com.nonggle.network.model.resume.ResumeCreateRequestDto
 import com.nonggle.network.model.resume.ResumeCreateResponseDto
+import com.nonggle.network.model.resume.ResumeDto
 import com.nonggle.network.model.resume.ResumeViewSingleDto
-import com.nonggle.network.model.resume.TotalResumesDto
 import com.nonggle.network.util.safeApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -28,7 +28,7 @@ interface ResumeService {
     suspend fun createResume(resume: ResumeCreateRequestDto, imageMeta: ImageMeta, imageInputStream: () -> InputStream): AppResult<ResumeCreateResponseDto>
     suspend fun getSingleResume(resumeId: Long): AppResult<ResumeViewSingleDto>
 
-    suspend fun getAllResumes(): AppResult<TotalResumesDto>
+    suspend fun getAllResumes(): AppResult<List<ResumeDto>>
 }
 
 class ResumeServiceImpl @Inject constructor(
@@ -74,8 +74,8 @@ class ResumeServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllResumes(): AppResult<TotalResumesDto> {
-        return safeApiCall<TotalResumesDto> {
+    override suspend fun getAllResumes(): AppResult<List<ResumeDto>> {
+        return safeApiCall<List<ResumeDto>> {
             baseClient.get("/api/v1/resumes")
         }
     }

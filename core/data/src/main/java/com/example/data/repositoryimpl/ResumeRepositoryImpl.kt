@@ -3,11 +3,11 @@ package com.example.data.repositoryimpl
 import com.example.domain.repository.ResumeRepository
 import com.nonggle.model.AppResult
 import com.nonggle.model.ResumeCreateComplete
-import com.nonggle.model.ResumeListModel
 import com.nonggle.model.ResumeWritingModel
+import com.nonggle.model.SingleResume
 import com.nonggle.model.map
 import com.nonggle.network.model.resume.ResumeCreateResponseDto
-import com.nonggle.network.model.resume.TotalResumesDto
+import com.nonggle.network.model.resume.ResumeDto
 import com.nonggle.network.model.resume.asExternalModel
 import com.nonggle.network.model.resume.asNetworkModel
 import com.nonggle.network.model.resume.asNetworkModule
@@ -23,9 +23,11 @@ class ResumeRepositoryImpl @Inject constructor(
         return response.map(ResumeCreateResponseDto::asExternalModel)
     }
 
-    override suspend fun getAllResume(): AppResult<ResumeListModel> {
+    override suspend fun getAllResume(): AppResult<List<SingleResume>> {
         val response = resumeService.getAllResumes()
-        return response.map(TotalResumesDto::asExternalModel)
+        return response.map{resumeDtoList ->
+            resumeDtoList.map(ResumeDto::asExternalModel)
+        }
     }
 
 
