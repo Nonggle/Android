@@ -1,6 +1,7 @@
 package com.nonggle.feature.resume_view.impl
 
 import com.example.core.ui.BaseViewModel
+import com.example.domain.usecase.ResumeSingleViewUseCase
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEffect
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEvent
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewState
@@ -9,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResumeViewViewModel @Inject constructor(
-
+    private val resumeSingleViewUseCase: ResumeSingleViewUseCase
 ): BaseViewModel<ResumeViewEvent, ResumeViewState, ResumeViewEffect>(ResumeViewState()) {
 
     init {

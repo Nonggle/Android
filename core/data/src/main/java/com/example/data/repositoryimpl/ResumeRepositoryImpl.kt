@@ -30,5 +30,10 @@ class ResumeRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSingleResume(resumeId: Long): AppResult<SingleResume> {
+        val response = resumeService.getSingleResume(resumeId = resumeId)
+        return response.map(ResumeDto::asExternalModel)
+    }
+
 
 }

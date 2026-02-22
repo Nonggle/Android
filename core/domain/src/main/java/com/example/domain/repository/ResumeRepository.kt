@@ -10,4 +10,6 @@ interface ResumeRepository {
     suspend fun createResume(resume: ResumeWritingModel, imageInputStream: () -> InputStream): AppResult<ResumeCreateComplete>
 
     suspend fun getAllResume(): AppResult<List<SingleResume>>
+
+    suspend fun getSingleResume(resumeId: Long): AppResult<SingleResume>
 }

@@ -20,5 +20,7 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:model"))
+    implementation(project(":core:domain"))
+
     implementation(project(":feature:resume_view:api"))
 }
