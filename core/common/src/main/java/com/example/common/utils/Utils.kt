@@ -1,8 +1,9 @@
-package com.example.impl.util
+package com.example.common.utils
 
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+
 
 fun getDateTimeFormatter(date: LocalDate): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
