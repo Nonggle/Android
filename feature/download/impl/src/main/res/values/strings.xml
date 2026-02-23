@@ -2,4 +2,7 @@
 <resources>
     <string name="Download_Title_RetryButton">재시도</string>
     <string name="resumeViewScreen_SubTitle_Retry">이력서 로드에 실패했습니다.\n다시 시도해주세요.</string>
+
+    <string name="Export_ButtonTitle">내보내기</string>
+    <string name="Export_ButtonSubTitle">PDF로 내보내기</string>
 </resources>

@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +42,8 @@ import coil3.request.crossfade
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
 import com.example.core.designsystem.component.FullButton
+import com.example.core.designsystem.component.NonggleBottomSheet
+import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.nonggle.feature.download.impl.R
 import com.nonggle.feature.download.impl.DownloadEvent
@@ -109,13 +114,29 @@ internal fun DownloadScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun resumeItem(
     modifier: Modifier = Modifier,
     context: Context,
     resumeContent: SingleResume,
-    navigateToViewResume: (Long) -> Unit = {}
+    navigateToViewResume: (Long) -> Unit = {},
+//    showBottomSheet: Boolean = false,
+//    bottomSheetState: SheetState,
+//    bottomSheetClick: () -> Unit = {},
+//    bottomSheetDismiss: () -> Unit = {},
 ) {
+    /// TODO: 내보내기 bottomsheet 정의
+//    if(showBottomSheet) {
+//        NonggleBottomSheet(
+//            height = 0.3f,
+//            sheetState = bottomSheetState,
+//            onDismissRequest = { bottomSheetDismiss() },
+//            title = stringResource(R.string.Export_ButtonTitle)
+//        ) {
+//
+//        }
+//    }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -188,5 +209,10 @@ fun resumeItem(
                 }
             }
         }
+        NonggleIconButton(
+            modifier = Modifier.align(Alignment.TopEnd),
+            onClick = {},
+            image = painterResource(R.drawable.export)
+        )
     }
 }

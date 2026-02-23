@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- 상자(받침) -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M5,19c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-4h-2v4H7v-4H5v4z" />
+
+    <!-- 위로 나가는 화살표 -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M11,16h2V7.83l2.59,2.58L17,9l-5,-5 -5,5 1.41,1.41L11,7.83V16z" />
+</vector>
