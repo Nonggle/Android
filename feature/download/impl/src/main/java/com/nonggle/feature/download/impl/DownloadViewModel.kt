@@ -26,6 +26,18 @@ class DownloadViewModel @Inject constructor(
     private val resumeListUseCase: ResumeListViewUseCase
 ) : BaseViewModel<DownloadEvent, DownloadState, DownloadEffect>(initialState = DownloadState()) {
     init {
+        getResumeList()
+    }
+
+    override fun onEvent(event: DownloadEvent) {
+        when (event) {
+            is DownloadEvent.RetryGetResumeList -> {
+                getResumeList()
+            }
+        }
+    }
+
+    private fun getResumeList() {
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
             val result = resumeListUseCase()
@@ -48,14 +60,6 @@ class DownloadViewModel @Inject constructor(
                         )
                     }
                 }
-            }
-        }
-    }
-
-    override fun onEvent(event: DownloadEvent) {
-        when (event) {
-            is DownloadEvent.RetryGetResumeList -> {
-
             }
         }
     }

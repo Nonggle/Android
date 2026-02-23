@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,15 +49,18 @@ import com.nonggle.model.SingleResume
 @Composable
 internal fun DownloadScreen(
     modifier: Modifier = Modifier,
+    navigateToViewResume: (Long) -> Unit,
     viewModel: DownloadViewModel = hiltViewModel(),
-    context: Context
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
     DownloadScreen(
         modifier = modifier,
         uiState = uiState,
+        context = context,
         onEvent = viewModel::setEvent,
-        context = context
+        navigateToViewResume = navigateToViewResume
     )
 }
 
@@ -64,7 +69,8 @@ internal fun DownloadScreen(
     modifier: Modifier = Modifier,
     uiState: DownloadState,
     context: Context,
-    onEvent: (DownloadEvent) -> Unit = {}
+    onEvent: (DownloadEvent) -> Unit = {},
+    navigateToViewResume: (Long) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -93,7 +99,8 @@ internal fun DownloadScreen(
                     itemContent = { index ->
                         resumeItem(
                             resumeContent = uiState.resumeList[index],
-                            context = context
+                            context = context,
+                            navigateToViewResume = navigateToViewResume
                         )
                     }
                 )
@@ -107,6 +114,7 @@ fun resumeItem(
     modifier: Modifier = Modifier,
     context: Context,
     resumeContent: SingleResume,
+    navigateToViewResume: (Long) -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -115,6 +123,7 @@ fun resumeItem(
             .background(color = NonggleTheme.colorScheme.white)
             .clip(RoundedCornerShape(4.dp))
             .border(1.dp, NonggleTheme.colorScheme.g_line_light, RoundedCornerShape(4.dp))
+            .clickable { navigateToViewResume(resumeContent.id) }
     ) {
         Row(
             modifier = Modifier

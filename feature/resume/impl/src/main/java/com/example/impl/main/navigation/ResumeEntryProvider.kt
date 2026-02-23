@@ -6,21 +6,22 @@ import com.example.core.navigation.Navigator
 import com.example.feature.resume.api.ResumeNavKey
 import com.example.feature.resume.impl.main.ResumeMainScreen
 import com.example.impl.complete_resume.CompleteResumeScreen
+import com.nonggle.resume_view.api.navigateToResumeView
 
 fun EntryProviderScope<NavKey>.resumeEntryProvider(navigator: Navigator) {
 
     entry<ResumeNavKey.ResumeWrite> {
         ResumeMainScreen(
             navigateToHome = { navigator.goBack() },
-            navigateToComplete = { navigator.navigate(ResumeNavKey.ResumeComplete) }
+            navigateToComplete = {
+                navigator.navigate(ResumeNavKey.ResumeComplete)
+            }
         )
     }
 
     entry<ResumeNavKey.ResumeComplete> {
         CompleteResumeScreen(
-            navigateToUserResume = {
-                /// FIXME: 이력서 열람 화면으로의 이동 추후 구현 예정
-            },
+            navigateToUserResume = navigator::navigateToResumeView,
             navigateToBack = { navigator.goBack() }
         )
     }

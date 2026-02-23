@@ -22,6 +22,10 @@ class ResumeStep1ViewModel @Inject constructor(
         when (event) {
             is ResumeStep1Event.SelectImage -> setProfileImageUri(event.imageUri)
 
+            is ResumeStep1Event.ImageVolumeExceeded -> {
+                postEffect(ResumeStep1Effect.SendToastMessage(message = event.message))
+            }
+
             is ResumeStep1Event.UserNameChanged -> userNameChanged(event.userName)
             is ResumeStep1Event.UserNameCleared -> userNameCleared()
             is ResumeStep1Event.RemoveProfileImage -> removeProfileImageUri()

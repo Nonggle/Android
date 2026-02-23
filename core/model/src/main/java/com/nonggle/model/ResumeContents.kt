@@ -3,7 +3,7 @@ package com.nonggle.model
 import java.util.UUID
 
 data class ResumeContents(
-    val id: String,
+    val id: Long,
     val userProfileImageUrl: String,
     val userName: String, // 이름
     val gender: String, // 성별
@@ -33,3 +33,4 @@ data class ResumeContents(
         val type: String // 사용자 성격 유형 세부항목
     )
 }
+

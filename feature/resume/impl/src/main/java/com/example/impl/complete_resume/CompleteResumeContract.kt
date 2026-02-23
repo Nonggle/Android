@@ -15,6 +15,4 @@ sealed interface CompleteResumeEvent: UiEvent {
 
 sealed interface CompleteResumeEffect: UiEffect {
     data class ShowErrorMessage(val message: String): CompleteResumeEffect
-    data object NavigateToUserResume: CompleteResumeEffect
-    data object NavigateToBack: CompleteResumeEffect
 }

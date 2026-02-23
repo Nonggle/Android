@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Download_Title_RetryButton">다시 불러오기</string>\
+    <string name="Download_Title_RetryButton">재시도</string>
+    <string name="resumeViewScreen_SubTitle_Retry">이력서 로드에 실패했습니다.\n다시 시도해주세요.</string>
 </resources>

@@ -67,5 +67,6 @@ dependencies {
     implementation(project(":feature:download:api"))
     implementation(project(":feature:download:impl"))
     implementation(project(":feature:resume:impl"))
+    implementation(project(":feature:resume_view:impl"))
     implementation(project(":feature:setting"))
 }

@@ -7,11 +7,12 @@ import com.nonggle.model.ResumeContents
 
 data class ResumeViewState(
     val isLoading: Boolean = true,
-    val resumeDetail: ResumeContents? = null
+    val resumeDetail: ResumeContents? = null,
+    val resumeRetry: Boolean = false
 ): UiState
 
 sealed interface ResumeViewEvent: UiEvent {
-
+    data object RetryGetResumeDetail: ResumeViewEvent
 }
 
 sealed interface ResumeViewEffect: UiEffect {

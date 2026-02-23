@@ -22,3 +22,29 @@ data class SingleResume(
         val careerDetail: String = "",
     )
 }
+
+fun SingleResume.toResumeContents(): ResumeContents =
+    ResumeContents(
+        id = id,
+        userProfileImageUrl = profileImageUrl,
+        userName = userName,
+        gender = gender,
+        userAge = "",
+        summary = introduction,
+        careerPeriod = totalCareer,
+        careerList = careerList.map { career ->
+            ResumeContents.Career(
+                title = career.careerDescription,
+                period = career.careerStartDate,
+                periodTotal = career.careerEndDate,
+                careerExplanation = career.careerDetail
+            )
+        },
+        certificateList = certificationList.map { cert ->
+            ResumeContents.Certificate(certificateTitle = cert)
+        },
+        userDetailKeyword = personalityList.map { personality ->
+            ResumeContents.Personality(type = personality)
+        },
+        userDetailSummary = introduce
+    )

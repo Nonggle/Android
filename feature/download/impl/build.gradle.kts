@@ -24,4 +24,5 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(project(":feature:download:api"))
+    implementation(project(":feature:resume_view:api"))
 }

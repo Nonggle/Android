@@ -1,5 +1,8 @@
 package com.example.common.utils
 
+import android.content.Context
+import android.net.Uri
+import android.provider.OpenableColumns
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
@@ -12,4 +15,20 @@ fun getDateTimeFormatter(date: LocalDate): String {
 
 fun getPeriodFormatter(period: Period): String {
     return "${period.years}년 ${period.months}개월 ${period.days}일"
+}
+
+/// 이미지 파일 크기 측정용
+fun getImageSizeFromUri(context: Context, uri: Uri): Long {
+    val projection = arrayOf(OpenableColumns.SIZE)
+    var fileSize: Long = 0
+    context.contentResolver.query(uri, projection, null, null,null)?.use { cursor ->
+        // SIZE 열의 인덱스를 찾음
+        val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+        // 커서를 첫 번째 행으로 이동
+        if (cursor.moveToFirst()) {
+            // 파일 크기 가져오기
+            fileSize = cursor.getLong(sizeIndex)
+        }
+    }
+    return fileSize
 }

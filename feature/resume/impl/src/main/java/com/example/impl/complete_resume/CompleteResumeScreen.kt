@@ -125,26 +125,27 @@ internal fun SuccessUpLoadResumeScreen(
                     composition = successComposition,
                     progress = successProgress
                 )
-               Column(
-                   modifier = Modifier.fillMaxSize(),
-                   verticalArrangement = Arrangement.Center,
-                   horizontalAlignment = Alignment.CenterHorizontally) {
-                   Spacer(modifier = Modifier.weight(1f))
-                   Text(
-                       modifier = Modifier.height(40.dp),
-                       text = stringResource(R.string.resumeCompleteScreen_SubTitle_Success),
-                       style = NonggleTheme.typography.t1.copy(NonggleTheme.colorScheme.m1)
-                   )
-                   Spacer(modifier = Modifier.weight(1f))
-                   ContainedButton(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .padding(horizontal = 20.dp),
-                       titleText = stringResource(R.string.resumeCompleteScreen_label_SuccessButton),
-                       onClick = { navigateToUserResume(id) }
-                   )
-                   Spacer(modifier = Modifier.height(40.dp))
-               }
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        modifier = Modifier.height(40.dp),
+                        text = stringResource(R.string.resumeCompleteScreen_SubTitle_Success),
+                        style = NonggleTheme.typography.t1.copy(NonggleTheme.colorScheme.m1)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    ContainedButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
+                        titleText = stringResource(R.string.resumeCompleteScreen_label_SuccessButton),
+                        onClick = { navigateToUserResume(id) }
+                    )
+                    Spacer(modifier = Modifier.height(40.dp))
+                }
             }
         }
     }
@@ -258,7 +259,7 @@ fun FailPreviewScreen() {
         FailUpLoadResumeScreen(
             errorComposition = errorComposition,
             errorProgress = { errorProgress },
-            loadingComposition =  loadingComposition,
+            loadingComposition = loadingComposition,
             loadingProgress = { loadingProgress }
         )
     }
