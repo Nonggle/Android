@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface ResumeNavKey : NavKey {
+    @Serializable
     data object ResumeWrite: ResumeNavKey
+    @Serializable
     data object ResumeComplete: ResumeNavKey
 }
 
