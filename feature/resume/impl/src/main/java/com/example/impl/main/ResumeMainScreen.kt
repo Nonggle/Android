@@ -28,9 +28,7 @@ import com.example.feature.resume.impl.main.ResumeTab.Companion.getByValue
 import com.example.feature.resume.impl.step2.ResumeStep2Screen
 import com.example.feature.resume.impl.step3.ResumeStep3Screen
 import kotlinx.coroutines.launch
-/// TODO: 완료시 토스트메시지 띄우기
-/// TODO: 매 step에서 다음 tab으로 넘어갈때 roomdb에 저장 기능 추후 구현
-/// TODO: 이력서 모두 작성 완료시 서버 저장 기능 추후 구현
+
 
 @Composable
 internal fun ResumeMainScreen(
@@ -56,6 +54,7 @@ internal fun ResumeMainScreen(
         },
         navigateToComplete = {
             if (pagerState.currentPage == uiState.tabList.size - 1) {
+                /// FIXME: 데이터 검증 거친 후 이동 만약 검증 실패시 오류 생긴 화면으로 이동
                 navigateToComplete()
             } else {
                 coroutineScope.launch {
@@ -109,7 +108,7 @@ internal fun ResumeMainScreen(
             state = pagerState,
         ) { page ->
             when (getByValue(page)) {
-                ResumeTab.INFO -> ResumeStep1Screen(context = context)
+                ResumeTab.INFO -> ResumeStep1Screen()
                 ResumeTab.CAREER -> ResumeStep2Screen()
                 ResumeTab.PORTFOLIO -> ResumeStep3Screen()
                 else -> {}

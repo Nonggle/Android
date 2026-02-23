@@ -76,6 +76,9 @@ internal fun ResumeStep3Screen(
                 }
             },
             hintText = stringResource(R.string.resume3Screen_HintText_Introduce),
+            supportText = {
+                // FIXME: 자기소개 문구 없을 경우 경고 문구
+            }
         )
         Text(
             modifier = Modifier.padding(top = 32.dp),

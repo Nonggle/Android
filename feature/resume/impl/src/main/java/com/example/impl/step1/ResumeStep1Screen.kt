@@ -1,6 +1,5 @@
 package com.example.feature.resume.impl.step1
 
-import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,7 +57,6 @@ import com.example.feature.resume.impl.component.genderSelectBox
 internal fun ResumeStep1Screen(
     modifier: Modifier = Modifier,
     viewModel: ResumeStep1ViewModel = hiltViewModel(),
-    context: Context,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -189,6 +187,12 @@ internal fun ResumeStep1Screen(
                     color = NonggleTheme.colorScheme.g1,
                 )
             },
+            supportText = {
+                /// FIXME: 값이 없을 경우 경고 애니메이션
+                Text(
+                    text = stringResource(R.string.resume1Screen_supportTitle)
+                )
+            },
             textFieldType = TextFieldType.Standard,
             value = uiState.info.userName,
             maxLength = 4,
@@ -216,6 +220,9 @@ internal fun ResumeStep1Screen(
             onClick = onBirthDateClick,
             paddingValues = PaddingValues(top = 8.dp)
         )
+        if(uiState.birthDate.isEmpty()) {
+            /// FIXME: 생년월일 값이 없을 경우 경고 애니메이션
+        }
         Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(R.string.resume1Screen_genderTitle),
@@ -227,6 +234,9 @@ internal fun ResumeStep1Screen(
             onSelectGender = { gender -> onEvent(ResumeStep1Event.SelectGender(gender)) },
             selectGenderResult = uiState.info.gender
         )
+        if(uiState.birthDate.isEmpty()) {
+            /// FIXME: 생년월일 값이 없을 경우 경고 애니메이션
+        }
         Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(R.string.resume1Screen_label_certificate),
