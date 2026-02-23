@@ -1,5 +1,6 @@
 package com.nonggle.feature.download.impl.navigation
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,6 +21,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -30,6 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.transformations
+import coil3.transform.CircleCropTransformation
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.nonggle.feature.download.impl.R
@@ -41,13 +47,15 @@ import com.nonggle.model.SingleResume
 @Composable
 internal fun DownloadScreen(
     modifier: Modifier = Modifier,
-    viewModel: DownloadViewModel = hiltViewModel()
+    viewModel: DownloadViewModel = hiltViewModel(),
+    context: Context
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     DownloadScreen(
         modifier = modifier,
         uiState = uiState,
-        onEvent = viewModel::setEvent
+        onEvent = viewModel::setEvent,
+        context = context
     )
 }
 
@@ -55,17 +63,18 @@ internal fun DownloadScreen(
 internal fun DownloadScreen(
     modifier: Modifier = Modifier,
     uiState: DownloadState,
+    context: Context,
     onEvent: (DownloadEvent) -> Unit = {}
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp, vertical = 24.dp)
+            .padding(horizontal = 20.dp, vertical = 24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (uiState.isLoading == true) {
-            CircularProgressIndicator(
-                modifier = Modifier.weight(1f)
-            )
+            CircularProgressIndicator()
         } else if (uiState.errorOcuur == true) {
             FullButton(
                 modifier = Modifier
@@ -82,7 +91,10 @@ internal fun DownloadScreen(
                     count = uiState.resumeList.size,
                     key = { index -> uiState.resumeList[index].id },
                     itemContent = { index ->
-                        resumeItem(resumeContent = uiState.resumeList[index])
+                        resumeItem(
+                            resumeContent = uiState.resumeList[index],
+                            context = context
+                        )
                     }
                 )
             }
@@ -93,6 +105,7 @@ internal fun DownloadScreen(
 @Composable
 fun resumeItem(
     modifier: Modifier = Modifier,
+    context: Context,
     resumeContent: SingleResume,
 ) {
     Box(
@@ -124,10 +137,13 @@ fun resumeItem(
                     AsyncImage(
                         modifier = Modifier
                             .size(58.dp)
-                            .clip(RoundedCornerShape(99.dp)),
-                        model = resumeContent.profileImageUrl,
+                            .border(width = 1.dp, color = NonggleTheme.colorScheme.g_line_light, shape = RoundedCornerShape(99.dp)),
+                        model = ImageRequest.Builder(context)
+                            .data(resumeContent.profileImageUrl)
+                            .crossfade(true)
+                            .transformations(CircleCropTransformation())
+                            .build(),
                         contentDescription = null,
-                        contentScale = ContentScale.Fit,
                         error = painterResource(R.drawable.user),
                         placeholder = painterResource(R.drawable.user),
                     )
@@ -151,6 +167,7 @@ fun resumeItem(
                 Spacer(Modifier.weight(1f))
                 Box(
                     modifier = Modifier
+                        .padding(top = 8.dp)
                         .clip(RoundedCornerShape(5.dp))
                         .background(color = NonggleTheme.colorScheme.m5)
                 ) {
