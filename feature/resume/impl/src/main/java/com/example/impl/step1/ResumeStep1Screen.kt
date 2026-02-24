@@ -72,14 +72,14 @@ internal fun ResumeStep1Screen(
     var showDateSelectDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.certificationExist, uiState.info.certificationList.size) {
-        if(uiState.certificationExist == true) {
+        if (uiState.certificationExist == true) {
             scrollState.scrollTo(scrollState.maxValue)
         }
     }
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 is ResumeStep1Effect.SendToastMessage -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
@@ -90,10 +90,10 @@ internal fun ResumeStep1Screen(
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            if(uri == null) return@rememberLauncherForActivityResult
+            if (uri == null) return@rememberLauncherForActivityResult
             val sizeInBytes = getImageSizeFromUri(context, uri)
             val sizeInMB = sizeInBytes / (1024.0 * 1024.0)
-            if(sizeInMB > Policy.MAX_PROFILE_IMAGE_SIZE_IN_BYTES) {
+            if (sizeInMB > Policy.MAX_PROFILE_IMAGE_SIZE_IN_BYTES) {
                 viewModel.setEvent(ResumeStep1Event.ImageVolumeExceeded(message = "업로드 가능한 이미지 용량을 초과했습니다."))
                 return@rememberLauncherForActivityResult
             } else {
@@ -212,11 +212,14 @@ internal fun ResumeStep1Screen(
                 )
             },
             supportText = {
-                /// FIXME: 값이 없을 경우 경고 애니메이션
-                Text(
-                    text = stringResource(R.string.resume1Screen_supportTitle)
-                )
+                if (uiState.info.userName.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.resume1Screen_supportTitle),
+                        style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)
+                    )
+                }
             },
+            isError = uiState.info.userName.isEmpty(),
             textFieldType = TextFieldType.Standard,
             value = uiState.info.userName,
             maxLength = 4,
@@ -244,8 +247,11 @@ internal fun ResumeStep1Screen(
             onClick = onBirthDateClick,
             paddingValues = PaddingValues(top = 8.dp)
         )
-        if(uiState.birthDate.isEmpty()) {
-            /// FIXME: 생년월일 값이 없을 경우 경고 애니메이션
+        if (uiState.birthDate.isEmpty()) {
+            Text(
+                text = stringResource(R.string.resume1Screen_ErrorTitle_BirthDateInput),
+                style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)
+            )
         }
         Text(
             modifier = Modifier.padding(top = 32.dp),
@@ -258,8 +264,11 @@ internal fun ResumeStep1Screen(
             onSelectGender = { gender -> onEvent(ResumeStep1Event.SelectGender(gender)) },
             selectGenderResult = uiState.info.gender
         )
-        if(uiState.birthDate.isEmpty()) {
-            /// FIXME: 생년월일 값이 없을 경우 경고 애니메이션
+        if (uiState.info.gender == null) {
+            Text(
+                text = stringResource(R.string.resume1Screen_ErrorTitle_GenderInput),
+                style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)
+            )
         }
         Text(
             modifier = Modifier.padding(top = 32.dp),
@@ -269,14 +278,26 @@ internal fun ResumeStep1Screen(
         )
         certificateSelectBox(
             modifier = Modifier.padding(top = 12.dp),
-            onClickExistCertificationInfo = { exist -> onEvent(ResumeStep1Event.ExistCertification(exist)) },
+            onClickExistCertificationInfo = { exist ->
+                onEvent(
+                    ResumeStep1Event.ExistCertification(
+                        exist
+                    )
+                )
+            },
             isCertificationExist = uiState.certificationExist
         )
-        if(uiState.certificationExist == true) {
+        if (uiState.certificationExist == true) {
             certificationInput(
                 modifier = Modifier.padding(top = 12.dp),
                 certificationName = uiState.certificationInput,
-                certificationInput = { newValue -> onEvent(ResumeStep1Event.CertificationChanged(newValue)) },
+                certificationInput = { newValue ->
+                    onEvent(
+                        ResumeStep1Event.CertificationChanged(
+                            newValue
+                        )
+                    )
+                },
                 addCertificationList = { onEvent(ResumeStep1Event.AddCertification) },
                 certificationList = uiState.info.certificationList,
                 removeCertificationItem = { onEvent(ResumeStep1Event.RemoveCertificationChip(it)) },
