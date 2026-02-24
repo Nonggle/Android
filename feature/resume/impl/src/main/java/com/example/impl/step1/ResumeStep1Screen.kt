@@ -243,11 +243,11 @@ internal fun ResumeStep1Screen(
         dateSelectBox(
             modifier = Modifier.padding(top = 4.dp),
             hintText = stringResource(R.string.resume1Screen_birthDateSubTitle),
-            selectDate = uiState.birthDate,
+            selectDate = uiState.info.birthDate ?: stringResource(R.string.resume1Screen_birthDateSubTitle),
             onClick = onBirthDateClick,
             paddingValues = PaddingValues(top = 8.dp)
         )
-        if (uiState.birthDate.isEmpty()) {
+        if (uiState.info.birthDate?.isEmpty() == true) {
             Text(
                 text = stringResource(R.string.resume1Screen_ErrorTitle_BirthDateInput),
                 style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)

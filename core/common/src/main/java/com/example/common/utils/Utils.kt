@@ -6,8 +6,9 @@ import android.provider.OpenableColumns
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
-
+/// 날짜 포맷팅
 fun getDateTimeFormatter(date: LocalDate): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
     return date.format(formatter)
@@ -31,4 +32,8 @@ fun getImageSizeFromUri(context: Context, uri: Uri): Long {
         }
     }
     return fileSize
+}
+
+fun getUserAge(date: LocalDate): Int {
+    return ChronoUnit.YEARS.between(date, LocalDate.now()).toInt()
 }

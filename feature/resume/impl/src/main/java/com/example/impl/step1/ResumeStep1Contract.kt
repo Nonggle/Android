@@ -28,7 +28,8 @@ data class CertificationTag(
 data class InfoData(
     val profileImageUrl: String? = null,
     val userName: String = "",
-    val birthDate: LocalDate? = null,
+    val birthDate: String? = null,
+    val userAge: String? = null,
     val introduction: String? = null,
     val gender: Gender? = null,
     val certificationList: List<CertificationTag> = emptyList()
@@ -37,7 +38,6 @@ data class InfoData(
 data class ResumeStep1State(
     val certificationExist: Boolean? = null,
     val certificationInput: String = "",
-    val birthDate: String = "",
     val info: InfoData = InfoData()
 ) : UiState
 

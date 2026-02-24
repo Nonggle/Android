@@ -3,6 +3,7 @@ package com.example.feature.resume.impl.step1
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.getDateTimeFormatter
+import com.example.common.utils.getUserAge
 import com.example.core.ui.BaseViewModel
 import com.example.domain.repository.ResumeDraftStoreInterface
 import com.example.domain.usecase.ImageContentReadUseCase
@@ -101,8 +102,7 @@ class ResumeStep1ViewModel @Inject constructor(
     private fun setBirthDate(date: LocalDate) {
         updateState {
             copy(
-                info = this.info.copy(birthDate = date),
-                birthDate = getDateTimeFormatter(date)
+                info = this.info.copy(birthDate = getDateTimeFormatter(date), userAge = "${getUserAge(date)}세"),
             )
         }
         resumeStore.update {
