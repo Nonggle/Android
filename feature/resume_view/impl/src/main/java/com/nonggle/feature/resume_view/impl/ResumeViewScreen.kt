@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.Uri
+import com.example.common.utils.getWorkPeriodFormatter
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEvent
@@ -184,8 +185,8 @@ internal fun ResumeViewScreen(
             ) { career ->
                 careerCard(
                     careerTitle = career.title,
-                    careerPeriod = career.period,
-                    careerPeriodTotal = career.periodTotal,
+                    careerPeriod = career.careerPeriod,
+                    careerPeriodTotal = getWorkPeriodFormatter(career.careerStareDate, career.careerEndDate),
                     careerExplanation = career.careerExplanation
                 )
                 Spacer(Modifier.height(20.dp))
@@ -217,7 +218,7 @@ internal fun ResumeViewScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "자격증 리스트 모듀 합친것 util 함수 빼기",
+                        text = resumeDetail.certificateList.joinToString { it.certificateTitle },
                         style = NonggleTheme.typography.b1_main.copy(color = NonggleTheme.colorScheme.g1)
                     )
                 }
@@ -250,7 +251,7 @@ internal fun ResumeViewScreen(
                 ) {
                     items(
                         count = resumeDetail.userDetailKeyword.size,
-                        key = { index -> "${resumeDetail.id}-kw-$index" } // ✅ 키는 아이템마다 달라야 함
+                        key = { index -> resumeDetail.userDetailKeyword[index].id }
                     ) { index ->
                         typeCard(title = resumeDetail.userDetailKeyword[index].type)
                     }

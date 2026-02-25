@@ -8,11 +8,11 @@ data class ResumeDto(
     val id: Long,
     val userId: Long,
     val userName: String,
+    val userAge: String,
     val birthDate: String?,
-    val introduction: String?,
     val gender: String?,
     val certificationList: List<String>?,
-    val careerList: List<CareerResponseData>?,
+    val careerList: List<CareerResponseData>,
     val totalCareer: String,
     val introduce: String?,
     val introduceDetail: String?,
@@ -25,6 +25,7 @@ data class ResumeDto(
     data class CareerResponseData(
         val careerStartDate: String,
         val careerEndDate: String,
+        val careerPeriod: String,
         val careerDescription: String,
         val careerDetail: String
     )
@@ -34,13 +35,14 @@ fun ResumeDto.asExternalModel(): SingleResume =
     SingleResume(
         id = id,
         userName = userName,
-        introduction = introduction ?: "",
+        userAge = userAge,
         gender = gender ?: "",
         certificationList = certificationList ?: emptyList(),
-        careerList = careerList?.map { career ->
+        careerList = careerList.map { career ->
             SingleResume.Career(
                 careerStartDate = career.careerStartDate,
                 careerEndDate = career.careerEndDate,
+                careerPeriod = career.careerPeriod,
                 careerDescription = career.careerDescription,
                 careerDetail = career.careerDetail
             )

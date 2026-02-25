@@ -30,7 +30,6 @@ data class InfoData(
     val userName: String = "",
     val birthDate: String? = null,
     val userAge: String? = null,
-    val introduction: String? = null,
     val gender: Gender? = null,
     val certificationList: List<CertificationTag> = emptyList()
 )

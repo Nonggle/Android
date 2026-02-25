@@ -3,7 +3,7 @@ package com.nonggle.model
 data class SingleResume(
     val id: Long = 0,
     val userName: String = "",
-    val introduction: String = "",
+    val userAge: String = "",
     val gender: String = "",
     val certificationList: List<String> = emptyList(),
     val careerList: List<Career> = emptyList(),
@@ -18,6 +18,7 @@ data class SingleResume(
     data class Career(
         val careerStartDate: String = "",
         val careerEndDate: String = "",
+        val careerPeriod: String = "",
         val careerDescription: String = "",
         val careerDetail: String = "",
     )
@@ -30,13 +31,13 @@ fun SingleResume.toResumeContents(): ResumeContents =
         userName = userName,
         gender = gender,
         userAge = "",
-        summary = introduction,
         careerPeriod = totalCareer,
         careerList = careerList.map { career ->
             ResumeContents.Career(
                 title = career.careerDescription,
-                period = career.careerStartDate,
-                periodTotal = career.careerEndDate,
+                careerStareDate = career.careerStartDate,
+                careerEndDate = career.careerEndDate,
+                careerPeriod = career.careerPeriod,
                 careerExplanation = career.careerDetail
             )
         },
@@ -46,5 +47,6 @@ fun SingleResume.toResumeContents(): ResumeContents =
         userDetailKeyword = personalityList.map { personality ->
             ResumeContents.Personality(type = personality)
         },
-        userDetailSummary = introduce
+        summary = introduce,
+        userDetailSummary = introduceDetail
     )

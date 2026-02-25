@@ -210,7 +210,7 @@ fun CareerBottomSheet(
 @Composable
 fun CareerItemDeleteDialog(
     onDismiss: () -> Unit = {},
-    onConfirm: () -> Unit = {},// bottomsheet 없애는 기능
+    onConfirm: () -> Unit = {},
 ) {
     NonggleDialog(
         onDismiss = onDismiss,

@@ -14,8 +14,13 @@ fun getDateTimeFormatter(date: LocalDate): String {
     return date.format(formatter)
 }
 
+// 총 기간의 문자열 파싱에 활용
 fun getPeriodFormatter(period: Period): String {
     return "${period.years}년 ${period.months}개월 ${period.days}일"
+}
+// 시작~ 종료 기간의 문자열 파싱에 활용
+fun getWorkPeriodFormatter(startDate: String, endDate: String): String {
+    return "${startDate} ~ ${endDate}"
 }
 
 /// 이미지 파일 크기 측정용
@@ -34,6 +39,13 @@ fun getImageSizeFromUri(context: Context, uri: Uri): Long {
     return fileSize
 }
 
+// 생년월일로부터 나이 측정에 활용
 fun getUserAge(date: LocalDate): Int {
     return ChronoUnit.YEARS.between(date, LocalDate.now()).toInt()
 }
+
+// 문자열 리스트 단일 문장으로 파싱에 활용
+fun combineListToString(list: List<String>): String {
+
+}
+

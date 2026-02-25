@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResumeCreateRequestDto(
     val userName: String,
+    val userAge: String,
     val birthDate: String,
-    val introduction: String,
     val gender: String,
     val certificationList: List<CertificationTag>?,
     val careerList: List<CareerFormData>,
@@ -26,6 +26,7 @@ data class ResumeCreateRequestDto(
     data class CareerFormData(
         val careerStartDate: String,
         val careerEndDate: String,
+        val careerPeriod: String,
         val careerDescription: String,
         val careerDetail: String
     )
@@ -47,7 +48,7 @@ fun ResumeWritingModel.asNetworkModel(): ResumeCreateRequestDto =
     ResumeCreateRequestDto(
         userName = userName,
         birthDate = birthDate,
-        introduction = introduction,
+        userAge = userAge,
         gender = gender,
         certificationList = certificationList?.map { ResumeCreateRequestDto.CertificationTag(it) } ?: emptyList(),
         careerList = careerList.map {
@@ -55,14 +56,14 @@ fun ResumeWritingModel.asNetworkModel(): ResumeCreateRequestDto =
                 careerStartDate = it.careerStartDate.toString(),
                 careerEndDate = it.careerEndDate.toString(),
                 careerDescription = it.careerDescription,
-                careerDetail = it.careerDetail
+                careerDetail = it.careerDetail,
+                careerPeriod = it.careerPeriod
             )
         },
         totalCareer = totalCareer,
         introduceDetail = introduceDetail,
         personalityList = personalityList.map { ResumeCreateRequestDto.PersonalityTag(it) },
         introduce  = introduce
-
     )
 
 fun ResumeWritingModel.ResumeImageMeta.asNetworkModule(): ImageMeta =

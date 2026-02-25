@@ -5,8 +5,8 @@ import java.time.LocalDate
 data class ResumeWritingModel(
     val imageMeta: ResumeImageMeta = ResumeImageMeta(),
     val userName: String = "",
-    val birthDate: String = "", // 기본값은 현재시각
-    val introduction: String = "",
+    val birthDate: String = "",
+    val userAge: String = "",
     val gender: String = "",
     val certificationList: List<String>? = null,
     val careerList: List<Career> = listOf(),
@@ -24,6 +24,7 @@ data class ResumeWritingModel(
     data class Career(
         val careerStartDate: LocalDate = LocalDate.now(),
         val careerEndDate: LocalDate = LocalDate.now(),
+        val careerPeriod: String = "",
         val careerDescription: String = "",
         val careerDetail: String = "",
     )

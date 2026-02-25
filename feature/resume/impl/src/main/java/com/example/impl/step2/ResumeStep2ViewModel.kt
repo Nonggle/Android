@@ -90,10 +90,11 @@ class ResumeStep2ViewModel @Inject constructor(
             it.copy(
                 careerList = newCareerList.map {
                     ResumeWritingModel.Career(
-                        it.careerStartDate ?: LocalDate.now(),
-                        it.careerEndDate ?: LocalDate.now(),
-                        it.careerDescription,
-                        it.careerDetail
+                        careerStartDate = it.careerStartDate ?: LocalDate.now(),
+                        careerEndDate = it.careerEndDate ?: LocalDate.now(),
+                        careerPeriod = getPeriodFormatter(period = Period.between(it.careerStartDate, it.careerEndDate)),
+                        careerDescription = it.careerDescription,
+                        careerDetail = it.careerDetail
                     )
                 },
                 totalCareer = getPeriodFormatter(newCareerList.map {
@@ -110,6 +111,7 @@ class ResumeStep2ViewModel @Inject constructor(
                     ResumeWritingModel.Career(
                         it.careerStartDate ?: LocalDate.now(),
                         it.careerEndDate ?: LocalDate.now(),
+                        careerPeriod = getPeriodFormatter(period = Period.between(it.careerStartDate, it.careerEndDate)),
                         it.careerDescription,
                         it.careerDetail
                     )

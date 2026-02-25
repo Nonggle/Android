@@ -102,11 +102,17 @@ class ResumeStep1ViewModel @Inject constructor(
     private fun setBirthDate(date: LocalDate) {
         updateState {
             copy(
-                info = this.info.copy(birthDate = getDateTimeFormatter(date), userAge = "${getUserAge(date)}세"),
+                info = this.info.copy(
+                    birthDate = getDateTimeFormatter(date),
+                    userAge = "${getUserAge(date)}세"
+                ),
             )
         }
         resumeStore.update {
-            it.copy(birthDate = getDateTimeFormatter(date))
+            it.copy(
+                birthDate = getDateTimeFormatter(date),
+                userAge = "${getUserAge(date)}세"
+            )
         }
     }
 

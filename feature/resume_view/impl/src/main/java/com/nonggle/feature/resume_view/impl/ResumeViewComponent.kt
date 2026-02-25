@@ -76,8 +76,8 @@ fun typeCard(title: String) {
 fun careerCard(
     modifier: Modifier = Modifier,
     careerTitle: String,
-    careerPeriod: String,
-    careerPeriodTotal: String,
+    careerPeriod: String, // 작업 진행 날짜 ex. 시작날짜 ~ 종료 날자
+    careerPeriodTotal: String, // 작업 진행 총 기간
     careerExplanation: String
 ) {
     Box(

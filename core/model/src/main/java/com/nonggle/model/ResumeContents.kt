@@ -18,9 +18,10 @@ data class ResumeContents(
     data class Career(
         val id: String = UUID.randomUUID().toString(),
         val title: String, // 경력 제목
-        val period: String, // 경력 기간 2xxx.xx.xx ~ 2xxx.xx.xx
-        val periodTotal: String, //전체 경력 기간 x개월
-        val careerExplanation: String, //경력 사항 내용
+        val careerStareDate: String,
+        val careerEndDate: String,
+        val careerPeriod: String, //전체 경력 기간 x개월
+        val careerExplanation: String //경력 사항 내용
     )
 
     data class Certificate(
