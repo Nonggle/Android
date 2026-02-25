@@ -1,0 +1,28 @@
+package com.example.feature.resume.impl.navigation
+
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
+import com.example.core.navigation.Navigator
+import com.example.feature.resume.api.ResumeNavKey
+import com.example.feature.resume.impl.main.ResumeMainScreen
+import com.example.impl.complete_resume.CompleteResumeScreen
+import com.nonggle.resume_view.api.navigateToResumeView
+
+fun EntryProviderScope<NavKey>.resumeEntryProvider(navigator: Navigator) {
+
+    entry<ResumeNavKey.ResumeWrite> {
+        ResumeMainScreen(
+            navigateToHome = { navigator.goBack() },
+            navigateToComplete = {
+                navigator.navigate(ResumeNavKey.ResumeComplete)
+            }
+        )
+    }
+
+    entry<ResumeNavKey.ResumeComplete> {
+        CompleteResumeScreen(
+            navigateToUserResume = navigator::navigateToResumeView,
+            navigateToBack = { navigator.goBack() }
+        )
+    }
+}

@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.common.utils.getDateTimeFormatter
 import com.example.core.designsystem.component.DatePickerModal
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleBottomSheet
@@ -38,7 +39,6 @@ import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
 import com.example.feature.resume.impl.step2.CareerBottomSheetEvent
 import com.example.feature.resume.impl.step2.CareerFormData
-import com.example.impl.util.getDateTimeFormatter
 
 @Composable
 fun TitleText(
@@ -210,7 +210,7 @@ fun CareerBottomSheet(
 @Composable
 fun CareerItemDeleteDialog(
     onDismiss: () -> Unit = {},
-    onConfirm: () -> Unit = {},// bottomsheet 없애는 기능
+    onConfirm: () -> Unit = {},
 ) {
     NonggleDialog(
         onDismiss = onDismiss,

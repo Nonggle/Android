@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    api(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.runtime)
 
     // hilt
     implementation(libs.hilt.android)
@@ -64,6 +64,9 @@ dependencies {
     implementation(project(":feature:login:impl"))
     implementation(project(":feature:home:api"))
     implementation(project(":feature:home:impl"))
-    implementation(project(":feature:download"))
+    implementation(project(":feature:download:api"))
+    implementation(project(":feature:download:impl"))
+    implementation(project(":feature:resume:impl"))
+    implementation(project(":feature:resume_view:impl"))
     implementation(project(":feature:setting"))
 }

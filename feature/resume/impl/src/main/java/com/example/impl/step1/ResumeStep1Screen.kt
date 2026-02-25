@@ -1,5 +1,7 @@
 package com.example.feature.resume.impl.step1
 
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,12 +36,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.example.common.policy.Policy
+import com.example.common.utils.getImageSizeFromUri
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.component.NonggleTextField
 import com.example.core.designsystem.component.TextFieldType
@@ -59,6 +64,7 @@ internal fun ResumeStep1Screen(
     viewModel: ResumeStep1ViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     val scrollState = rememberScrollState()
     val datePickerState = rememberDatePickerState()
@@ -66,19 +72,35 @@ internal fun ResumeStep1Screen(
     var showDateSelectDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.certificationExist, uiState.info.certificationList.size) {
-        if(uiState.certificationExist == true) {
+        if (uiState.certificationExist == true) {
             scrollState.scrollTo(scrollState.maxValue)
+        }
+    }
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is ResumeStep1Effect.SendToastMessage -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            uri?.let { viewModel.setEvent(ResumeStep1Event.SelectImage(it)) }
+            if (uri == null) return@rememberLauncherForActivityResult
+            val sizeInBytes = getImageSizeFromUri(context, uri)
+            val sizeInMB = sizeInBytes / (1024.0 * 1024.0)
+            if (sizeInMB > Policy.MAX_PROFILE_IMAGE_SIZE_IN_BYTES) {
+                viewModel.setEvent(ResumeStep1Event.ImageVolumeExceeded(message = "업로드 가능한 이미지 용량을 초과했습니다."))
+                return@rememberLauncherForActivityResult
+            } else {
+                uri.let { viewModel.setEvent(ResumeStep1Event.SelectImage(it)) }
+            }
         }
     )
-
-
 
     ResumeStep1Screen(
         modifier = modifier,
@@ -189,6 +211,15 @@ internal fun ResumeStep1Screen(
                     color = NonggleTheme.colorScheme.g1,
                 )
             },
+            supportText = {
+                if (uiState.info.userName.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.resume1Screen_supportTitle),
+                        style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)
+                    )
+                }
+            },
+            isError = uiState.info.userName.isEmpty(),
             textFieldType = TextFieldType.Standard,
             value = uiState.info.userName,
             maxLength = 4,
@@ -212,10 +243,16 @@ internal fun ResumeStep1Screen(
         dateSelectBox(
             modifier = Modifier.padding(top = 4.dp),
             hintText = stringResource(R.string.resume1Screen_birthDateSubTitle),
-            selectDate = uiState.birthDate,
+            selectDate = uiState.info.birthDate ?: stringResource(R.string.resume1Screen_birthDateSubTitle),
             onClick = onBirthDateClick,
             paddingValues = PaddingValues(top = 8.dp)
         )
+        if (uiState.info.birthDate?.isEmpty() == true) {
+            Text(
+                text = stringResource(R.string.resume1Screen_ErrorTitle_BirthDateInput),
+                style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)
+            )
+        }
         Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(R.string.resume1Screen_genderTitle),
@@ -227,6 +264,12 @@ internal fun ResumeStep1Screen(
             onSelectGender = { gender -> onEvent(ResumeStep1Event.SelectGender(gender)) },
             selectGenderResult = uiState.info.gender
         )
+        if (uiState.info.gender == null) {
+            Text(
+                text = stringResource(R.string.resume1Screen_ErrorTitle_GenderInput),
+                style = NonggleTheme.typography.HintTextAppearance.copy(color = NonggleTheme.colorScheme.error)
+            )
+        }
         Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(R.string.resume1Screen_label_certificate),
@@ -235,14 +278,26 @@ internal fun ResumeStep1Screen(
         )
         certificateSelectBox(
             modifier = Modifier.padding(top = 12.dp),
-            onClickExistCertificationInfo = { exist -> onEvent(ResumeStep1Event.ExistCertification(exist)) },
+            onClickExistCertificationInfo = { exist ->
+                onEvent(
+                    ResumeStep1Event.ExistCertification(
+                        exist
+                    )
+                )
+            },
             isCertificationExist = uiState.certificationExist
         )
-        if(uiState.certificationExist == true) {
+        if (uiState.certificationExist == true) {
             certificationInput(
                 modifier = Modifier.padding(top = 12.dp),
                 certificationName = uiState.certificationInput,
-                certificationInput = { newValue -> onEvent(ResumeStep1Event.CertificationChanged(newValue)) },
+                certificationInput = { newValue ->
+                    onEvent(
+                        ResumeStep1Event.CertificationChanged(
+                            newValue
+                        )
+                    )
+                },
                 addCertificationList = { onEvent(ResumeStep1Event.AddCertification) },
                 certificationList = uiState.info.certificationList,
                 removeCertificationItem = { onEvent(ResumeStep1Event.RemoveCertificationChip(it)) },

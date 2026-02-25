@@ -1,13 +1,15 @@
 package com.nonggle.network.di
 
-import com.example.common.result.AuthEventBus
-import com.example.common.result.DefaultAuthEventBus
+import com.nonggle.network.util.AuthEventBus
+import com.nonggle.network.util.DefaultAuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.HttpClientFactory
 import com.nonggle.network.service.AuthService
 import com.nonggle.network.service.KtorRefreshTokenService
 import com.nonggle.network.service.LoginService
 import com.nonggle.network.service.LoginServiceImpl
+import com.nonggle.network.service.ResumeService
+import com.nonggle.network.service.ResumeServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,4 +63,10 @@ object NetworkModule {
     fun provideLoginService(
         @ApiClient baseClient: HttpClient,
     ): LoginService = LoginServiceImpl(baseClient)
+
+    @Provides
+    @Singleton
+    fun provideResumeService(
+        @ApiClient baseClient: HttpClient,
+    ): ResumeService = ResumeServiceImpl(baseClient)
 }

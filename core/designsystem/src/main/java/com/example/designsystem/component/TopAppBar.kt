@@ -31,14 +31,14 @@ import com.example.core.designsystem.theme.soYo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonggleTopAppBar(
-    @StringRes titleRes: Int,
+    @StringRes titleRes: Int?,
     @DrawableRes navigationIcon: Int,
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     onNavigationClick: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(id = titleRes)) },
+        title = { if(titleRes == null) {} else Text(text = stringResource(id = titleRes)) },
         navigationIcon = {
             IconButton(
                 onClick = onNavigationClick

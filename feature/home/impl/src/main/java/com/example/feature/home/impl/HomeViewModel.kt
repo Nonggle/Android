@@ -5,7 +5,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(): BaseViewModel<HomeEvent, HomeState, HomeEffect>(initialState = HomeState()) {
+class HomeViewModel @Inject constructor(
+): BaseViewModel<HomeEvent, HomeState, HomeEffect>(initialState = HomeState()) {
+
+
     override fun onEvent(event: HomeEvent) {
         when(event) {
             is HomeEvent.NavigateToResumeWritingScreen -> {

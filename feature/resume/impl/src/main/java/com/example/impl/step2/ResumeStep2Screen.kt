@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.common.utils.getPeriodFormatter
 import com.example.core.designsystem.component.OutlinedIconButton
 import com.example.core.designsystem.theme.NonggleTheme
 import com.example.feature.resume.impl.R
@@ -27,7 +28,6 @@ import com.example.impl.component.CareerBottomSheet
 import com.example.impl.component.CareerItem
 import com.example.impl.component.SubTitleText
 import com.example.impl.component.TitleText
-import com.example.impl.util.getPeriodFormatter
 import java.time.Period
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +40,8 @@ internal fun ResumeStep2Screen(
 
     var isShowBottomSheet by remember { mutableStateOf(false) }
     val careerBottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
+        confirmValueChange = {false}
     )
 
     ResumeStep2Screen(

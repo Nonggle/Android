@@ -20,8 +20,9 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:home:api"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
 
+    implementation(project(":feature:home:api"))
     implementation(project(":feature:resume:api"))
-    implementation(project(":feature:resume:impl"))
 }

@@ -1,5 +1,6 @@
 package com.example.feature.resume.impl.main
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.core.designsystem.component.NonggleTabRow
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,13 +28,12 @@ import com.example.feature.resume.impl.main.ResumeTab.Companion.getByValue
 import com.example.feature.resume.impl.step2.ResumeStep2Screen
 import com.example.feature.resume.impl.step3.ResumeStep3Screen
 import kotlinx.coroutines.launch
-/// TODO: 완료시 토스트메시지 띄우기
-/// TODO: 매 step에서 다음 tab으로 넘어갈때 roomdb에 저장 기능 추후 구현
-/// TODO: 이력서 모두 작성 완료시 서버 저장 기능 추후 구현
+
 
 @Composable
 internal fun ResumeMainScreen(
     modifier: Modifier = Modifier,
+    navigateToComplete: () -> Unit,
     navigateToHome: () -> Unit,
     viewModel: ResumeMainViewModel = hiltViewModel(),
 ) {
@@ -40,6 +41,7 @@ internal fun ResumeMainScreen(
 
     val pagerState = rememberPagerState(pageCount = { uiState.tabList.size })
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     ResumeMainScreen(
         modifier = modifier,
@@ -52,14 +54,16 @@ internal fun ResumeMainScreen(
         },
         navigateToComplete = {
             if (pagerState.currentPage == uiState.tabList.size - 1) {
-                navigateToHome()
+                /// FIXME: 데이터 검증 거친 후 이동 만약 검증 실패시 오류 생긴 화면으로 이동
+                navigateToComplete()
             } else {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
             }
         },
-        navigateGoBack = navigateToHome
+        navigateGoBack = navigateToHome,
+        context = context
     )
 }
 
@@ -71,7 +75,8 @@ internal fun ResumeMainScreen(
     pagerState: PagerState,
     onTabClick: (Int) -> Unit,
     navigateToComplete: () -> Unit,
-    navigateGoBack: () -> Unit
+    navigateGoBack: () -> Unit,
+    context: Context,
 ) {
 
     Column(

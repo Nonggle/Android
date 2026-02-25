@@ -8,12 +8,12 @@ import com.example.core.ui.UiState
 import java.time.LocalDate
 import java.util.UUID
 
-enum class Gender(val value: Int) {
-    MALE(0), FEMALE(1);
+enum class Gender(val value: String) {
+    MALE("MALE"), FEMALE("FEMALE");
 
     companion object {
         private val map = entries.associateBy(Gender::value)
-        fun getByValue(value: Int): Gender? {
+        fun getByValue(value: String): Gender? {
             return map[value]
         }
     }
@@ -26,10 +26,10 @@ data class CertificationTag(
 )
 
 data class InfoData(
-    val profileImageUrl: Uri? = null,
+    val profileImageUrl: String? = null,
     val userName: String = "",
-    val birthDate: LocalDate? = null,
-    val introduction: String? = null,
+    val birthDate: String? = null,
+    val userAge: String? = null,
     val gender: Gender? = null,
     val certificationList: List<CertificationTag> = emptyList()
 )
@@ -37,12 +37,13 @@ data class InfoData(
 data class ResumeStep1State(
     val certificationExist: Boolean? = null,
     val certificationInput: String = "",
-    val birthDate: String = "",
     val info: InfoData = InfoData()
 ) : UiState
 
 sealed interface ResumeStep1Event : UiEvent {
-    data class SelectImage(val imageUri: Uri): ResumeStep1Event
+    data class SelectImage(val imageUri: Uri?): ResumeStep1Event
+
+    data class ImageVolumeExceeded(val message: String): ResumeStep1Event
 
     data class UserNameChanged(val userName: String): ResumeStep1Event
     data object UserNameCleared: ResumeStep1Event
@@ -62,4 +63,5 @@ sealed interface ResumeStep1Event : UiEvent {
 }
 
 sealed interface ResumeStep1Effect : UiEffect {
+    data class SendToastMessage(val message: String): ResumeStep1Effect
 }

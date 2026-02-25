@@ -12,7 +12,7 @@ enum class ResumeTab(val value: Int) {
     PORTFOLIO(2);  // 포트폴리오
 
     companion object {
-        private val map = ResumeTab.entries.associateBy(ResumeTab::value)
+        private val map = entries.associateBy(ResumeTab::value)
         fun getByValue(value:Int): ResumeTab? {
             return map[value]
         }
@@ -21,15 +21,16 @@ enum class ResumeTab(val value: Int) {
 
 // 이력서 화면의 전체적인 UI 상태 (훨씬 단순해짐)
 data class ResumeMainState(
+    val isLoading: Boolean = false,
     val selectedTab: ResumeTab = ResumeTab.INFO,
     val tabList: List<Int> = listOf(R.string.resume_basicTitle, R.string.resume_careerTitle, R.string.resume_portfolioTitle)
 ) : UiState
 
 sealed interface ResumeMainEvent: UiEvent {
-
+    data object submitResume: ResumeMainEvent
 }
 
 sealed interface ResumeMainEffect: UiEffect {
-
+    data class showErrorToastMessage(val message: String): ResumeMainEffect
 }
 

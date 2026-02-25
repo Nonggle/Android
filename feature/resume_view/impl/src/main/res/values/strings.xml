@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="resumeViewScreen_SubTitle_CareerPeriodTotal">경력</string>
+    <string name="resumeViewScreen_Title_CareerPeriodTotal">경력사항</string>
+    <string name="resumeViewScreen_Title_Certificate">보유자격증</string>
+    <string name="resumeViewScreen_SubTitle_Certificate">자격증종류</string>
+    <string name="resumeViewScreen_Title_UserDetail">자기소개</string>
+
+    <string name="resumeViewScreen_Title_Retry">재시도</string>
+    <string name="resumeViewScreen_SubTitle_Retry">이력서 로드에 실패했습니다.\n다시 시도해주세요.</string>
+</resources>

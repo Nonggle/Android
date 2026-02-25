@@ -2,8 +2,8 @@ package com.nonggle.network
 
 import io.ktor.client.plugins.logging.Logger
 import android.util.Log
-import com.example.common.result.AuthEvent
-import com.example.common.result.AuthEventBus
+import com.nonggle.network.util.AuthEvent
+import com.nonggle.network.util.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.model.AppResult
 import com.nonggle.network.service.AuthService
@@ -50,8 +50,10 @@ object HttpClientFactory {
             timeoutMs = NetworkConfig.TIMEOUT_MS,
             loggerTag = "KtorLogger"
         ).config {
+            expectSuccess = false
             install(Auth) {
                 bearer {
+                    cacheTokens = false
                     loadTokens {
                         val access = tokenManager.getAccessToken()
                         val refresh = tokenManager.getRefreshToken()
@@ -61,7 +63,6 @@ object HttpClientFactory {
                         ) else null
                     }
 
-                    // 토큰 갱신은 "AuthClient 기반 RefreshTokenService"에 위임
                     refreshTokens {
                         refreshMutex.withLock {
                             val refreshToken = tokenManager.getRefreshToken()
@@ -72,7 +73,6 @@ object HttpClientFactory {
                             }
 
                             val apiResult = refreshTokenService.refresh(refreshToken)
-
 
                             if(apiResult is AppResult.Success) {
                                 val tokenResponse = apiResult.data
@@ -91,10 +91,9 @@ object HttpClientFactory {
                         }
                     }
 
-                    sendWithoutRequest { request ->
-                        request.url.encodedPath in setOf(
-                            "/auth/kakao",
-                        )
+                    sendWithoutRequest { req ->
+                        val path = req.url.encodedPath
+                        path !in setOf("/auth/kakao", "/auth/token/refresh")
                     }
                 }
             }

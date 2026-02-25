@@ -26,7 +26,7 @@ import com.example.core.designsystem.theme.NonggleTheme
 import com.example.core.designsystem.theme.soYo
 
 @Composable
-fun LoginScreen(
+internal fun LoginScreen(
     modifier: Modifier = Modifier,
     //onShowLoginFailSnackBar: suspend (String) -> Unit,
     navigateToMain: () -> Unit,

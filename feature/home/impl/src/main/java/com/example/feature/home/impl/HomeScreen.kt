@@ -1,6 +1,5 @@
 package com.example.feature.home.impl.navigation
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,10 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleCircularProgressBar
 import com.example.core.designsystem.component.NonggleMainTopAppBar
@@ -39,7 +37,6 @@ import com.example.feature.home.impl.HomeEvent
 import com.example.feature.home.impl.HomeState
 import com.example.feature.home.impl.HomeViewModel
 import com.example.feature.home.impl.R
-import com.example.feature.resume.impl.step2.CareerBottomSheetEvent
 
 @Composable
 internal fun HomeScreen(
@@ -94,9 +91,9 @@ internal fun HomeScreen(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                     text = stringResource(R.string.HomeScreen_MainTitle, uiState.userName),
                     textAlign = TextAlign.Start,
-                    style = NonggleTheme.typography.t1,
+                    style = NonggleTheme.typography.t2,
                 )
-                Spacer(modifier = Modifier.weight(0.3f))
+                Spacer(modifier = Modifier.height(120.dp))
                 DownloadProgressBox(
                     title = uiState.downloadResume.title,
                     updateTime = uiState.updateTime,
@@ -108,12 +105,13 @@ internal fun HomeScreen(
         FullButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp, vertical = 40.dp),
             title = stringResource(R.string.HomeScreen_Navigate_ResumeWriting),
             onClick = {
                 onEvent(HomeEvent.NavigateToResumeWritingScreen)
             },
         )
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
@@ -130,7 +128,7 @@ fun DownloadProgressBox(
             .fillMaxWidth()
             .wrapContentHeight()
             .clip(shape = RoundedCornerShape(10.dp))
-            .background(color = NonggleTheme.colorScheme.white)
+            .background(color = NonggleTheme.colorScheme.m5)
     ) {
         if(isDownloadExist) {
             Row(
@@ -157,7 +155,9 @@ fun DownloadProgressBox(
             }
         } else {
             Text(
-                modifier = Modifier.align(Alignment.TopCenter),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(vertical = 30.dp),
                 text = stringResource(R.string.HomeScreen_Download_NotExist),
                 style = NonggleTheme.typography.b1_main,
                 color = NonggleTheme.colorScheme.black

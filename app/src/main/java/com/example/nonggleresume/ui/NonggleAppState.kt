@@ -45,7 +45,7 @@ class NonggleAppState(
     coroutineScope: CoroutineScope,
     networkMonitor: NetworkMonitor,
 ) {
-    private val _isLogin = MutableStateFlow(false)
+    private val _isLogin = MutableStateFlow(true)
 
     val rootNavState: StateFlow<RootNavKey> =
         _isLogin.map { login ->
