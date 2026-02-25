@@ -44,8 +44,3 @@ fun getUserAge(date: LocalDate): Int {
     return ChronoUnit.YEARS.between(date, LocalDate.now()).toInt()
 }
 
-// 문자열 리스트 단일 문장으로 파싱에 활용
-fun combineListToString(list: List<String>): String {
-
-}
-
