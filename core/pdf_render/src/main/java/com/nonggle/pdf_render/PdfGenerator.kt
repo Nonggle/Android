@@ -63,13 +63,13 @@ class PdfGenerator(private val context: Context) {
 
             val contentWidth = pageSize.width - (margin.value * (pageSize.dpi / 160f) * 2).toInt()
             val contentHeight = pageSize.height - (margin.value * (pageSize.dpi / 160f) * 2).toInt()
-            val marginPx = (margin.value * (pageSize.dpi / 160f)).toInt()
-
             if (contentWidth <= 0 || contentHeight <= 0) {
                 return@withContext Result.failure(
-                    IllegalArgumentException("Page content area must be positive. Check pageSize and margin.")
+                    IllegalArgumentException("Page size must be positive. Check pageSize and margin.")
                 )
             }
+            val marginPx = (margin.value * (pageSize.dpi / 160f)).toInt()
+
             if (minLastPageRatio <= 0f || minLastPageRatio > 1f) {
                 return@withContext Result.failure(
                     IllegalArgumentException("minLastPageRatio must be in the range (0f, 1f].")
@@ -233,7 +233,8 @@ class PdfGenerator(private val context: Context) {
         autoRebalanceBreaks: Boolean,
         minLastPageRatio: Float
     ): Pair<IntArray, IntArray> {
-        val pageCount = ceil(totalContentHeight / pageContentHeight.toFloat()).toInt().coerceAtLeast(1)
+        val pageCount =
+            ceil(totalContentHeight / pageContentHeight.toFloat()).toInt().coerceAtLeast(1)
         val pageHeights = IntArray(pageCount)
 
         if (pageCount == 1) {
@@ -241,10 +242,11 @@ class PdfGenerator(private val context: Context) {
         } else {
             val fullPages = pageCount - 1
             val remainder = totalContentHeight - (fullPages * pageContentHeight)
-            val minLastPageHeight = ceil(pageContentHeight * minLastPageRatio).toInt().coerceAtLeast(1)
+            val minLastPageHeight =
+                ceil(pageContentHeight * minLastPageRatio).toInt().coerceAtLeast(1)
             val shouldRebalance = autoRebalanceBreaks &&
-                remainder in 1 until minLastPageHeight &&
-                fullPages > 0
+                    remainder in 1 until minLastPageHeight &&
+                    fullPages > 0
 
             if (!shouldRebalance) {
                 for (index in 0 until fullPages) {
