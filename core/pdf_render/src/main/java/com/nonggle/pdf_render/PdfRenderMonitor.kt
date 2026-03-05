@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.time.withTimeout
+import kotlinx.coroutines.withTimeout
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.resume
 
@@ -73,20 +75,24 @@ class PdfRenderMonitor {
 
     suspend fun waitForRender(
         view: View,
+        timeoutMs: Long = 3000L,
         onStatusChanged: ((PdfRenderLoadStatus) -> Unit)? = null
     ) {
         // Wait until all images have finished loading
-        status
-            .onEach { current -> onStatusChanged?.invoke(current) }
-            .first { current -> current.isIdle }
-
-        // Wait for the next frame to ensure images are rendered into the view
-        waitForNextFrame(view)
+        withTimeout(timeoutMs) {
+            status
+                .onEach { current -> onStatusChanged?.invoke(current) }
+                .first { current -> current.isIdle }
+            waitForNextFrame(view)
+        }
     }
 
     private suspend fun waitForNextFrame(view: View) = suspendCancellableCoroutine { continuation ->
-        view.post {
-            continuation.resume(Unit)
+        val runnable = Runnable {
+            if(continuation.isActive) continuation.resume(Unit)
         }
+        view.post(runnable)
+        // 렌더링 취소시 호출
+        continuation.invokeOnCancellation { view.removeCallbacks(runnable) }
     }
 }
