@@ -32,7 +32,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.Uri
 import com.example.common.utils.getWorkPeriodFormatter
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.theme.NonggleTheme
