@@ -68,8 +68,10 @@ class PdfRenderMonitor {
     }
 
     fun notifyLoadingFinished() {
-        inFlightCount.updateAndGet { current -> (current - 1).coerceAtLeast(0) }
-        finishedCount.incrementAndGet()
+        val previous = inFlightCount.getAndUpdate { current -> (current - 1).coerceAtLeast(0) }
+        if(previous > 0) {
+            finishedCount.incrementAndGet()
+        }
         updateStatus()
     }
 
