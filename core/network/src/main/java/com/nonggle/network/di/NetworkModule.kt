@@ -15,8 +15,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import com.nonggle.common.network.IoDispatcher
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
@@ -56,17 +58,20 @@ object NetworkModule {
     @Singleton
     fun provideRefreshTokenService(
         @AuthClient authClient: HttpClient,
-    ): AuthService = KtorRefreshTokenService(authClient)
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): AuthService = KtorRefreshTokenService(authClient, ioDispatcher)
 
     @Provides
     @Singleton
     fun provideLoginService(
         @ApiClient baseClient: HttpClient,
-    ): LoginService = LoginServiceImpl(baseClient)
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): LoginService = LoginServiceImpl(baseClient, ioDispatcher)
 
     @Provides
     @Singleton
     fun provideResumeService(
         @ApiClient baseClient: HttpClient,
-    ): ResumeService = ResumeServiceImpl(baseClient)
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): ResumeService = ResumeServiceImpl(baseClient, ioDispatcher)
 }

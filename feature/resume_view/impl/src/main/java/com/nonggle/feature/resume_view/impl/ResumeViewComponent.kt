@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,23 +25,36 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.Uri
 import coil3.compose.AsyncImage
 import com.example.core.designsystem.theme.NonggleTheme
 
 
 @Composable
-fun userProfile(profileImageUrl: Uri) {
-    AsyncImage(
-        modifier = Modifier
+fun userProfile(
+    modifier: Modifier,
+    profileImageUrl: String
+) {
+    Box(
+        modifier = modifier
             .size(80.dp)
-            .clip(RoundedCornerShape(99.dp)),
-        model = profileImageUrl,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        error = painterResource(R.drawable.xcircle),
-        placeholder = painterResource(R.drawable.xcircle),
-    )
+            .border(
+                width = 1.dp,
+                color = NonggleTheme.colorScheme.g_line_light,
+                shape = RoundedCornerShape(99.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(99.dp)),
+            model = profileImageUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            error = painterResource(R.drawable.user),
+            placeholder = painterResource(R.drawable.user),
+        )
+    }
 }
 
 @Composable
@@ -87,7 +101,8 @@ fun careerCard(
             .clip(RoundedCornerShape(20.dp))
             .border(
                 BorderStroke(1.dp, NonggleTheme.colorScheme.g_line_light),
-                shape = RoundedCornerShape(20.dp))
+                shape = RoundedCornerShape(20.dp)
+            )
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)

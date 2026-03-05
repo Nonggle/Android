@@ -2,6 +2,7 @@ package com.nonggle.feature.resume_view.impl
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,10 +32,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.Uri
 import com.example.common.utils.getWorkPeriodFormatter
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.theme.NonggleTheme
+import com.nonggle.feature.resume_view.impl.Gender.Companion.getByName
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEvent
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewState
 import com.nonggle.model.ResumeContents
@@ -100,7 +101,6 @@ internal fun ResumeViewScreen(
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    // 상단 배경(기존 height 150)
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -113,30 +113,37 @@ internal fun ResumeViewScreen(
                         modifier = Modifier
                             .padding(top = 100.dp, start = 20.dp, end = 20.dp)
                             .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = NonggleTheme.colorScheme.g_line,
+                                shape = RoundedCornerShape(20.dp)
+                            )
                             .background(
-                                color = NonggleTheme.colorScheme.g1,
-                                shape = RoundedCornerShape(4.dp)
+                                color = NonggleTheme.colorScheme.white,
+                                shape = RoundedCornerShape(20.dp)
                             )
                     ) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            userProfile(Uri(resumeDetail.userProfileImageUrl))
 
                             Text(
-                                modifier = Modifier.padding(vertical = 10.dp),
+                                modifier = Modifier.padding(top = 52.dp, bottom = 10.dp),
                                 text = resumeDetail.userName,
                                 style = NonggleTheme.typography.t3.copy(color = NonggleTheme.colorScheme.black),
                             )
 
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Image(
                                     painter = painterResource(R.drawable.user),
                                     contentDescription = null
                                 )
                                 Text(
-                                    text = "${resumeDetail.gender} * ${resumeDetail.userAge}",
+                                    modifier = Modifier.padding(start = 4.dp),
+                                    text = "${getByName(resumeDetail.gender)}, ${resumeDetail.userAge}",
                                     style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g1),
                                 )
                             }
@@ -148,6 +155,15 @@ internal fun ResumeViewScreen(
                             )
                         }
                     }
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.TopCenter
+                    ) {
+                        userProfile(
+                            modifier = Modifier.padding(top = 66.dp),
+                            profileImageUrl = resumeDetail.userProfileImageUrl
+                        )
+                    }
                 }
 
                 Spacer(Modifier.height(20.dp))
@@ -156,7 +172,7 @@ internal fun ResumeViewScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
-                        .background(color = NonggleTheme.colorScheme.g3)
+                        .background(color = NonggleTheme.colorScheme.g_line)
                 )
             }
 
@@ -184,6 +200,7 @@ internal fun ResumeViewScreen(
                 key = { career -> career.id }
             ) { career ->
                 careerCard(
+                    modifier = Modifier.padding(horizontal = 20.dp),
                     careerTitle = career.title,
                     careerPeriod = career.careerPeriod,
                     careerPeriodTotal = getWorkPeriodFormatter(career.careerStareDate, career.careerEndDate),
@@ -199,17 +216,20 @@ internal fun ResumeViewScreen(
                         .height(1.dp)
                         .background(color = NonggleTheme.colorScheme.g_line)
                 )
-                Spacer(Modifier.height(36.dp))
+                Spacer(Modifier.height(26.dp))
             }
 
             // ---------- 자격증 ----------
             item(key = "cert_title") {
                 Text(
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                     text = stringResource(R.string.resumeViewScreen_Title_Certificate),
                     style = NonggleTheme.typography.t3.copy(color = NonggleTheme.colorScheme.black)
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
@@ -238,7 +258,7 @@ internal fun ResumeViewScreen(
             // ---------- 자기소개 ----------
             item(key = "detail_title") {
                 Text(
-                    modifier = Modifier.padding(bottom = 16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
                     text = stringResource(R.string.resumeViewScreen_Title_UserDetail),
                     style = NonggleTheme.typography.t3.copy(color = NonggleTheme.colorScheme.black)
                 )
@@ -246,21 +266,23 @@ internal fun ResumeViewScreen(
 
             item(key = "keywords") {
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(
                         count = resumeDetail.userDetailKeyword.size,
                         key = { index -> resumeDetail.userDetailKeyword[index].id }
                     ) { index ->
-                        typeCard(title = resumeDetail.userDetailKeyword[index].type)
+                        typeCard(title = "#${resumeDetail.userDetailKeyword[index].type}")
                     }
                 }
             }
 
             item(key = "detail_summary") {
                 Text(
-                    modifier = Modifier.padding(top = 16.dp, bottom = 20.dp),
+                    modifier = Modifier.padding(top = 16.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
                     text = resumeDetail.userDetailSummary,
                     style = NonggleTheme.typography.b2_sub.copy(color = NonggleTheme.colorScheme.g2)
                 )

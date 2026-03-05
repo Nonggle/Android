@@ -8,24 +8,24 @@ data class ResumeDto(
     val id: Long,
     val userId: Long,
     val userName: String,
-    val userAge: String,
-    val birthDate: String?,
-    val gender: String?,
-    val certificationList: List<String>?,
+    val userAge: String? = null,
+    val birthDate: String? = null,
+    val userGender: String? = null,
+    val certificationList: List<String>? = emptyList(),
     val careerList: List<CareerResponseData>,
     val totalCareer: String,
     val introduce: String?,
-    val introduceDetail: String?,
-    val personalityList: List<String>?,
-    val profileImageUrl: String?,
-    val createdAt: String?,
-    val updatedAt: String?,
+    val introduceDetail: String? = null,
+    val personalityList: List<String>? = emptyList(),
+    val profileImageUrl: String? = null,
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
 ) {
     @Serializable
     data class CareerResponseData(
         val careerStartDate: String,
         val careerEndDate: String,
-        val careerPeriod: String,
+        val careerPeriod: String?,
         val careerDescription: String,
         val careerDetail: String
     )
@@ -35,18 +35,18 @@ fun ResumeDto.asExternalModel(): SingleResume =
     SingleResume(
         id = id,
         userName = userName,
-        userAge = userAge,
-        gender = gender ?: "",
+        userAge = userAge ?: "",
+        gender = userGender ?: "",
         certificationList = certificationList ?: emptyList(),
         careerList = careerList.map { career ->
             SingleResume.Career(
                 careerStartDate = career.careerStartDate,
                 careerEndDate = career.careerEndDate,
-                careerPeriod = career.careerPeriod,
+                careerPeriod = career.careerPeriod ?: "",
                 careerDescription = career.careerDescription,
                 careerDetail = career.careerDetail
             )
-        } ?: emptyList(),
+        },
         totalCareer = totalCareer,
         introduce = introduce ?: "",
         introduceDetail = introduceDetail ?: "",

@@ -15,6 +15,20 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
+enum class Gender(val value: String) {
+    MALE("남"), FEMALE("여");
+
+    companion object {
+        fun getByName(name: String): String {
+            return when (name) {
+                "MALE" -> MALE.value
+                "FEMALE" -> FEMALE.value
+                else -> ""
+            }
+        }
+    }
+}
+
 @HiltViewModel(assistedFactory = ResumeViewViewModel.Factory::class)
 class ResumeViewViewModel @AssistedInject constructor(
     @Assisted val navKey: ResumeViewNavKey,
@@ -32,7 +46,7 @@ class ResumeViewViewModel @AssistedInject constructor(
     }
 
     override fun onEvent(event: ResumeViewEvent) {
-        when(event) {
+        when (event) {
             is ResumeViewEvent.RetryGetResumeDetail -> {
                 getResumeDetail(resumeId = navKey.resumeId)
             }
@@ -41,27 +55,26 @@ class ResumeViewViewModel @AssistedInject constructor(
 
     private fun getResumeDetail(resumeId: Long) {
         viewModelScope.launch {
-            viewModelScope.launch {
-                updateState { copy(isLoading = true) }
-                val result = resumeSingleViewUseCase(resumeId)
+            updateState { copy(isLoading = true, resumeRetry = false) }
+            val result = resumeSingleViewUseCase(resumeId)
 
-                when (result) {
-                    is AppResult.Success -> {
-                        updateState {
-                            copy(
-                                isLoading = false,
-                                resumeDetail = result.data.toResumeContents(),
-                            )
-                        }
+            when (result) {
+                is AppResult.Success -> {
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            resumeRetry = false,
+                            resumeDetail = result.data.toResumeContents(),
+                        )
                     }
+                }
 
-                    is AppResult.Error -> {
-                        updateState {
-                            copy(
-                                isLoading = false,
-                                resumeRetry = true,
-                            )
-                        }
+                is AppResult.Error -> {
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            resumeRetry = true,
+                        )
                     }
                 }
             }
