@@ -55,7 +55,7 @@ class ResumeViewViewModel @AssistedInject constructor(
 
     private fun getResumeDetail(resumeId: Long) {
         viewModelScope.launch {
-            updateState { copy(isLoading = true) }
+            updateState { copy(isLoading = true, resumeRetry = false) }
             val result = resumeSingleViewUseCase(resumeId)
 
             when (result) {
@@ -63,6 +63,7 @@ class ResumeViewViewModel @AssistedInject constructor(
                     updateState {
                         copy(
                             isLoading = false,
+                            resumeRetry = false,
                             resumeDetail = result.data.toResumeContents(),
                         )
                     }
