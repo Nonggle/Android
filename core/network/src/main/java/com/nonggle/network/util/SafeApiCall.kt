@@ -10,26 +10,27 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 
 suspend inline fun <reified T> safeApiCall(
+    dispatcher: CoroutineDispatcher,
     crossinline block: suspend () -> HttpResponse
-): AppResult<T> {
-    return try {
+): AppResult<T> = withContext(dispatcher) {
+    try {
         val response = block()
         val httpCode = response.status.value
 
         if (response.status.isSuccess()) {
             val envelope: ApiResponse<T> = response.body()
             if (envelope.success) {
-                val data = envelope.data
-                    ?: return AppResult.Error(AppError.Serialization) // success인데 data 없음
-                AppResult.Success(data)
+                envelope.data?.let { AppResult.Success(it) }
+                    ?: AppResult.Error(AppError.Serialization)
             } else {
-                val errorMsg = envelope.error?.message
-                AppResult.Error(AppError.Http(httpCode, errorMsg))
+                AppResult.Error(AppError.Http(httpCode, envelope.error?.message))
             }
         } else {
             AppResult.Error(AppError.Http(response.status.value, response.bodyAsText() ?: "Unhandled HTTP error"))
