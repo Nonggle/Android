@@ -8,18 +8,18 @@ data class ResumeDto(
     val id: Long,
     val userId: Long,
     val userName: String,
-    val userAge: String?,
-    val birthDate: String?,
-    val userGender: String?,
-    val certificationList: List<String>?,
+    val userAge: String? = null,
+    val birthDate: String? = null,
+    val userGender: String? = null,
+    val certificationList: List<String>? = emptyList(),
     val careerList: List<CareerResponseData>,
     val totalCareer: String,
     val introduce: String?,
-    val introduceDetail: String?,
-    val personalityList: List<String>?,
-    val profileImageUrl: String?,
-    val createdAt: String?,
-    val updatedAt: String?,
+    val introduceDetail: String? = null,
+    val personalityList: List<String>? = emptyList(),
+    val profileImageUrl: String? = null,
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
 ) {
     @Serializable
     data class CareerResponseData(
@@ -42,11 +42,11 @@ fun ResumeDto.asExternalModel(): SingleResume =
             SingleResume.Career(
                 careerStartDate = career.careerStartDate,
                 careerEndDate = career.careerEndDate,
-                careerPeriod = career.careerPeriod ?: "기간없음",
+                careerPeriod = career.careerPeriod ?: "",
                 careerDescription = career.careerDescription,
                 careerDetail = career.careerDetail
             )
-        } ?: emptyList(),
+        },
         totalCareer = totalCareer,
         introduce = introduce ?: "",
         introduceDetail = introduceDetail ?: "",
