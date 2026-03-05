@@ -1,6 +1,5 @@
 package com.nonggle.pdf_render
 
-//noinspection SuspiciousImport
 import android.R
 import android.app.Activity
 import android.content.Context
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewTreeObserver
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -34,151 +32,6 @@ import androidx.compose.foundation.layout.width
 class PdfGenerator(private val context: Context) {
 
     /**
-     * Generates a PDF from the given Composables.
-     */
-    suspend fun generate(
-        outputStream: OutputStream,
-        pageSize: PdfPageSize = PdfPageSize.A4(72), // Default to A4
-        margin: Dp = 160.dp, // 1 inch
-        timeout: Long = 3000,
-        pages: List<@Composable () -> Unit>
-    ): Result<String> = withContext(Dispatchers.Main) {
-
-        outputStream.use { out ->
-            val pdfDocument = PdfDocument()
-            val imageMonitor = PdfImageMonitor()
-
-            // Dynamic density so the content appears the same regardless of the DPI
-            val densityScale = pageSize.dpi / 72f
-            val pdfDensity = object : Density {
-                override val density: Float = densityScale
-                override val fontScale: Float = 1f
-            }
-
-            // size minus margin/padding
-            val contentWidth = pageSize.width - (margin.value * (pageSize.dpi / 160f) * 2).toInt()
-            val contentHeight = pageSize.height - (margin.value * (pageSize.dpi / 160f) * 2).toInt()
-
-            // margin in pixels
-            val marginPx = (margin.value * (pageSize.dpi / 160f)).toInt()
-
-            try {
-                pages.forEachIndexed { index, pageContent ->
-
-                    val contentReady = CompletableDeferred<Unit>()
-                    val pageInfo = PdfDocument.PageInfo.Builder(
-                        pageSize.width, pageSize.height, index + 1
-                    ).create()
-                    val page = pdfDocument.startPage(pageInfo)
-
-                    // Create the View
-                    var viewAttached = false
-                    // keep the view invisible
-                    val composeView = ComposeView(context = context)
-                    val rootLayout =
-                        (context as? Activity)?.window?.decorView?.findViewById<ViewGroup>(R.id.content)
-                            ?: throw IllegalStateException("Context must be an Activity")
-
-                    try {
-                        composeView.apply {
-                            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
-                            setContent {
-                                CompositionLocalProvider(
-                                    LocalPdfImageMonitor provides imageMonitor,
-                                    LocalDensity provides pdfDensity
-                                ) {
-                                    val contentWidthDp = with(pdfDensity) { contentWidth.toDp() }
-                                    val contentHeightDp = with(pdfDensity) { contentHeight.toDp() }
-                                    Box(
-                                        modifier = Modifier
-                                            .size(
-                                                contentWidthDp,
-                                                contentHeightDp
-                                            )
-                                            .onGloballyPositioned {
-                                                if (!contentReady.isCompleted) {
-                                                    contentReady.complete(Unit)
-                                                }
-                                            }
-                                    ) {
-                                        pageContent()
-                                    }
-                                }
-                            }
-                        }
-
-                        // Add view with 0 alpha
-                        composeView.alpha = 0f
-                        rootLayout.addView(
-                            composeView,
-                            LayoutParams(contentWidth, contentHeight)
-                        )
-
-                        // Safely wait for the content
-                        withContext(Dispatchers.Main) {
-                            kotlinx.coroutines.withTimeout(timeout) {
-                                contentReady.await()
-                            }
-                        }
-                        viewAttached = true
-
-                        // Wait for the next frame
-                        waitForNextFrame(composeView)
-
-                        // Wait for the images to fully load
-                        imageMonitor.waitForImages(composeView)
-
-                        composeView.measure(
-                            View.MeasureSpec.makeMeasureSpec(
-                                contentWidth,
-                                View.MeasureSpec.EXACTLY
-                            ),
-                            View.MeasureSpec.makeMeasureSpec(
-                                contentHeight,
-                                View.MeasureSpec.EXACTLY
-                            )
-                        )
-                        composeView.layout(0, 0, pageSize.width, pageSize.height)
-
-                        // Wait for the view to be ready to draw
-                        waitForDrawReady(composeView)
-
-                        page.canvas.save()
-                        page.canvas.translate(marginPx.toFloat(), marginPx.toFloat())
-                        composeView.draw(page.canvas)
-                        page.canvas.restore()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        if (viewAttached) {
-                            rootLayout.removeView(composeView)
-                        }
-                        return@withContext Result.failure(e)
-                    } finally {
-                        if (viewAttached) {
-                            rootLayout.removeView(composeView)
-                        }
-
-                        pdfDocument.finishPage(page)
-                    }
-                }
-
-                //Write to File
-                withContext(Dispatchers.IO) {
-                    pdfDocument.writeTo(out)
-                    out.flush()
-                }
-
-                return@withContext Result.success("Successfully generated ${pages.size} pages!")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext Result.failure(e)
-            } finally {
-                pdfDocument.close()
-            }
-        }
-    }
-
-    /**
      * Generates a PDF from a single long Composable.
      * If content height exceeds a page, it is split across multiple pages without bitmap capture.
      */
@@ -189,11 +42,19 @@ class PdfGenerator(private val context: Context) {
         timeout: Long = 3000,
         autoRebalanceBreaks: Boolean = true,
         minLastPageRatio: Float = 0.2f,
+        monitor: PdfRenderMonitor = PdfRenderMonitor(),
         content: @Composable () -> Unit
     ): Result<String> = withContext(Dispatchers.Main) {
         outputStream.use { out ->
             val pdfDocument = PdfDocument()
-            val imageMonitor = PdfImageMonitor()
+            monitor.reset()
+            emitProgress(
+                monitor = monitor,
+                progress = PdfRenderProgress(
+                    stage = PdfRenderStage.INITIALIZING,
+                    progress = 0f
+                )
+            )
 
             val pdfDensity = object : Density {
                 override val density: Float = pageSize.dpi / 160f
@@ -230,7 +91,7 @@ class PdfGenerator(private val context: Context) {
                     setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
                     setContent {
                         CompositionLocalProvider(
-                            LocalPdfImageMonitor provides imageMonitor,
+                            LocalPdfMonitor provides monitor,
                             LocalDensity provides pdfDensity
                         ) {
                             Box(
@@ -261,9 +122,16 @@ class PdfGenerator(private val context: Context) {
                         contentReady.await()
                     }
                 }
+                emitProgress(
+                    monitor = monitor,
+                    progress = PdfRenderProgress(
+                        stage = PdfRenderStage.COMPOSING,
+                        progress = 0.1f
+                    )
+                )
 
                 waitForNextFrame(composeView)
-                imageMonitor.waitForImages(composeView)
+                monitor.waitForRender(composeView)
 
                 composeView.measure(
                     View.MeasureSpec.makeMeasureSpec(contentWidth, View.MeasureSpec.EXACTLY),
@@ -308,13 +176,42 @@ class PdfGenerator(private val context: Context) {
                         page.canvas.restore()
                     } finally {
                         pdfDocument.finishPage(page)
+                        val renderedPages = pageIndex + 1
+                        val pageProgress = renderedPages.toFloat() / pageCount.toFloat()
+                        emitProgress(
+                            monitor = monitor,
+                            progress = PdfRenderProgress(
+                                stage = PdfRenderStage.RENDERING_PAGES,
+                                progress = 0.45f + (pageProgress * 0.45f),
+                                renderedPages = renderedPages,
+                                totalPages = pageCount
+                            )
+                        )
                     }
                 }
 
+                emitProgress(
+                    monitor = monitor,
+                    progress = PdfRenderProgress(
+                        stage = PdfRenderStage.WRITING_FILE,
+                        progress = 0.95f,
+                        renderedPages = pageCount,
+                        totalPages = pageCount
+                    )
+                )
                 withContext(Dispatchers.IO) {
                     pdfDocument.writeTo(out)
                     out.flush()
                 }
+                emitProgress(
+                    monitor = monitor,
+                    progress = PdfRenderProgress(
+                        stage = PdfRenderStage.COMPLETED,
+                        progress = 1f,
+                        renderedPages = pageCount,
+                        totalPages = pageCount
+                    )
+                )
 
                 Result.success("Successfully generated $pageCount pages from long content.")
             } catch (e: Exception) {
@@ -412,5 +309,12 @@ class PdfGenerator(private val context: Context) {
                 continuation.resume(Unit)
             }
         }
+    }
+
+    private fun emitProgress(
+        monitor: PdfRenderMonitor,
+        progress: PdfRenderProgress
+    ) {
+        monitor.report(progress)
     }
 }
