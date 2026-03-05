@@ -161,7 +161,7 @@ internal fun ResumeViewScreen(
                     ) {
                         userProfile(
                             modifier = Modifier.padding(top = 66.dp),
-                            resumeDetail.userProfileImageUrl
+                            profileImageUrl = resumeDetail.userProfileImageUrl
                         )
                     }
                 }
