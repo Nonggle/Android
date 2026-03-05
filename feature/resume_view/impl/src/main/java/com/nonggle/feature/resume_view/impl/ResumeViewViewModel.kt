@@ -22,7 +22,8 @@ enum class Gender(val value: String) {
         fun getByName(name: String): String {
             return when (name) {
                 "MALE" -> MALE.value
-                else -> FEMALE.value
+                "FEMALE" -> FEMALE.value
+                else -> ""
             }
         }
     }
