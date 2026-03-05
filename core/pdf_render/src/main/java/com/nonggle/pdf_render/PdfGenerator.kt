@@ -215,7 +215,7 @@ class PdfGenerator(private val context: Context) {
 
                 Result.success("Successfully generated $pageCount pages from long content.")
             } catch (e: Exception) {
-                e.printStackTrace()
+                monitor.reset()
                 Result.failure(e)
             } finally {
                 if (viewAttached) {
