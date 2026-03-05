@@ -91,8 +91,7 @@ internal fun DownloadScreen(
         } else if (uiState.errorOcuur == true) {
             FullButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                    .fillMaxWidth(),
                 title = stringResource(R.string.Download_Title_RetryButton),
                 onClick = { onEvent(DownloadEvent.RetryGetResumeList) }
             )
