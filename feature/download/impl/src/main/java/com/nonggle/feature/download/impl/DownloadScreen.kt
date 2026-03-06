@@ -1,6 +1,7 @@
 package com.nonggle.feature.download.impl.navigation
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +23,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,10 +44,10 @@ import coil3.request.crossfade
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
 import com.example.core.designsystem.component.FullButton
-import com.example.core.designsystem.component.NonggleBottomSheet
 import com.example.core.designsystem.component.NonggleDialog
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.theme.NonggleTheme
+import com.nonggle.feature.download.impl.DownloadEffect
 import com.nonggle.feature.download.impl.R
 import com.nonggle.feature.download.impl.DownloadEvent
 import com.nonggle.feature.download.impl.DownloadState
@@ -61,6 +62,16 @@ internal fun DownloadScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect {  effect ->
+            when(effect) {
+                is DownloadEffect.ShowErrorToastMessage -> {
+                    Toast.makeText(context, R.string.ResumeDelete_Fail_ToastMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     DownloadScreen(
         modifier = modifier,
@@ -88,7 +99,7 @@ internal fun DownloadScreen(
     ) {
         if (uiState.isLoading == true) {
             CircularProgressIndicator()
-        } else if (uiState.errorOcuur == true) {
+        } else if (uiState.isError == true) {
             FullButton(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -106,7 +117,8 @@ internal fun DownloadScreen(
                         resumeItem(
                             resumeContent = uiState.resumeList[index],
                             context = context,
-                            navigateToViewResume = navigateToViewResume
+                            navigateToViewResume = navigateToViewResume,
+                            deleteItem = { onEvent(DownloadEvent.deleteResumeItem(resumeId = uiState.resumeList[index].id)) }
                         )
                     }
                 )
@@ -120,11 +132,13 @@ internal fun DownloadScreen(
 fun resumeItem(
     modifier: Modifier = Modifier,
     context: Context,
+    deleteItem: () -> Unit,
     resumeContent: SingleResume,
     navigateToViewResume: (Long) -> Unit = {},
 
 ) {
     var showExportDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     if(showExportDialog) {
         exportDialog(
@@ -132,6 +146,19 @@ fun resumeItem(
             onConfirm = {
                 // TODO 추출 진행 예정
                 showExportDialog = false
+
+                //1) pdf 추출
+                // 2) 다운로드 로직 시행
+            }
+        )
+    }
+
+    if(showDeleteDialog) {
+        deleteDialog(
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = {
+                deleteItem()
+                showDeleteDialog = false
             }
         )
     }
@@ -166,7 +193,11 @@ fun resumeItem(
                     AsyncImage(
                         modifier = Modifier
                             .size(58.dp)
-                            .border(width = 1.dp, color = NonggleTheme.colorScheme.g_line_light, shape = RoundedCornerShape(99.dp)),
+                            .border(
+                                width = 1.dp,
+                                color = NonggleTheme.colorScheme.g_line_light,
+                                shape = RoundedCornerShape(99.dp)
+                            ),
                         model = ImageRequest.Builder(context)
                             .data(resumeContent.profileImageUrl)
                             .crossfade(true)
@@ -208,11 +239,23 @@ fun resumeItem(
                 }
             }
         }
-        NonggleIconButton(
-            modifier = Modifier.align(Alignment.TopEnd),
-            onClick = { showExportDialog = true },
-            image = painterResource(R.drawable.export)
-        )
+        // 내보내기 아이콘 버튼
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 10.dp),
+        ) {
+            NonggleIconButton(
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = { showExportDialog = true },
+                image = painterResource(R.drawable.export)
+            )
+            NonggleIconButton(
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = { showDeleteDialog = true },
+                image = painterResource(R.drawable.xcircle)
+            )
+        }
     }
 }
 
@@ -228,6 +271,24 @@ fun exportDialog(
         dialogContent = {
             Text(
                 text = stringResource(R.string.ResumeExport_Dialog_Content),
+                style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
+            )
+        }
+    )
+}
+
+@Composable
+fun deleteDialog(
+    onDismiss: () -> Unit = {},
+    onConfirm: () -> Unit = {},
+) {
+    NonggleDialog(
+        onDismiss = onDismiss,
+        onConfirm = onConfirm,
+        dialogTitle = stringResource(R.string.ResumeDelete_Dialog_Title),
+        dialogContent = {
+            Text(
+                text = stringResource(R.string.ResumeDelete_Dialog_Content),
                 style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
             )
         }

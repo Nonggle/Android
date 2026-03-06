@@ -10,13 +10,14 @@ import com.nonggle.model.SingleResume
 data class DownloadState(
     val isLoading: Boolean = false,
     val resumeList: List<SingleResume> = emptyList(),
-    val errorOcuur: Boolean = false,
+    val isError: Boolean = false,
 ): UiState
 
 sealed interface DownloadEvent: UiEvent {
     data object RetryGetResumeList: DownloadEvent
+    data class deleteResumeItem(val resumeId: Long): DownloadEvent
 }
 
 sealed interface DownloadEffect: UiEffect {
-
+    data object ShowErrorToastMessage: DownloadEffect
 }
