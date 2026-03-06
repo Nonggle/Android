@@ -16,6 +16,9 @@ fun EntryProviderScope<NavKey>.resumeViewEntryProvider(navigator: Navigator) {
             }
         )
 
-        ResumeViewScreen(viewModel = viewModel)
+        ResumeViewScreen(
+            viewModel = viewModel,
+            navigateToBack = { navigator.goBack() }
+        )
     }
 }

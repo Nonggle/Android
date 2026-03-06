@@ -6,6 +6,7 @@ import com.example.domain.usecase.ResumeSingleViewUseCase
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEffect
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEvent
 import com.nonggle.feature.resume_view.impl.navigation.ResumeViewState
+import com.nonggle.feature.resume_view.impl.navigation.ScreenMode
 import com.nonggle.model.AppResult
 import com.nonggle.model.toResumeContents
 import com.nonggle.resume_view.api.ResumeViewNavKey
@@ -14,20 +15,6 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-
-enum class Gender(val value: String) {
-    MALE("남"), FEMALE("여");
-
-    companion object {
-        fun getByName(name: String): String {
-            return when (name) {
-                "MALE" -> MALE.value
-                "FEMALE" -> FEMALE.value
-                else -> ""
-            }
-        }
-    }
-}
 
 @HiltViewModel(assistedFactory = ResumeViewViewModel.Factory::class)
 class ResumeViewViewModel @AssistedInject constructor(
@@ -49,6 +36,15 @@ class ResumeViewViewModel @AssistedInject constructor(
         when (event) {
             is ResumeViewEvent.RetryGetResumeDetail -> {
                 getResumeDetail(resumeId = navKey.resumeId)
+            }
+
+            is ResumeViewEvent.ClickBackIconButton -> {
+                postEffect(ResumeViewEffect.NavigateToBack)
+            }
+
+            is ResumeViewEvent.DownloadResumeToLocal -> {
+                updateState { copy(screenMode = ScreenMode.PDF) }
+                postEffect(ResumeViewEffect.DownLoadPDF)
             }
         }
     }
@@ -79,5 +75,21 @@ class ResumeViewViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    fun updatePermissionGranted(isGranted: Boolean) {
+        updateState { copy(writeExternalPermissionGranted = isGranted) }
+    }
+
+    fun updateScreenMode(screenMode: ScreenMode) {
+        updateState { copy(screenMode = screenMode) }
+    }
+
+    fun generateDownloadSuccessToastMessage() {
+        postEffect(ResumeViewEffect.DownLoadSuccess)
+    }
+
+    fun generateDownloadFailToastMessage(message: String) {
+        postEffect(ResumeViewEffect.DownLoadFailure(message))
     }
 }
