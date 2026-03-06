@@ -14,10 +14,12 @@ data class DownloadState(
 ): UiState
 
 sealed interface DownloadEvent: UiEvent {
-    data object RetryGetResumeList: DownloadEvent
-    data class deleteResumeItem(val resumeId: Long): DownloadEvent
+    object RetryGetResumeList: DownloadEvent
+    /// FIXME: 동시에 삭제가 진행된다면?
+    data class DeleteResumeItem(val resumeId: Long): DownloadEvent
 }
 
 sealed interface DownloadEffect: UiEffect {
-    data object ShowErrorToastMessage: DownloadEffect
+    object ShowErrorToastMessage: DownloadEffect
+
 }

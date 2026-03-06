@@ -1,15 +1,5 @@
 package com.nonggle.feature.download.impl
 
-import android.content.ContentValues
-import android.content.Context
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.example.core.ui.BaseViewModel
 import com.example.domain.usecase.ResumeDeleteUseCase
@@ -17,11 +7,6 @@ import com.example.domain.usecase.ResumeListViewUseCase
 import com.nonggle.model.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.util.jar.Manifest
 import javax.inject.Inject
 @HiltViewModel
 class DownloadViewModel @Inject constructor(
@@ -39,7 +24,7 @@ class DownloadViewModel @Inject constructor(
                 getResumeList()
             }
 
-            is DownloadEvent.deleteResumeItem -> {
+            is DownloadEvent.DeleteResumeItem -> {
                 deleteResumeItem(event.resumeId)
             }
         }
@@ -54,7 +39,7 @@ class DownloadViewModel @Inject constructor(
                     updateState {
                         copy(
                             isLoading = false,
-                            resumeList = result.data ?: currentState.resumeList,
+                            resumeList = result.data,
                             isError = false
                         )
                     }
@@ -92,5 +77,6 @@ class DownloadViewModel @Inject constructor(
             }
         }
     }
+
 
 }

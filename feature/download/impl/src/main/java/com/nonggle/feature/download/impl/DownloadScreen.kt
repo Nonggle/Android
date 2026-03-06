@@ -1,7 +1,6 @@
 package com.nonggle.feature.download.impl.navigation
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,7 +22,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +45,6 @@ import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleDialog
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.theme.NonggleTheme
-import com.nonggle.feature.download.impl.DownloadEffect
 import com.nonggle.feature.download.impl.R
 import com.nonggle.feature.download.impl.DownloadEvent
 import com.nonggle.feature.download.impl.DownloadState
@@ -62,16 +59,6 @@ internal fun DownloadScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    LaunchedEffect(viewModel.effect) {
-        viewModel.effect.collect {  effect ->
-            when(effect) {
-                is DownloadEffect.ShowErrorToastMessage -> {
-                    Toast.makeText(context, R.string.ResumeDelete_Fail_ToastMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
     DownloadScreen(
         modifier = modifier,
@@ -118,7 +105,7 @@ internal fun DownloadScreen(
                             resumeContent = uiState.resumeList[index],
                             context = context,
                             navigateToViewResume = navigateToViewResume,
-                            deleteItem = { onEvent(DownloadEvent.deleteResumeItem(resumeId = uiState.resumeList[index].id)) }
+                            deleteItem = { onEvent(DownloadEvent.DeleteResumeItem(resumeId = uiState.resumeList[index].id)) }
                         )
                     }
                 )
@@ -137,21 +124,7 @@ fun resumeItem(
     navigateToViewResume: (Long) -> Unit = {},
 
 ) {
-    var showExportDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
-
-    if(showExportDialog) {
-        exportDialog(
-            onDismiss = { showExportDialog = false },
-            onConfirm = {
-                // TODO 추출 진행 예정
-                showExportDialog = false
-
-                //1) pdf 추출
-                // 2) 다운로드 로직 시행
-            }
-        )
-    }
 
     if(showDeleteDialog) {
         deleteDialog(
@@ -239,42 +212,14 @@ fun resumeItem(
                 }
             }
         }
-        // 내보내기 아이콘 버튼
-        Row(
+        NonggleIconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 10.dp),
-        ) {
-            NonggleIconButton(
-                modifier = Modifier.padding(end = 8.dp),
-                onClick = { showExportDialog = true },
-                image = painterResource(R.drawable.export)
-            )
-            NonggleIconButton(
-                modifier = Modifier.padding(end = 8.dp),
-                onClick = { showDeleteDialog = true },
-                image = painterResource(R.drawable.xcircle)
-            )
-        }
+                .padding(end = 8.dp, top = 10.dp),
+            onClick = { showDeleteDialog = true },
+            image = painterResource(R.drawable.xcircle)
+        )
     }
-}
-
-@Composable
-fun exportDialog(
-    onDismiss: () -> Unit = {},
-    onConfirm: () -> Unit = {},
-) {
-    NonggleDialog(
-        onDismiss = onDismiss,
-        onConfirm = onConfirm,
-        dialogTitle = stringResource(R.string.ResumeExport_Dialog_Title),
-        dialogContent = {
-            Text(
-                text = stringResource(R.string.ResumeExport_Dialog_Content),
-                style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
-            )
-        }
-    )
 }
 
 @Composable
