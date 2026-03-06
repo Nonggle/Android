@@ -52,9 +52,9 @@ import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.component.NonggleTopAppBar
 import com.example.core.designsystem.theme.NonggleTheme
 import com.nonggle.feature.resume_view.impl.navigation.Gender.Companion.getByName
-import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEffect
-import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEvent
-import com.nonggle.feature.resume_view.impl.navigation.ResumeViewState
+import com.nonggle.feature.resume_view.impl.navigation.ResumeReadEffect
+import com.nonggle.feature.resume_view.impl.navigation.ResumeReadEvent
+import com.nonggle.feature.resume_view.impl.navigation.ResumeReadState
 import com.nonggle.feature.resume_view.impl.navigation.ScreenMode
 import com.nonggle.model.ResumeContents
 import com.nonggle.pdf_render.Orientation
@@ -68,7 +68,7 @@ import java.io.FileOutputStream
 @Composable
 internal fun ResumeViewScreen(
     modifier: Modifier = Modifier,
-    viewModel: ResumeViewViewModel,
+    viewModel: ResumeReadViewModel,
     navigateToBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -85,12 +85,12 @@ internal fun ResumeViewScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is ResumeViewEffect.NavigateToBack -> {
+                is ResumeReadEffect.NavigateToBack -> {
                     navigateToBack()
                 }
 
                 // 버전에 따라 권한을 요청후 작업을 진행해야함
-                is ResumeViewEffect.DownLoadPDF -> {
+                is ResumeReadEffect.DownLoadPDF -> {
                     if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && !uiState.writeExternalPermissionGranted) {
                         permissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     }
@@ -155,7 +155,7 @@ internal fun ResumeViewScreen(
                     }
                 }
 
-                is ResumeViewEffect.DownLoadSuccess -> {
+                is ResumeReadEffect.DownLoadSuccess -> {
                     Toast.makeText(
                         context,
                         R.string.ResumeExport_Succcess_ToastMessage,
@@ -163,7 +163,7 @@ internal fun ResumeViewScreen(
                     ).show()
                 }
 
-                is ResumeViewEffect.DownLoadFailure -> {
+                is ResumeReadEffect.DownLoadFailure -> {
                     Toast.makeText(
                         context,
                         effect.message,
@@ -189,10 +189,10 @@ internal fun ResumeViewScreen(
 internal fun ResumeViewScreen(
     context: Context,
     modifier: Modifier = Modifier,
-    uiState: ResumeViewState,
+    uiState: ResumeReadState,
     resumeDetail: ResumeContents?,
     scrollState: ScrollState,
-    onEvent: (ResumeViewEvent) -> Unit = {},
+    onEvent: (ResumeReadEvent) -> Unit = {},
 ) {
     var showExportDialog by remember { mutableStateOf(false) }
 
@@ -204,7 +204,7 @@ internal fun ResumeViewScreen(
 
                 //1) pdf 추출
                 //2) 다운로드 로직 시행
-                onEvent(ResumeViewEvent.DownloadResumeToLocal)
+                onEvent(ResumeReadEvent.DownloadResumeToLocal)
             }
         )
     }
@@ -224,7 +224,7 @@ internal fun ResumeViewScreen(
             FullButton(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = { onEvent(ResumeViewEvent.RetryGetResumeDetail) },
+                onClick = { onEvent(ResumeReadEvent.RetryGetResumeDetail) },
                 title = stringResource(R.string.resumeViewScreen_Title_Retry)
             )
             Text(
@@ -251,7 +251,7 @@ internal fun ResumeViewScreen(
                         // 상단바
                         NonggleTopAppBar(
                             navigationIcon = R.drawable.arrow_left,
-                            onNavigationClick = { onEvent(ResumeViewEvent.ClickBackIconButton) },
+                            onNavigationClick = { onEvent(ResumeReadEvent.ClickBackIconButton) },
                             colors = TopAppBarColors(
                                 containerColor = Color.Transparent,
                                 navigationIconContentColor = Color.Transparent,

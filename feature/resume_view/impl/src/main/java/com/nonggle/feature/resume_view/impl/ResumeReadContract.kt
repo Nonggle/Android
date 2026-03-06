@@ -24,7 +24,7 @@ enum class Gender(val value: String) {
     }
 }
 
-data class ResumeViewState(
+data class ResumeReadState(
     val isLoading: Boolean = true,
     val resumeDetail: ResumeContents? = null,
     val resumeRetry: Boolean = false,
@@ -32,21 +32,21 @@ data class ResumeViewState(
     val screenMode: ScreenMode = ScreenMode.SCREEN,
 ): UiState
 
-sealed interface ResumeViewEvent: UiEvent {
-    object RetryGetResumeDetail: ResumeViewEvent
+sealed interface ResumeReadEvent: UiEvent {
+    object RetryGetResumeDetail: ResumeReadEvent
 
     /// FIXME: 동시에 파일 다운로드가 요청된다면 스레드 관리?
-    object DownloadResumeToLocal: ResumeViewEvent
+    object DownloadResumeToLocal: ResumeReadEvent
 
-    object ClickBackIconButton: ResumeViewEvent
+    object ClickBackIconButton: ResumeReadEvent
 }
 
-sealed interface ResumeViewEffect: UiEffect {
+sealed interface ResumeReadEffect: UiEffect {
 
-    object DownLoadPDF: ResumeViewEffect
+    object DownLoadPDF: ResumeReadEffect
 
-    object DownLoadSuccess: ResumeViewEffect
+    object DownLoadSuccess: ResumeReadEffect
 
-    data class DownLoadFailure(val message: String): ResumeViewEffect
-    object NavigateToBack: ResumeViewEffect
+    data class DownLoadFailure(val message: String): ResumeReadEffect
+    object NavigateToBack: ResumeReadEffect
 }
