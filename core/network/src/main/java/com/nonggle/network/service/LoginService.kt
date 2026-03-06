@@ -14,14 +14,14 @@ import javax.inject.Inject
 
 
 interface LoginService {
-    suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto>
+    suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto?>
 }
 
 class LoginServiceImpl @Inject constructor(
     @ApiClient private val baseClient: HttpClient,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): LoginService {
-    override suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto> {
+    override suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto?> {
         return safeApiCall(ioDispatcher) {
             baseClient.post("/auth/kakao") {
                 setBody(TokenRequestDto(accessToken))

@@ -16,12 +16,15 @@ sealed interface AppError {
     data object Unknown : AppError
 }
 
-inline fun <T, R> AppResult<T>.map(transform: (T) -> R): AppResult<R> = when (this) {
+inline fun <T, R> AppResult<T?>.map(transform: (T?) -> R): AppResult<R> = when (this) {
     is AppResult.Success -> AppResult.Success(transform(data))
     is AppResult.Error -> this
 }
 
-inline fun <T> AppResult<T>.getOrNull(): T? = when (this) {
-    is AppResult.Success -> data
-    is AppResult.Error -> null
+inline fun <T, R> AppResult<T?>.mapNotNull(
+    transform: (T) -> R
+): AppResult<R> = when (this) {
+    is AppResult.Success -> data?.let { AppResult.Success(transform(it)) }
+        ?: AppResult.Error(AppError.Serialization)
+    is AppResult.Error -> this
 }

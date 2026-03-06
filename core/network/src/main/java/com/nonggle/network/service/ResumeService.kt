@@ -10,6 +10,7 @@ import com.nonggle.network.model.resume.ResumeDto
 import com.nonggle.network.util.safeApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.onUpload
+import io.ktor.client.request.delete
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
@@ -29,11 +30,13 @@ interface ResumeService {
         resume: ResumeCreateRequestDto,
         imageMeta: ImageMeta,
         imageInputStream: () -> InputStream
-    ): AppResult<ResumeCreateResponseDto>
+    ): AppResult<ResumeCreateResponseDto?>
 
-    suspend fun getSingleResume(resumeId: Long): AppResult<ResumeDto>
+    suspend fun getSingleResume(resumeId: Long): AppResult<ResumeDto?>
 
-    suspend fun getAllResumes(): AppResult<List<ResumeDto>>
+    suspend fun getAllResumes(): AppResult<List<ResumeDto>?>
+
+    suspend fun deleteResume(resumeId: Long): AppResult<Unit?>
 }
 
 class ResumeServiceImpl @Inject constructor(
@@ -45,8 +48,8 @@ class ResumeServiceImpl @Inject constructor(
         resume: ResumeCreateRequestDto,
         imageMeta: ImageMeta,
         imageInputStream: () -> InputStream
-    ): AppResult<ResumeCreateResponseDto> {
-        return safeApiCall(ioDispatcher) {
+    ): AppResult<ResumeCreateResponseDto?> {
+        return safeApiCall<ResumeCreateResponseDto>(ioDispatcher) {
             val jsonString = Json.encodeToString(ResumeCreateRequestDto.serializer(), resume)
 
             baseClient.post("/api/v1/resumes") {
@@ -84,15 +87,21 @@ class ResumeServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSingleResume(resumeId: Long): AppResult<ResumeDto> {
+    override suspend fun getSingleResume(resumeId: Long): AppResult<ResumeDto?> {
         return safeApiCall(ioDispatcher) {
             baseClient.get("/api/v1/resumes/${resumeId}")
         }
     }
 
-    override suspend fun getAllResumes(): AppResult<List<ResumeDto>> {
+    override suspend fun getAllResumes(): AppResult<List<ResumeDto>?> {
         return safeApiCall(ioDispatcher) {
             baseClient.get("/api/v1/resumes")
+        }
+    }
+
+    override suspend fun deleteResume(resumeId: Long): AppResult<Unit?> {
+        return safeApiCall(ioDispatcher) {
+            baseClient.delete("/api/v1/resumes/${resumeId}")
         }
     }
 
