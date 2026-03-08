@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface AuthService {
-    suspend fun refresh(refreshToken: String): AppResult<TokenResponseDto>
+    suspend fun refresh(refreshToken: String): AppResult<TokenResponseDto?>
 }
 
 @Singleton
@@ -22,7 +22,7 @@ class KtorRefreshTokenService @Inject constructor(
     @AuthClient private val authClient: HttpClient,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthService {
-    override suspend fun refresh(refreshToken: String): AppResult<TokenResponseDto> {
+    override suspend fun refresh(refreshToken: String): AppResult<TokenResponseDto?> {
         return safeApiCall(ioDispatcher) {
                 authClient.post("/auth/token/refresh") {
                     setBody(RefreshTokenRequestDto(refreshToken = refreshToken))

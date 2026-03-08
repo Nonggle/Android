@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,7 +42,6 @@ import coil3.request.crossfade
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
 import com.example.core.designsystem.component.FullButton
-import com.example.core.designsystem.component.NonggleBottomSheet
 import com.example.core.designsystem.component.NonggleDialog
 import com.example.core.designsystem.component.NonggleIconButton
 import com.example.core.designsystem.theme.NonggleTheme
@@ -88,7 +86,7 @@ internal fun DownloadScreen(
     ) {
         if (uiState.isLoading == true) {
             CircularProgressIndicator()
-        } else if (uiState.errorOcuur == true) {
+        } else if (uiState.isError == true) {
             FullButton(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -106,7 +104,8 @@ internal fun DownloadScreen(
                         resumeItem(
                             resumeContent = uiState.resumeList[index],
                             context = context,
-                            navigateToViewResume = navigateToViewResume
+                            navigateToViewResume = navigateToViewResume,
+                            deleteItem = { onEvent(DownloadEvent.DeleteResumeItem(resumeId = uiState.resumeList[index].id)) }
                         )
                     }
                 )
@@ -120,18 +119,19 @@ internal fun DownloadScreen(
 fun resumeItem(
     modifier: Modifier = Modifier,
     context: Context,
+    deleteItem: () -> Unit,
     resumeContent: SingleResume,
     navigateToViewResume: (Long) -> Unit = {},
 
 ) {
-    var showExportDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
-    if(showExportDialog) {
-        exportDialog(
-            onDismiss = { showExportDialog = false },
+    if(showDeleteDialog) {
+        deleteDialog(
+            onDismiss = { showDeleteDialog = false },
             onConfirm = {
-                // TODO 추출 진행 예정
-                showExportDialog = false
+                deleteItem()
+                showDeleteDialog = false
             }
         )
     }
@@ -166,7 +166,11 @@ fun resumeItem(
                     AsyncImage(
                         modifier = Modifier
                             .size(58.dp)
-                            .border(width = 1.dp, color = NonggleTheme.colorScheme.g_line_light, shape = RoundedCornerShape(99.dp)),
+                            .border(
+                                width = 1.dp,
+                                color = NonggleTheme.colorScheme.g_line_light,
+                                shape = RoundedCornerShape(99.dp)
+                            ),
                         model = ImageRequest.Builder(context)
                             .data(resumeContent.profileImageUrl)
                             .crossfade(true)
@@ -209,25 +213,27 @@ fun resumeItem(
             }
         }
         NonggleIconButton(
-            modifier = Modifier.align(Alignment.TopEnd),
-            onClick = { showExportDialog = true },
-            image = painterResource(R.drawable.export)
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = 8.dp, top = 10.dp),
+            onClick = { showDeleteDialog = true },
+            image = painterResource(R.drawable.xcircle)
         )
     }
 }
 
 @Composable
-fun exportDialog(
+fun deleteDialog(
     onDismiss: () -> Unit = {},
     onConfirm: () -> Unit = {},
 ) {
     NonggleDialog(
         onDismiss = onDismiss,
         onConfirm = onConfirm,
-        dialogTitle = stringResource(R.string.ResumeExport_Dialog_Title),
+        dialogTitle = stringResource(R.string.ResumeDelete_Dialog_Title),
         dialogContent = {
             Text(
-                text = stringResource(R.string.ResumeExport_Dialog_Content),
+                text = stringResource(R.string.ResumeDelete_Dialog_Content),
                 style = NonggleTheme.typography.b3_small.copy(color = NonggleTheme.colorScheme.g2)
             )
         }

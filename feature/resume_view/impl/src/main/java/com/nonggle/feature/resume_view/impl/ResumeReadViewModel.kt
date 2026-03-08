@@ -3,9 +3,10 @@ package com.nonggle.feature.resume_view.impl
 import androidx.lifecycle.viewModelScope
 import com.example.core.ui.BaseViewModel
 import com.example.domain.usecase.ResumeSingleViewUseCase
-import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEffect
-import com.nonggle.feature.resume_view.impl.navigation.ResumeViewEvent
-import com.nonggle.feature.resume_view.impl.navigation.ResumeViewState
+import com.nonggle.feature.resume_view.impl.navigation.ResumeReadEffect
+import com.nonggle.feature.resume_view.impl.navigation.ResumeReadEvent
+import com.nonggle.feature.resume_view.impl.navigation.ResumeReadState
+import com.nonggle.feature.resume_view.impl.navigation.ScreenMode
 import com.nonggle.model.AppResult
 import com.nonggle.model.toResumeContents
 import com.nonggle.resume_view.api.ResumeViewNavKey
@@ -15,29 +16,15 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-enum class Gender(val value: String) {
-    MALE("남"), FEMALE("여");
-
-    companion object {
-        fun getByName(name: String): String {
-            return when (name) {
-                "MALE" -> MALE.value
-                "FEMALE" -> FEMALE.value
-                else -> ""
-            }
-        }
-    }
-}
-
-@HiltViewModel(assistedFactory = ResumeViewViewModel.Factory::class)
-class ResumeViewViewModel @AssistedInject constructor(
+@HiltViewModel(assistedFactory = ResumeReadViewModel.Factory::class)
+class ResumeReadViewModel @AssistedInject constructor(
     @Assisted val navKey: ResumeViewNavKey,
     private val resumeSingleViewUseCase: ResumeSingleViewUseCase,
-) : BaseViewModel<ResumeViewEvent, ResumeViewState, ResumeViewEffect>(ResumeViewState()) {
+) : BaseViewModel<ResumeReadEvent, ResumeReadState, ResumeReadEffect>(ResumeReadState()) {
 
     @AssistedFactory
     interface Factory {
-        fun create(navKey: ResumeViewNavKey): ResumeViewViewModel
+        fun create(navKey: ResumeViewNavKey): ResumeReadViewModel
     }
 
     init {
@@ -45,10 +32,19 @@ class ResumeViewViewModel @AssistedInject constructor(
 
     }
 
-    override fun onEvent(event: ResumeViewEvent) {
+    override fun onEvent(event: ResumeReadEvent) {
         when (event) {
-            is ResumeViewEvent.RetryGetResumeDetail -> {
+            is ResumeReadEvent.RetryGetResumeDetail -> {
                 getResumeDetail(resumeId = navKey.resumeId)
+            }
+
+            is ResumeReadEvent.ClickBackIconButton -> {
+                postEffect(ResumeReadEffect.NavigateToBack)
+            }
+
+            is ResumeReadEvent.DownloadResumeToLocal -> {
+                updateState { copy(screenMode = ScreenMode.PDF) }
+                postEffect(ResumeReadEffect.DownLoadPDF)
             }
         }
     }
@@ -79,5 +75,21 @@ class ResumeViewViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    fun updatePermissionGranted(isGranted: Boolean) {
+        updateState { copy(writeExternalPermissionGranted = isGranted) }
+    }
+
+    fun updateScreenMode(screenMode: ScreenMode) {
+        updateState { copy(screenMode = screenMode) }
+    }
+
+    fun generateDownloadSuccessToastMessage() {
+        postEffect(ResumeReadEffect.DownLoadSuccess)
+    }
+
+    fun generateDownloadFailToastMessage(message: String) {
+        postEffect(ResumeReadEffect.DownLoadFailure(message))
     }
 }

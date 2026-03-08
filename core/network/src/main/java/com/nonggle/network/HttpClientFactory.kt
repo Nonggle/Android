@@ -78,10 +78,11 @@ object HttpClientFactory {
                                 val tokenResponse = apiResult.data
 
                                 tokenManager.saveTokens(
-                                    accessToken = tokenResponse.accessToken,
-                                    refreshToken = tokenResponse.refreshToken
+                                    accessToken = tokenResponse?.accessToken ?: "",
+                                    refreshToken = tokenResponse?.refreshToken ?: ""
                                 )
-                                BearerTokens(tokenResponse.accessToken, tokenResponse.refreshToken)
+
+                                BearerTokens(tokenResponse?.accessToken ?: "", tokenResponse?.refreshToken)
                             } else {
                                 tokenManager.deleteToken()
                                 authEventBus.emit(AuthEvent.SessionExpired)

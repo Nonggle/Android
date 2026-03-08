@@ -10,13 +10,16 @@ import com.nonggle.model.SingleResume
 data class DownloadState(
     val isLoading: Boolean = false,
     val resumeList: List<SingleResume> = emptyList(),
-    val errorOcuur: Boolean = false,
+    val isError: Boolean = false,
 ): UiState
 
 sealed interface DownloadEvent: UiEvent {
-    data object RetryGetResumeList: DownloadEvent
+    object RetryGetResumeList: DownloadEvent
+    /// FIXME: 동시에 삭제가 진행된다면?
+    data class DeleteResumeItem(val resumeId: Long): DownloadEvent
 }
 
 sealed interface DownloadEffect: UiEffect {
+    object ShowErrorToastMessage: DownloadEffect
 
 }

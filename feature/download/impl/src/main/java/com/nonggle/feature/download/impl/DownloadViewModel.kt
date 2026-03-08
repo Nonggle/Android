@@ -2,29 +2,18 @@ package com.nonggle.feature.download.impl
 
 import androidx.lifecycle.viewModelScope
 import com.example.core.ui.BaseViewModel
+import com.example.domain.usecase.ResumeDeleteUseCase
 import com.example.domain.usecase.ResumeListViewUseCase
 import com.nonggle.model.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-enum class Gender(val value: String) {
-    MALE("남"), FEMALE("여");
-
-    companion object {
-        fun getByName(name: String): String {
-            if (name == "MALE") {
-                return MALE.value
-            }
-            return FEMALE.value
-        }
-    }
-}
-
 @HiltViewModel
 class DownloadViewModel @Inject constructor(
-    private val resumeListUseCase: ResumeListViewUseCase
+    private val resumeListUseCase: ResumeListViewUseCase,
+    private val resumeDeleteUseCase: ResumeDeleteUseCase,
 ) : BaseViewModel<DownloadEvent, DownloadState, DownloadEffect>(initialState = DownloadState()) {
+
     init {
         getResumeList()
     }
@@ -33,6 +22,10 @@ class DownloadViewModel @Inject constructor(
         when (event) {
             is DownloadEvent.RetryGetResumeList -> {
                 getResumeList()
+            }
+
+            is DownloadEvent.DeleteResumeItem -> {
+                deleteResumeItem(event.resumeId)
             }
         }
     }
@@ -47,7 +40,7 @@ class DownloadViewModel @Inject constructor(
                         copy(
                             isLoading = false,
                             resumeList = result.data,
-                            errorOcuur = false
+                            isError = false
                         )
                     }
                 }
@@ -56,11 +49,34 @@ class DownloadViewModel @Inject constructor(
                     updateState {
                         copy(
                             isLoading = false,
-                            errorOcuur = true
+                            isError = true
                         )
                     }
                 }
             }
         }
     }
+
+    private fun deleteResumeItem(resumeId: Long) {
+        val deleteResumeItem = currentState.resumeList.find { it.id == resumeId } ?: return
+        viewModelScope.launch {
+            updateState {
+                copy(resumeList = resumeList.filter { it.id != resumeId })
+            }
+
+            val result = resumeDeleteUseCase(resumeId)
+            when(result) {
+                is AppResult.Error -> {
+                    // 삭제 실패했으므로 ui 복구
+                    updateState { copy(
+                        resumeList = resumeList + deleteResumeItem
+                    ) }
+                    postEffect(effect = DownloadEffect.ShowErrorToastMessage)
+                }
+                else -> {}
+            }
+        }
+    }
+
+
 }

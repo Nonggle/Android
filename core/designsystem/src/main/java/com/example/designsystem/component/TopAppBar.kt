@@ -3,8 +3,8 @@ package com.example.core.designsystem.component
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -31,14 +31,18 @@ import com.example.core.designsystem.theme.soYo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonggleTopAppBar(
-    @StringRes titleRes: Int?,
+    @StringRes titleRes: Int? = null,
     @DrawableRes navigationIcon: Int,
     modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     onNavigationClick: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
-        title = { if(titleRes == null) {} else Text(text = stringResource(id = titleRes)) },
+        title = {
+            if (titleRes == null) {
+            } else Text(text = stringResource(id = titleRes))
+        },
         navigationIcon = {
             IconButton(
                 onClick = onNavigationClick
@@ -49,6 +53,7 @@ fun NonggleTopAppBar(
                 )
             }
         },
+        actions = actions,
         colors = colors,
         modifier = modifier.testTag("nonggleTopAppBar"),
     )
@@ -91,6 +96,14 @@ private fun NonggleTopAppBarPreview() {
         NonggleTopAppBar(
             titleRes = android.R.string.untitled,
             navigationIcon = R.drawable.close,
+            actions = {
+                Row {
+                    NonggleIconButton(
+                        onClick = {},
+                        image = painterResource(R.drawable.close),
+                    )
+                }
+            }
         )
     }
 }

@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
+    implementation(project(":core:pdf_render"))
 
     implementation(project(":feature:resume_view:api"))
 }

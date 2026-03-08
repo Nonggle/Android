@@ -19,7 +19,7 @@ import kotlin.coroutines.cancellation.CancellationException
 suspend inline fun <reified T> safeApiCall(
     dispatcher: CoroutineDispatcher,
     crossinline block: suspend () -> HttpResponse
-): AppResult<T> = withContext(dispatcher) {
+): AppResult<T?> = withContext(dispatcher) {
     try {
         val response = block()
         val httpCode = response.status.value
@@ -27,8 +27,7 @@ suspend inline fun <reified T> safeApiCall(
         if (response.status.isSuccess()) {
             val envelope: ApiResponse<T> = response.body()
             if (envelope.success) {
-                envelope.data?.let { AppResult.Success(it) }
-                    ?: AppResult.Error(AppError.Serialization)
+                AppResult.Success(envelope.data)
             } else {
                 AppResult.Error(AppError.Http(httpCode, envelope.error?.message))
             }

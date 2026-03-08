@@ -41,7 +41,6 @@ class ResumeStep1ViewModel @Inject constructor(
     }
 
     private fun setProfileImageUri(imageUri: Uri?) {
-        /// TODO: imageUri null일때 토스트 메시지 처리
         if(imageUri == null) {
             return
         }

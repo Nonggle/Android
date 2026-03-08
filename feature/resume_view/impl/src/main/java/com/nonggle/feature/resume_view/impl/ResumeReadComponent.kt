@@ -1,5 +1,6 @@
 package com.nonggle.feature.resume_view.impl
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,35 +26,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import com.example.core.designsystem.theme.NonggleTheme
+import com.nonggle.feature.resume_view.impl.navigation.ScreenMode
 
 
 @Composable
 fun userProfile(
+    context: Context,
     modifier: Modifier,
+    screenMode: ScreenMode,
     profileImageUrl: String
 ) {
-    Box(
+    AsyncImage(
         modifier = modifier
             .size(80.dp)
-            .border(
-                width = 1.dp,
-                color = NonggleTheme.colorScheme.g_line_light,
-                shape = RoundedCornerShape(99.dp)
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(99.dp)),
-            model = profileImageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.user),
-            placeholder = painterResource(R.drawable.user),
-        )
-    }
+            .clip(RoundedCornerShape(99.dp)),
+        model = ImageRequest.Builder(context)
+            .data(profileImageUrl)
+            .allowHardware(screenMode == ScreenMode.SCREEN)
+            .build(),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        error = painterResource(R.drawable.user),
+        placeholder = painterResource(R.drawable.user),
+    )
 }
 
 @Composable
