@@ -14,17 +14,17 @@ data class DownloadResume(
 
 data class HomeState(
     val downloadResume: DownloadResume = DownloadResume(),
-    val userName: String = "송승희", // FIXME: 서버연동 이후 닉네임 사용할 수 있도록 수정
+    val userName: String = "", // 서버연동 이후 닉네임 사용할 수 있도록 수정
     val progress: Float = 0f,
     val updateTime: String = "",
-    val downloadResumeExist: Boolean = false, /// FIXME: 서버 연동 이후 사용 예정
-): UiState
+    val downloadResumeExist: Boolean = false, // 서버 연동 이후 사용 예정
+) : UiState
 
-sealed interface HomeEvent: UiEvent {
-    data object NavigateToResumeWritingScreen: HomeEvent
+sealed interface HomeEvent : UiEvent {
+    data object NavigateToResumeWritingScreen : HomeEvent
 }
 
-sealed interface HomeEffect: UiEffect {
+sealed interface HomeEffect : UiEffect {
 
-    data object NavigateToResumeWritingScreen: HomeEffect
+    data object NavigateToResumeWritingScreen : HomeEffect
 }

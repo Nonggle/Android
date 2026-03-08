@@ -4,7 +4,7 @@ import com.nonggle.model.AuthenticateToken
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TokenResponseDto (
+data class TokenResponseDto(
     val userId: Long,
     val accessToken: String,
     val refreshToken: String

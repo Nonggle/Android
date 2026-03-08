@@ -1,6 +1,5 @@
 package com.nonggle.network
 
-import io.ktor.client.plugins.logging.Logger
 import android.util.Log
 import com.example.common.result.AuthEvent
 import com.example.common.result.AuthEventBus
@@ -17,6 +16,7 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
@@ -55,10 +55,14 @@ object HttpClientFactory {
                     loadTokens {
                         val access = tokenManager.getAccessToken()
                         val refresh = tokenManager.getRefreshToken()
-                        if (access != null && refresh != null) BearerTokens(
-                            access,
-                            refresh
-                        ) else null
+                        if (access != null && refresh != null) {
+                            BearerTokens(
+                                access,
+                                refresh
+                            )
+                        } else {
+                            null
+                        }
                     }
 
                     // 토큰 갱신은 "AuthClient 기반 RefreshTokenService"에 위임
@@ -66,15 +70,14 @@ object HttpClientFactory {
                         refreshMutex.withLock {
                             val refreshToken = tokenManager.getRefreshToken()
 
-                            if(refreshToken == null) {
+                            if (refreshToken == null) {
                                 authEventBus.emit(AuthEvent.SessionExpired)
                                 return@withLock null
                             }
 
                             val apiResult = refreshTokenService.refresh(refreshToken)
 
-
-                            if(apiResult is AppResult.Success) {
+                            if (apiResult is AppResult.Success) {
                                 val tokenResponse = apiResult.data
 
                                 tokenManager.saveTokens(
@@ -87,7 +90,6 @@ object HttpClientFactory {
                                 authEventBus.emit(AuthEvent.SessionExpired)
                                 return@withLock null
                             }
-
                         }
                     }
 

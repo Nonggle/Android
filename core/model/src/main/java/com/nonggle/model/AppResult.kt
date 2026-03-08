@@ -5,7 +5,6 @@ sealed interface AppResult<out T> {
     data class Error(val error: AppError) : AppResult<Nothing>
 }
 
-
 sealed interface AppError {
     data object Network : AppError
     data object Timeout : AppError

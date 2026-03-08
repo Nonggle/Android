@@ -83,4 +83,3 @@ val DarkNonggleColors = NonggleColors(
     // Shadow (10% black)
     shadow = Color(0x1A000000)
 )
-

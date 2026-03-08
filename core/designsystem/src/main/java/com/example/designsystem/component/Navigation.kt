@@ -65,7 +65,7 @@ fun NonggleMobileNavigationScaffold(
         modifier = modifier,
         containerColor = Color.Transparent,
         bottomBar = {
-            if(showBottomBar) {
+            if (showBottomBar) {
                 NonggleNavigationBar {
                     navigationBarItems()
                 }

@@ -20,7 +20,7 @@ import javax.inject.Inject
 internal class ConnectivityManagerNetworkMonitor @Inject constructor(
     @ApplicationContext private val context: Context,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-): NetworkMonitor {
+) : NetworkMonitor {
     override val isOnline: Flow<Boolean> = callbackFlow {
         val connectivityManager = context.getSystemService<ConnectivityManager>()
         if (connectivityManager == null) {
@@ -57,7 +57,7 @@ internal class ConnectivityManagerNetworkMonitor @Inject constructor(
         .flowOn(ioDispatcher)
         .conflate()
 
-    private fun ConnectivityManager.isCurrentlyConnected() : Boolean {
+    private fun ConnectivityManager.isCurrentlyConnected(): Boolean {
         val networkCapabilities = getNetworkCapabilities(activeNetwork) ?: return false
         return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }

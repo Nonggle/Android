@@ -1,10 +1,10 @@
 package com.nonggle.network.util
 
+import android.util.Log
 import com.nonggle.model.AppError
 import com.nonggle.model.AppResult
 import com.nonggle.network.model.ApiResponse
 import io.ktor.client.call.body
-import android.util.Log
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
@@ -20,9 +20,9 @@ suspend inline fun <reified T> safeApiCall(
         val response = block()
         val httpCode = response.status.value
 
-        if(response.status.isSuccess()) {
+        if (response.status.isSuccess()) {
             val envelope: ApiResponse<T> = response.body()
-            if(envelope.success) {
+            if (envelope.success) {
                 val data = envelope.data
                     ?: return AppResult.Error(AppError.Serialization) // success인데 data 없음
                 AppResult.Success(data)
@@ -53,7 +53,7 @@ suspend inline fun <reified T> safeApiCall(
                 AppResult.Error(mapped)
             }
         }
-        ///FIXME: 로그 삭제 예정
+        // /FIXME: 로그 삭제 예정
     } catch (e: HttpRequestTimeoutException) {
         Log.e("API_DEBUG", "Timeout", e)
         AppResult.Error(AppError.Timeout)

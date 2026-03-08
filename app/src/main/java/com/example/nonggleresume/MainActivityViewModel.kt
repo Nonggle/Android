@@ -7,10 +7,8 @@ import com.example.common.result.AuthEventBus
 import com.example.domain.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,7 +32,7 @@ class MainActivityViewModel @Inject constructor(
         }
         // Listen for session expiration events
         viewModelScope.launch {
-            /// TODO: 로그인 상태 확인 -> 토큰이 정상적으로 존재하는지 확인
+            // / TODO: 로그인 상태 확인 -> 토큰이 정상적으로 존재하는지 확인
             // _isLoggedIn.value = authRepository.isLoggedIn()
             authEventBus.events.collect { event ->
                 if (event is AuthEvent.SessionExpired) {

@@ -25,5 +25,4 @@ abstract class DataModule {
     internal abstract fun bindsLoginRepository(
         loginRepositoryImpl: LoginRepositoryImpl,
     ): LoginRepository
-
 }

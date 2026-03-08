@@ -31,5 +31,4 @@ internal fun DownloadScreen() {
 @Preview(showBackground = true)
 @Composable
 fun DownloadPreviewScreen() {
-
 }

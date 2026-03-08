@@ -125,15 +125,14 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        /// TODO: loading 상태 true로 업데이트
-        /// TODO: 백그라운드 -> 포그라운드 전환일 경우 로그인 유효성을 미리 확인
+        // / TODO: loading 상태 true로 업데이트
+        // / TODO: 백그라운드 -> 포그라운드 전환일 경우 로그인 유효성을 미리 확인
     }
 
     override fun onPause() {

@@ -61,15 +61,15 @@ fun NonggleTextField(
             it()
             Spacer(modifier = Modifier.height(4.dp))
         }
-        when(textFieldType) {
+        when (textFieldType) {
             TextFieldType.Standard -> TextField(
                 value = value,
                 supportingText = supportText,
                 enabled = enabled,
                 isError = isError,
-                onValueChange = {newText ->
-                    if(maxLength != null) {
-                        if(newText.length <= maxLength) {
+                onValueChange = { newText ->
+                    if (maxLength != null) {
+                        if (newText.length <= maxLength) {
                             onValueChange(newText)
                         }
                     } else {
@@ -91,7 +91,7 @@ fun NonggleTextField(
                 trailingIcon = trailingIcon,
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = focusedColor,
-                    unfocusedIndicatorColor = if(isSuccess) successColor else enabledColor,
+                    unfocusedIndicatorColor = if (isSuccess) successColor else enabledColor,
                     disabledIndicatorColor = disabledColor,
                     errorIndicatorColor = errorColor,
                     focusedContainerColor = Color.Transparent,
@@ -107,8 +107,8 @@ fun NonggleTextField(
                 readOnly = readOnly,
                 value = value,
                 onValueChange = { newText ->
-                    if(maxLength != null) {
-                        if(newText.length <= maxLength) {
+                    if (maxLength != null) {
+                        if (newText.length <= maxLength) {
                             onValueChange(newText)
                         }
                     } else {
@@ -133,7 +133,7 @@ fun NonggleTextField(
                 isError = isError,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = focusedColor,
-                    unfocusedBorderColor = if(isSuccess) successColor else enabledColor,
+                    unfocusedBorderColor = if (isSuccess) successColor else enabledColor,
                     disabledBorderColor = disabledColor,
                     errorBorderColor = errorColor,
                     focusedContainerColor = containerColor,

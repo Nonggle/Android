@@ -1,6 +1,5 @@
 package com.nonggle.common.network
 
-
 import javax.inject.Qualifier
 
 @Qualifier

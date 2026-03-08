@@ -22,7 +22,6 @@ class LoginRepositoryImpl @Inject constructor(
         return flowOf(tokenManager.hasAccessToken())
     }
 
-
     override suspend fun login(accessToken: String): AppResult<AuthenticateToken> {
         // AuthService를 통해 API를 호출합니다.
         val apiResult = loginService.kakaoLogin(accessToken)
@@ -42,8 +41,7 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logOut(): AppResult<Unit> {
-        /// TODO: 로그아웃 구현
+        // / TODO: 로그아웃 구현
         return AppResult.Success(Unit)
     }
-
 }

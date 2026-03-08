@@ -25,9 +25,9 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.core.designsystem.component.NonggleMobileNavigationScaffold
 import com.example.core.designsystem.component.NonggleNavigationBarItem
-import com.example.download.navigation.downLoadEntryProvider
 import com.example.core.navigation.Navigator
 import com.example.core.navigation.toEntries
+import com.example.download.navigation.downLoadEntryProvider
 import com.example.feature.home.impl.navigation.homeEntryProvider
 import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider
@@ -41,7 +41,7 @@ internal fun NonggleApp(
 ) {
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
 
-    LaunchedEffect(isOffline) {/// TODO: 네트워크 미연결시 다이얼로그 처리
+    LaunchedEffect(isOffline) { // / TODO: 네트워크 미연결시 다이얼로그 처리
         if (isOffline) Log.d("NOTCONNECT", "네트워크 미연결")
     }
 

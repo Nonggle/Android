@@ -81,7 +81,7 @@ fun NonggleDropDown(
 ) {
     ExposedDropdownMenuBox(
         expanded = stateHolder.enabled,
-        onExpandedChange = {stateHolder.onEnabled(!stateHolder.enabled)},
+        onExpandedChange = { stateHolder.onEnabled(!stateHolder.enabled) },
         modifier = modifier
     ) {
         Box(
@@ -116,8 +116,8 @@ fun NonggleDropDown(
                 )
             }
         }
-        ExposedDropdownMenu (
-            modifier = Modifier.width(with(LocalDensity.current) {stateHolder.size.width.toDp()}),
+        ExposedDropdownMenu(
+            modifier = Modifier.width(with(LocalDensity.current) { stateHolder.size.width.toDp() }),
             expanded = stateHolder.enabled,
             onDismissRequest = {
                 stateHolder.onEnabled(false)

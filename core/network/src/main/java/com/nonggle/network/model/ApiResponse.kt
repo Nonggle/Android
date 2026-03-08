@@ -9,7 +9,7 @@ data class ApiResponse<T>(
     val error: ErrorDto? = null
 ) {
     @Serializable
-    data class ErrorDto (
+    data class ErrorDto(
         val code: Int,
         val message: String
     )

@@ -1,25 +1,25 @@
 package com.nonggle.auth
 
-import android.util.Base64
 import android.content.SharedPreferences
-import com.nonggle.auth.di.TokenManager
-import javax.inject.Inject
+import android.util.Base64
 import androidx.core.content.edit
 import com.google.crypto.tink.Aead
+import com.nonggle.auth.di.TokenManager
 import com.nonggle.common.network.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-/// 토큰 저장소 + 암호화
+// / 토큰 저장소 + 암호화
 class TinkTokenManager @Inject constructor(
     private val prefs: SharedPreferences,
     private val aead: Aead,
     @IoDispatcher private val io: CoroutineDispatcher
 ) : TokenManager {
-        private companion object {
-            const val KEY_ACCESS = "access_token"
-            const val KEY_REFRESH = "refresh_token"
-        }
+    private companion object {
+        const val KEY_ACCESS = "access_token"
+        const val KEY_REFRESH = "refresh_token"
+    }
 
     private fun encrypt(plain: String, associatedKey: String): String {
         val cipherBytes = aead.encrypt(
@@ -68,7 +68,9 @@ class TinkTokenManager @Inject constructor(
     }
 
     override suspend fun deleteToken() = withContext(io) {
-        prefs.edit { remove(KEY_ACCESS); remove(KEY_REFRESH) }
+        prefs.edit {
+            remove(KEY_ACCESS)
+            remove(KEY_REFRESH)
+        }
     }
-
 }

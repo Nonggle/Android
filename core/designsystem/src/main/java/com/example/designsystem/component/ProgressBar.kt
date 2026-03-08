@@ -49,7 +49,7 @@ fun NonggleCircularProgressBar(
                 style = Stroke(width = strokeWidth.toPx())
             )
 
-            //프로그래스 호 그리기
+            // 프로그래스 호 그리기
             drawArc(
                 color = color,
                 startAngle = -90f,

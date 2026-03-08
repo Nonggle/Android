@@ -1,6 +1,5 @@
-package com.example.feature.home.impl.navigation
+package com.example.feature.home.impl
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,17 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.example.core.designsystem.component.FullButton
 import com.example.core.designsystem.component.NonggleCircularProgressBar
 import com.example.core.designsystem.component.NonggleMainTopAppBar
 import com.example.core.designsystem.theme.NonggleTheme
-import com.example.feature.home.impl.HomeEffect
-import com.example.feature.home.impl.HomeEvent
-import com.example.feature.home.impl.HomeState
-import com.example.feature.home.impl.HomeViewModel
-import com.example.feature.home.impl.R
-import com.example.feature.resume.impl.step2.CareerBottomSheetEvent
 
 @Composable
 internal fun HomeScreen(
@@ -51,7 +42,7 @@ internal fun HomeScreen(
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 is HomeEffect.NavigateToResumeWritingScreen -> {
                     navigateToResumeWritingScreen()
                 }
@@ -124,7 +115,7 @@ fun DownloadProgressBox(
     updateTime: String,
     progress: Float,
     isDownloadExist: Boolean,
-){
+) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -132,7 +123,7 @@ fun DownloadProgressBox(
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = NonggleTheme.colorScheme.white)
     ) {
-        if(isDownloadExist) {
+        if (isDownloadExist) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

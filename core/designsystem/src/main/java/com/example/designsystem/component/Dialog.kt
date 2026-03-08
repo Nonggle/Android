@@ -17,22 +17,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import com.example.core.designsystem.theme.NonggleTheme
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.core.designsystem.R
+import com.example.core.designsystem.theme.NonggleTheme
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
-/// Toast, Dialog
+// / Toast, Dialog
 @Composable
 fun NonggleDialog(
     onDismiss: () -> Unit,
@@ -47,7 +47,7 @@ fun NonggleDialog(
             dismissOnClickOutside = false,
             dismissOnBackPress = false,
 
-            ),
+        ),
         onDismissRequest = onDismiss,
         content = {
             Card {
@@ -73,7 +73,9 @@ fun NonggleDialog(
                         ContainedButton(
                             modifier = Modifier.weight(1f),
                             titleText = stringResource(R.string.dialog_Cancel_ButtonTitle),
-                            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.black),
+                            titleTextStyle = NonggleTheme.typography.b4_btn.copy(
+                                color = NonggleTheme.colorScheme.black
+                            ),
                             backgroundColor = NonggleTheme.colorScheme.g4,
                             onClick = onDismiss
                         )
@@ -81,7 +83,9 @@ fun NonggleDialog(
                         ContainedButton(
                             modifier = Modifier.weight(1f),
                             titleText = stringResource(R.string.dialog_Confirm_ButtonTitle),
-                            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.white),
+                            titleTextStyle = NonggleTheme.typography.b4_btn.copy(
+                                color = NonggleTheme.colorScheme.white
+                            ),
                             onClick = onConfirm
                         )
                     }
@@ -107,14 +111,15 @@ fun DatePickerModal(
             TextButton(
                 onClick = {
                     val selectedDateMillis = datePickerState.selectedDateMillis
-                    if(selectedDateMillis != null) {
+                    if (selectedDateMillis != null) {
                         val localDate = Instant.ofEpochMilli(selectedDateMillis)
                             .atZone(ZoneId.of("Asia/Seoul"))
                             .toLocalDate()
                         onDateSelected(localDate)
                     }
-                onDismiss()
-            }) {
+                    onDismiss()
+                }
+            ) {
                 Text(
                     text = stringResource(R.string.dialog_Confirm_ButtonTitle),
                     style = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.m1)
@@ -135,7 +140,6 @@ fun DatePickerModal(
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

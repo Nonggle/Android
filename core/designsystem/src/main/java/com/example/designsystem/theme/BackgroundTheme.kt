@@ -10,5 +10,6 @@ data class BackgroundTheme(
     val color: Color = Color.White,
     val tonalElevation: Dp = Dp.Unspecified,
 )
+
 // 컴포저블 어디서나 접근 가능한 변수.
 val LocalBackgroundTheme = staticCompositionLocalOf { BackgroundTheme() }

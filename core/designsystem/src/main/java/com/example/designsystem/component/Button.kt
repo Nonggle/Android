@@ -172,14 +172,19 @@ fun OutlinedButton(
         disableContentColor = NonggleTheme.colorScheme.g3,
         roundedCorner = 4.dp,
         backgroundColor = Color.White,
-        border = BorderStroke(width = 1.dp, color = if (isSelect) NonggleTheme.colorScheme.m1 else NonggleTheme.colorScheme.g_line),
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (isSelect) NonggleTheme.colorScheme.m1 else NonggleTheme.colorScheme.g_line
+        ),
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         content = {
             Text(
                 textAlign = TextAlign.Center,
                 text = titleText,
-                style = NonggleTheme.typography.b4_btn.copy(color = if (isSelect) NonggleTheme.colorScheme.m1 else NonggleTheme.colorScheme.g3)
+                style = NonggleTheme.typography.b4_btn.copy(
+                    color = if (isSelect) NonggleTheme.colorScheme.m1 else NonggleTheme.colorScheme.g3
+                )
             )
         }
     )

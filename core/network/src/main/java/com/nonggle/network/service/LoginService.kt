@@ -10,14 +10,13 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
 
-
 interface LoginService {
     suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto>
 }
 
 class LoginServiceImpl @Inject constructor(
     @ApiClient private val baseClient: HttpClient,
-): LoginService {
+) : LoginService {
     override suspend fun kakaoLogin(accessToken: String): AppResult<TokenResponseDto> {
         return safeApiCall<TokenResponseDto> {
             baseClient.post("/auth/kakao") {

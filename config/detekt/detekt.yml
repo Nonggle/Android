@@ -1,0 +1,75 @@
+build:
+  maxIssues: 3
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+processors:
+  active: true
+
+console-reports:
+  active: true
+
+output-reports:
+  active: true
+
+complexity:
+  active: true
+  LongMethod:
+    active: true
+    threshold: 80
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 7
+  LargeClass:
+    active: true
+    threshold: 700
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+
+style:
+  active: true
+  MagicNumber:
+    active: true
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+  ReturnCount:
+    active: false
+  WildcardImport:
+    active: false
+
+exceptions:
+  active: true
+  SwallowedException:
+    active: true
+  TooGenericExceptionCaught:
+    active: false
+
+naming:
+  active: true
+  FunctionNaming:
+    active: true
+    functionPattern: "[a-z][a-zA-Z0-9]*"
+    ignoreAnnotated:
+      - Composable
+  VariableNaming:
+    active: true
+  TopLevelPropertyNaming:
+    active: true
+
+comments:
+  active: false
+
+potential-bugs:
+  active: true
+
+performance:
+  active: true

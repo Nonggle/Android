@@ -4,4 +4,4 @@ import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object DownLoadNavKey: NavKey
+data object DownLoadNavKey : NavKey

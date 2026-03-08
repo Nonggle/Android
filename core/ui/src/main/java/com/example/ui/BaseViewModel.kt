@@ -20,23 +20,23 @@ interface UiState
 interface UiEvent
 interface UiEffect
 
-abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
+abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
     initialState: State
-): ViewModel() {
-    /// State
+) : ViewModel() {
+    // / State
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
     val uiState: StateFlow<State> = _uiState.asStateFlow()
     protected val currentState: State get() = _uiState.value
 
-    ///Event
+    // /Event
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     val event = _event.asSharedFlow()
 
-    /// Effect
+    // / Effect
     private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
-    /// public Functions
+    // / public Functions
     protected fun updateState(reduce: State.() -> State) {
         viewModelScope.launch {
             _uiState.update(reduce)
@@ -55,7 +55,7 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
         }
     }
 
-    //uiState 중 특정 필드만 관찰할 때 사용
+    // uiState 중 특정 필드만 관찰할 때 사용
     fun <T> select(selector: (State) -> T): StateFlow<T> =
         uiState
             .map(selector)
@@ -71,5 +71,4 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
             event.collect(::onEvent)
         }
     }
-
 }

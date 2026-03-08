@@ -20,11 +20,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthModule {
-    private const val PREF_FILE = "nonggle_auth_prefs"          // 토큰 저장 prefs
-    private const val KEYSET_PREF_FILE = "nonggle_tink_keyset"  // 키셋 저장 prefs
+    private const val PREF_FILE = "nonggle_auth_prefs" // 토큰 저장 prefs
+    private const val KEYSET_PREF_FILE = "nonggle_tink_keyset" // 키셋 저장 prefs
     private const val KEYSET_NAME = "aead_keyset"
     private const val MASTER_KEY_URI = "android-keystore://nonggle_tink_master_key"
-
 
     @Provides
     @Singleton
@@ -49,7 +48,7 @@ object AuthModule {
             .build()
             .keysetHandle
 
-        return handle.getPrimitive(RegistryConfiguration.get(),Aead::class.java)
+        return handle.getPrimitive(RegistryConfiguration.get(), Aead::class.java)
     }
 
     @Provides

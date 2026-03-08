@@ -1,8 +1,8 @@
 package com.example.core.designsystem.theme
 import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontFamily
 import com.example.core.designsystem.R
 
 val soYo = FontFamily(
