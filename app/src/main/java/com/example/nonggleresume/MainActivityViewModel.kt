@@ -20,18 +20,18 @@ class MainActivityViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
     // TODO: Add a UseCase to check the initial login status
 ) : ViewModel() {
-
-    val isLoggedIn: StateFlow<Boolean> = loginRepository.isLoggedIn()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = false
-        )
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
 
     private val _uiState = MutableStateFlow<MainActivityUiState>(MainActivityUiState.Loading)
     val uiState: StateFlow<MainActivityUiState> = _uiState
 
     init {
+        viewModelScope.launch {
+            loginRepository.isLoggedIn().collect { isLoggedIn ->
+                _isLoggedIn.value = isLoggedIn
+            }
+        }
         // Listen for session expiration events
         viewModelScope.launch {
             /// TODO: 로그인 상태 확인 -> 토큰이 정상적으로 존재하는지 확인
@@ -42,9 +42,8 @@ class MainActivityViewModel @Inject constructor(
                 }
             }
         }
-        
-        // TODO: Check initial login status from a repository or use case
-        // For example: _isLoggedIn.value = authRepository.isLoggedIn()
+
+        _uiState.value = MainActivityUiState.Success
     }
 
     fun onLoginSuccess() {
