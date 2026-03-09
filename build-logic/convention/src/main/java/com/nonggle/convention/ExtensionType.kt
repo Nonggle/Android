@@ -1,4 +1,4 @@
-package com.example.convention
+package com.nonggle.convention
 
 enum class ExtensionType {
     APPLICATION,

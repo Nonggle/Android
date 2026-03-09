@@ -1,4 +1,4 @@
-package com.example.convention
+package com.nonggle.convention
 // 빌드에 관련된 코드
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog

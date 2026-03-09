@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.example.buildlogic"
+group = "com.nonggle.buildlogic"
 
 
 dependencies {

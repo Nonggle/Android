@@ -1,4 +1,4 @@
-import com.example.convention.configureKotlinJvm
+import com.nonggle.convention.configureKotlinJvm
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

@@ -1,4 +1,4 @@
-package com.example.convention
+package com.nonggle.convention
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.DependencyHandlerScope
