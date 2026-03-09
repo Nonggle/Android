@@ -1,7 +1,7 @@
 package com.nonggle.feature.resume_view.impl
 
 import androidx.lifecycle.viewModelScope
-import com.example.core.ui.BaseViewModel
+import com.example.ui.BaseViewModel
 import com.example.domain.usecase.ResumeSingleViewUseCase
 import com.nonggle.feature.resume_view.impl.navigation.ResumeReadEffect
 import com.nonggle.feature.resume_view.impl.navigation.ResumeReadEvent

@@ -1,7 +1,7 @@
 package com.example.impl.complete_resume
 
 import androidx.lifecycle.viewModelScope
-import com.example.core.ui.BaseViewModel
+import com.example.ui.BaseViewModel
 import com.example.domain.usecase.ResumeCreateUseCase
 import com.nonggle.model.AppError
 import com.nonggle.model.AppResult

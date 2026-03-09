@@ -1,7 +1,7 @@
 package com.nonggle.feature.download.impl
 
 import androidx.lifecycle.viewModelScope
-import com.example.core.ui.BaseViewModel
+import com.example.ui.BaseViewModel
 import com.example.domain.usecase.ResumeDeleteUseCase
 import com.example.domain.usecase.ResumeListViewUseCase
 import com.nonggle.model.AppResult

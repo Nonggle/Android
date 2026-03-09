@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,8 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import com.example.core.data.util.NetworkMonitor
 import com.example.core.designsystem.theme.NonggleTheme
+import com.example.core.navigation.rememberNavigationState
+import com.example.core.navigation.toEntries
+import com.example.feature.home.api.HomeNavKey
+import com.example.feature.login.api.LoginNavKey
+import com.example.feature.login.impl.navigation.LoginEntryProvider
+import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.nonggleresume.ui.NonggleApp
 import com.example.nonggleresume.ui.rememberNonggleAppState
 import com.example.nonggleresume.util.isSystemInDarkTheme
@@ -30,6 +39,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -78,7 +88,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val appState = rememberNonggleAppState(networkMonitor = networkMonitor)
+            val isLoggedIn by viewModel.isLoggedIn.collectAsState()
 
             CompositionLocalProvider(
                 // LocalAnalyticsHelper provides analyticsHelper, //여기에 firebase analytics를 연동할 수 있지 않을까
@@ -90,15 +100,41 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = NonggleTheme.colorScheme.white
                     ) {
-                        NonggleApp(appState)
+                        if (isLoggedIn) {
+                            val appState = rememberNonggleAppState(
+                                networkMonitor = networkMonitor,
+                                navigatorState = rememberNavigationState(
+                                    HomeNavKey,
+                                    TOP_LEVEL_NAV_ITEMS.keys
+                                )
+                            )
+                            NonggleApp(appState)
+                        } else {
+                            val loginNavigationState = rememberNavigationState(
+                                startKey = LoginNavKey,
+                                topLevelKeys = setOf(LoginNavKey)
+                            )
+
+                            val entryProvider = entryProvider {
+                                LoginEntryProvider(navigateToMain = viewModel::onLoginSuccess)
+                            }
+
+                            NavDisplay(
+                                entries = loginNavigationState.toEntries(entryProvider),
+                                onBack = { /* 로그인 화면에서는 보통 뒤로가기를 막습니다 */ }
+                            )
+                        }
                     }
                 }
+
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        /// TODO: loading 상태 true로 업데이트
+        /// TODO: 백그라운드 -> 포그라운드 전환일 경우 로그인 유효성을 미리 확인
     }
 
     override fun onPause() {

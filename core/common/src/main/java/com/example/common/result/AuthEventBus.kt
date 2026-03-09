@@ -1,4 +1,4 @@
-package com.nonggle.network.util
+package com.example.common.result
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

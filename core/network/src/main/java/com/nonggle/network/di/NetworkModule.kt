@@ -1,7 +1,6 @@
 package com.nonggle.network.di
 
-import com.nonggle.network.util.AuthEventBus
-import com.nonggle.network.util.DefaultAuthEventBus
+import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.network.HttpClientFactory
 import com.nonggle.network.service.AuthService
@@ -31,10 +30,6 @@ annotation class AuthClient
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    @Provides
-    @Singleton
-    fun provideAuthEventBus(): AuthEventBus = DefaultAuthEventBus()
 
     @Provides
     @Singleton

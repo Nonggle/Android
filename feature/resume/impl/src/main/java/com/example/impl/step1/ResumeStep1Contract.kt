@@ -2,9 +2,9 @@ package com.example.feature.resume.impl.step1
 
 import android.net.Uri
 import androidx.compose.runtime.Stable
-import com.example.core.ui.UiEffect
-import com.example.core.ui.UiEvent
-import com.example.core.ui.UiState
+import com.example.ui.UiEffect
+import com.example.ui.UiEvent
+import com.example.ui.UiState
 import java.time.LocalDate
 import java.util.UUID
 

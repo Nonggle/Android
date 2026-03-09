@@ -5,5 +5,6 @@ plugins {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(libs.coroutines.core)
     implementation(libs.javax.inject)
 }

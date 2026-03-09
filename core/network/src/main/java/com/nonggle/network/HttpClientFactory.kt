@@ -2,13 +2,14 @@ package com.nonggle.network
 
 import io.ktor.client.plugins.logging.Logger
 import android.util.Log
-import com.nonggle.network.util.AuthEvent
-import com.nonggle.network.util.AuthEventBus
+import com.example.common.result.AuthEvent
+import com.example.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.model.AppResult
 import com.nonggle.network.service.AuthService
 import com.nonggle.network.util.NetworkConfig
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
@@ -42,13 +43,15 @@ object HttpClientFactory {
         tokenManager: TokenManager,
         refreshTokenService: AuthService,
         authEventBus: AuthEventBus,
+        engine: HttpClientEngine? = null,
     ): HttpClient {
         val refreshMutex = Mutex()
 
         return createBaseClient(
             baseUrl = NetworkConfig.baseUrl,
             timeoutMs = NetworkConfig.TIMEOUT_MS,
-            loggerTag = "KtorLogger"
+            loggerTag = "KtorLogger",
+            engine = engine,
         ).config {
             expectSuccess = false
             install(Auth) {
@@ -110,8 +113,10 @@ object HttpClientFactory {
             isLenient = true
             ignoreUnknownKeys = true
         },
+        engine: HttpClientEngine? = null,
     ): HttpClient {
-        return HttpClient(OkHttp) {
+        val client = if (engine != null) HttpClient(engine) else HttpClient(OkHttp)
+        return client.config {
             install(ContentNegotiation) { json(json) }
 
             install(HttpTimeout) {

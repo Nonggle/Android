@@ -1,9 +1,9 @@
 package com.example.feature.home.impl
 
 import androidx.compose.runtime.Stable
-import com.example.core.ui.UiEffect
-import com.example.core.ui.UiEvent
-import com.example.core.ui.UiState
+import com.example.ui.UiEffect
+import com.example.ui.UiEvent
+import com.example.ui.UiState
 import java.time.LocalTime
 
 @Stable

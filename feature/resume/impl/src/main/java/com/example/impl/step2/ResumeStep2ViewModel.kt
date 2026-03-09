@@ -1,7 +1,7 @@
 package com.example.feature.resume.impl.step2
 
 import com.example.common.utils.getPeriodFormatter
-import com.example.core.ui.BaseViewModel
+import com.example.ui.BaseViewModel
 import com.example.domain.repository.ResumeDraftStoreInterface
 import com.nonggle.model.ResumeWritingModel
 import dagger.hilt.android.lifecycle.HiltViewModel

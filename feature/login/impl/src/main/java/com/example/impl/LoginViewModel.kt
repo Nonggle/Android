@@ -1,7 +1,7 @@
 package com.example.feature.login.impl
 
 import androidx.lifecycle.viewModelScope
-import com.example.core.ui.BaseViewModel
+import com.example.ui.BaseViewModel
 import com.example.domain.usecase.KakaoLoginUseCase
 import com.nonggle.model.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel

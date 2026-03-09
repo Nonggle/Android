@@ -9,6 +9,6 @@ class KakaoLoginUseCase @Inject constructor(
     private val repository: LoginRepository,
 ) {
     suspend operator fun invoke(accessToken: String): AppResult<AuthenticateToken> {
-        return repository.kakaoLogin(accessToken)
+        return repository.login(accessToken)
     }
 }

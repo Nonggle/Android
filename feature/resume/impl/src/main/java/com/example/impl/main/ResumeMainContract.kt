@@ -1,8 +1,8 @@
 package com.example.feature.resume.impl.main
 
-import com.example.core.ui.UiEffect
-import com.example.core.ui.UiEvent
-import com.example.core.ui.UiState
+import com.example.ui.UiEffect
+import com.example.ui.UiEvent
+import com.example.ui.UiState
 import com.example.feature.resume.impl.R
 
 // 각 탭을 명확하게 식별하기 위한 Enum 클래스

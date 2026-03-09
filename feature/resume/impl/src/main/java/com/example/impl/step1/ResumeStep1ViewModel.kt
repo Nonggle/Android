@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.getDateTimeFormatter
 import com.example.common.utils.getUserAge
-import com.example.core.ui.BaseViewModel
+import com.example.ui.BaseViewModel
 import com.example.domain.repository.ResumeDraftStoreInterface
 import com.example.domain.usecase.ImageContentReadUseCase
 import com.nonggle.model.ResumeWritingModel
