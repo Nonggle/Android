@@ -1,4 +1,4 @@
-package com.example.nonggleresume
+package com.nonggle.nonggleresume
 
 import com.example.common.result.AuthEvent
 import com.example.common.result.DefaultAuthEventBus
