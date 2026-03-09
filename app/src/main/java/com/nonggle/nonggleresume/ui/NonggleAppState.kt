@@ -1,4 +1,4 @@
-package com.example.nonggleresume.ui
+package com.nonggle.nonggleresume.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable

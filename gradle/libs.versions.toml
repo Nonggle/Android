@@ -26,7 +26,7 @@ coroutines = "1.10.2"
 javax-inject = "1"
 
 # Project versions
-projectApplicationId = "com.example.nonggleresume"
+projectApplicationId = "com.nonggle.nonggleresume"
 projectVersionName = "1.0"
 projectVersionCode = "1"
 projectMinSdkVersion = "26"

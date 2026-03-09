@@ -1,4 +1,4 @@
-package com.example.nonggleresume.navigation
+package com.nonggle.nonggleresume.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable

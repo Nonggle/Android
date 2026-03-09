@@ -4,6 +4,7 @@ import com.example.common.result.AuthEvent
 import com.example.common.result.DefaultAuthEventBus
 import com.example.domain.repository.LoginRepository
 import com.nonggle.model.AppResult
+import com.nonggle.nonggleresume.MainActivityViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

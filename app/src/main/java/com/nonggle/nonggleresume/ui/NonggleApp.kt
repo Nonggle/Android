@@ -1,4 +1,4 @@
-package com.example.nonggleresume.ui
+package com.nonggle.nonggleresume.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -30,7 +30,7 @@ import com.example.core.navigation.toEntries
 import com.example.feature.home.impl.navigation.homeEntryProvider
 import com.example.feature.resume.impl.navigation.resumeEntryProvider
 import com.example.feature.resume_view.impl.navigation.resumeViewEntryProvider
-import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
+import com.nonggle.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
 import com.example.setting.navigation.settingEntryProvider
 import com.nonggle.feature.download.impl.navigation.downLoadEntryProvider
 

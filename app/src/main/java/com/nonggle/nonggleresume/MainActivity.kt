@@ -1,4 +1,4 @@
-package com.example.nonggleresume
+package com.nonggle.nonggleresume
 
 import android.graphics.Color
 import android.os.Bundle
@@ -27,11 +27,11 @@ import com.example.core.navigation.toEntries
 import com.example.feature.home.api.HomeNavKey
 import com.example.feature.login.api.LoginNavKey
 import com.example.feature.login.impl.navigation.LoginEntryProvider
-import com.example.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
-import com.example.nonggleresume.ui.NonggleApp
-import com.example.nonggleresume.ui.rememberNonggleAppState
-import com.example.nonggleresume.util.isSystemInDarkTheme
-import com.example.nonggleresume.util.isSysyemInDarkTheme
+import com.nonggle.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
+import com.nonggle.nonggleresume.ui.NonggleApp
+import com.nonggle.nonggleresume.ui.rememberNonggleAppState
+import com.nonggle.nonggleresume.util.isSystemInDarkTheme
+import com.nonggle.nonggleresume.util.isSysyemInDarkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged

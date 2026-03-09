@@ -1,6 +1,7 @@
-package com.example.nonggleresume
+package com.nonggle.nonggleresume
 
 import android.app.Application
+import com.example.nonggleresume.BuildConfig
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 

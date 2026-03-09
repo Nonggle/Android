@@ -11,7 +11,7 @@ fun getSecretKey(key: String): String {
 }
 
 android {
-    namespace = "com.example.nonggleresume"
+    namespace = "com.nonggle.nonggleresume"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

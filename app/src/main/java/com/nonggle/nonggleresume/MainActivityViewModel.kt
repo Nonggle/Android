@@ -1,4 +1,4 @@
-package com.example.nonggleresume
+package com.nonggle.nonggleresume
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
