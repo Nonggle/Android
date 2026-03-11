@@ -8,7 +8,7 @@ class AndroidLibraryComposeConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             pluginManager.run {
-                apply("example.nonggle.android.library")
+                apply("nonggle.android.library")
                 apply("org.jetbrains.kotlin.plugin.compose")
             }
 

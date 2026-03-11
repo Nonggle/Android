@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.core.data.util.NetworkMonitor
-import com.example.core.navigation.NavigationState
+import com.nonggle.data.util.NetworkMonitor
+import com.nonggle.navigation.NavigationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

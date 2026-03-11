@@ -23,16 +23,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.example.core.designsystem.component.NonggleMobileNavigationScaffold
-import com.example.core.designsystem.component.NonggleNavigationBarItem
-import com.example.core.navigation.Navigator
-import com.example.core.navigation.toEntries
-import com.example.feature.home.impl.navigation.homeEntryProvider
-import com.example.feature.resume.impl.navigation.resumeEntryProvider
-import com.example.feature.resume_view.impl.navigation.resumeViewEntryProvider
+import com.nonggle.designsystem.component.NonggleMobileNavigationScaffold
+import com.nonggle.designsystem.component.NonggleNavigationBarItem
+import com.nonggle.navigation.Navigator
+import com.nonggle.navigation.toEntries
+import com.nonggle.feature.home.impl.navigation.homeEntryProvider
+import com.nonggle.feature.resume_view.impl.navigation.resumeViewEntryProvider
 import com.nonggle.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
-import com.example.setting.navigation.settingEntryProvider
+import com.nonggle.setting.navigation.settingEntryProvider
 import com.nonggle.feature.download.impl.navigation.downLoadEntryProvider
+import com.nonggle.resume.impl.navigation.resumeEntryProvider
 
 // 로그인 후에만 호출됨
 

@@ -3,10 +3,10 @@ package com.nonggle.nonggleresume.navigation
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.example.core.designsystem.icon.NonggleIcons
-import com.example.feature.home.api.HomeNavKey
-import com.example.nonggleresume.R
-import com.example.setting.navigation.SettingNavKey
+import com.nonggle.designsystem.icon.NonggleIcons
+import com.nonggle.api.HomeNavKey
+import com.nonggle.nonggleresume.R
+import com.nonggle.setting.navigation.SettingNavKey
 import com.nonggle.feature.download.api.DownLoadNavKey
 
 data class TopLevelNavItem(

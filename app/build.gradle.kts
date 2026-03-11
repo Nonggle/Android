@@ -1,9 +1,9 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    alias(libs.plugins.example.nonggle.android.application.compose)
-    alias(libs.plugins.example.nonggle.android.hilt)
-    alias(libs.plugins.example.nonggle.android.detekt)
+    alias(libs.plugins.nonggle.android.application.compose)
+    alias(libs.plugins.nonggle.android.hilt)
+    alias(libs.plugins.nonggle.android.detekt)
 }
 
 fun getSecretKey(key: String): String {

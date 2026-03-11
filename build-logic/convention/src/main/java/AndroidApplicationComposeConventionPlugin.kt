@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.getByType
 class AndroidApplicationComposeConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
-            pluginManager.apply("example.nonggle.android.application")
+            pluginManager.apply("nonggle.android.application")
             pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
             val extension = extensions.getByType<ApplicationExtension>()

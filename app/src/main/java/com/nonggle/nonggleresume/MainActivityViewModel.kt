@@ -2,9 +2,9 @@ package com.nonggle.nonggleresume
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common.result.AuthEvent
-import com.example.common.result.AuthEventBus
-import com.example.domain.repository.LoginRepository
+import com.nonggle.common.result.AuthEvent
+import com.nonggle.common.result.AuthEventBus
+import com.nonggle.domain.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

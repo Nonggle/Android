@@ -1,9 +1,9 @@
 package com.nonggle.feature.download.impl
 
 import androidx.compose.runtime.Stable
-import com.example.ui.UiEffect
-import com.example.ui.UiEvent
-import com.example.ui.UiState
+import com.nonggle.ui.UiEffect
+import com.nonggle.ui.UiEvent
+import com.nonggle.ui.UiState
 import com.nonggle.model.SingleResume
 
 @Stable

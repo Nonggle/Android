@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.example.nonggle.android.library.compose)
-    alias(libs.plugins.example.nonggle.android.detekt)
+    alias(libs.plugins.nonggle.android.library.compose)
+    alias(libs.plugins.nonggle.android.detekt)
 }
 
 android {
-    namespace = "com.example.core.ui"
+    namespace = "com.nonggle.core.ui"
 }
 
 dependencies {

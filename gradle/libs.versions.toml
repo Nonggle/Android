@@ -151,15 +151,15 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 gms-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 # build-logic
-example-nonggle-android-application = {id = "example.nonggle.android.application", version = "unspecified"}
-example-nonggle-android-application-compose = {id = "example.nonggle.android.application.compose", version = "unspecified"}
-example-nonggle-android-library = {id = "example.nonggle.android.library", version = "unspecified"}
-example-nonggle-android-library-compose = {id = "example.nonggle.android.library.compose", version = "unspecified"}
-example-nonggle-android-feature-ui = {id = "example.nonggle.android.feature.ui", version = "unspecified"}
-example-nonggle-module-jvm-library = {id = "example.nonggle.module.jvm.library", version = "unspecified"}
-example-nonggle-android-hilt = {id = "example.nonggle.android.hilt", version = "unspecified"}
-example-nonggle-android-serialization = {id = "example.nonggle.android.serialization", version = "unspecified"}
-example-nonggle-android-detekt = {id = "example.nonggle.android.detekt", version = "unspecified"}
+nonggle-android-application = {id = "nonggle.android.application", version = "unspecified"}
+nonggle-android-application-compose = {id = "nonggle.android.application.compose", version = "unspecified"}
+nonggle-android-library = {id = "nonggle.android.library", version = "unspecified"}
+nonggle-android-library-compose = {id = "nonggle.android.library.compose", version = "unspecified"}
+nonggle-android-feature-ui = {id = "nonggle.android.feature.ui", version = "unspecified"}
+nonggle-module-jvm-library = {id = "nonggle.module.jvm.library", version = "unspecified"}
+nonggle-android-hilt = {id = "nonggle.android.hilt", version = "unspecified"}
+nonggle-android-serialization = {id = "nonggle.android.serialization", version = "unspecified"}
+nonggle-android-detekt = {id = "nonggle.android.detekt", version = "unspecified"}
 
 # ksp
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

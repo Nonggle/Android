@@ -1,9 +1,9 @@
 package com.nonggle.feature.download.impl
 
 import androidx.lifecycle.viewModelScope
-import com.example.ui.BaseViewModel
-import com.example.domain.usecase.ResumeDeleteUseCase
-import com.example.domain.usecase.ResumeListViewUseCase
+import com.nonggle.ui.BaseViewModel
+import com.nonggle.domain.usecase.ResumeDeleteUseCase
+import com.nonggle.domain.usecase.ResumeListViewUseCase
 import com.nonggle.model.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

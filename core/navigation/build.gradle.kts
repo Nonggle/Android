@@ -1,13 +1,13 @@
 import org.gradle.kotlin.dsl.dependencies
 
 plugins {
-    alias(libs.plugins.example.nonggle.android.library)
-    alias(libs.plugins.example.nonggle.android.library.compose)
-    alias(libs.plugins.example.nonggle.android.detekt)
+    alias(libs.plugins.nonggle.android.library)
+    alias(libs.plugins.nonggle.android.library.compose)
+    alias(libs.plugins.nonggle.android.detekt)
 }
 
 android {
-    namespace = "com.example.core.navigation"
+    namespace = "com.nonggle.core.navigation"
 }
 
 dependencies {

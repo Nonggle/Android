@@ -7,8 +7,8 @@ class AndroidFeatureUIConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             pluginManager.run {
-                apply("example.nonggle.android.library.compose")
-                apply("example.nonggle.android.hilt")
+                apply("nonggle.android.library.compose")
+                apply("nonggle.android.hilt")
             }
 
             dependencies {

@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.example.nonggle.android.feature.ui)
-    alias(libs.plugins.example.nonggle.android.serialization)
-    alias(libs.plugins.example.nonggle.android.detekt)
+    alias(libs.plugins.nonggle.android.feature.ui)
+    alias(libs.plugins.nonggle.android.serialization)
+    alias(libs.plugins.nonggle.android.detekt)
 }
 
 android {
-    namespace = "com.example.feature.resume.impl"
+    namespace = "com.nonggle.feature.resume.impl"
 }
 
 dependencies {

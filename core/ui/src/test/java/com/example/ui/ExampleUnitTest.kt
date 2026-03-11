@@ -1,4 +1,4 @@
-package com.example.ui
+package com.nonggle.ui
 
 import org.junit.Test
 

@@ -41,10 +41,10 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
-import com.example.core.designsystem.component.FullButton
-import com.example.core.designsystem.component.NonggleDialog
-import com.example.core.designsystem.component.NonggleIconButton
-import com.example.core.designsystem.theme.NonggleTheme
+import com.nonggle.designsystem.component.FullButton
+import com.nonggle.designsystem.component.NonggleDialog
+import com.nonggle.designsystem.component.NonggleIconButton
+import com.nonggle.designsystem.theme.NonggleTheme
 import com.nonggle.feature.download.impl.R
 import com.nonggle.feature.download.impl.DownloadEvent
 import com.nonggle.feature.download.impl.DownloadState

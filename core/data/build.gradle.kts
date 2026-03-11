@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.example.nonggle.android.library)
-    alias(libs.plugins.example.nonggle.android.hilt)
-    alias(libs.plugins.example.nonggle.android.detekt)
+    alias(libs.plugins.nonggle.android.library)
+    alias(libs.plugins.nonggle.android.hilt)
+    alias(libs.plugins.nonggle.android.detekt)
 }
 
 android {
-    namespace = "com.example.core.data"
+    namespace = "com.nonggle.core.data"
 }
 
 dependencies {

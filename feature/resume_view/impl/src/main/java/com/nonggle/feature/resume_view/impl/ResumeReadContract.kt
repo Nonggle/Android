@@ -1,8 +1,8 @@
 package com.nonggle.feature.resume_view.impl.navigation
 
-import com.example.ui.UiEffect
-import com.example.ui.UiEvent
-import com.example.ui.UiState
+import com.nonggle.ui.UiEffect
+import com.nonggle.ui.UiEvent
+import com.nonggle.ui.UiState
 import com.nonggle.model.ResumeContents
 
 // 이력서 화면이 열람용, pdf 렌더링용을 구분하는 enum class

@@ -1,7 +1,7 @@
 package com.nonggle.resume_view.api
 
 import androidx.navigation3.runtime.NavKey
-import com.example.core.navigation.Navigator
+import com.nonggle.navigation.Navigator
 import kotlinx.serialization.Serializable
 
 @Serializable

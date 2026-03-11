@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.allowHardware
-import com.example.core.designsystem.theme.NonggleTheme
+import com.nonggle.designsystem.theme.NonggleTheme
 import com.nonggle.feature.resume_view.impl.navigation.ScreenMode
 
 

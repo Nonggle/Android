@@ -2,8 +2,8 @@ package com.nonggle.network
 
 import io.ktor.client.plugins.logging.Logger
 import android.util.Log
-import com.example.common.result.AuthEvent
-import com.example.common.result.AuthEventBus
+import com.nonggle.common.result.AuthEvent
+import com.nonggle.common.result.AuthEventBus
 import com.nonggle.auth.di.TokenManager
 import com.nonggle.model.AppResult
 import com.nonggle.network.service.AuthService
