@@ -1,7 +1,9 @@
 package com.nonggle.designsystem.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -45,12 +47,19 @@ fun NonggleNavigationBar(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
-    NavigationBar(
-        modifier = modifier,
-        contentColor = Color.Green,
-        tonalElevation = 0.dp,
-        content = content,
-    )
+    Column {
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = NonggleTheme.colorScheme.g_line
+        )
+        NavigationBar(
+            modifier = modifier,
+            contentColor = NonggleTheme.colorScheme.m1,
+            containerColor = NonggleTheme.colorScheme.white,
+            tonalElevation = 3.dp,
+            content = content,
+        )
+    }
 }
 
 @Composable
