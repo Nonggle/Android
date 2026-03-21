@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -68,6 +69,7 @@ class ResumeStep2ViewModelTest {
 
         // WHEN (실행)
         viewModel.setEvent(ResumeStep2Event.CareerSheetEvent(CareerBottomSheetEvent.AddCareerItem(newCareer)))
+        advanceUntilIdle()
 
         // THEN (검증)
         val currentState = viewModel.uiState.value
@@ -95,9 +97,11 @@ class ResumeStep2ViewModelTest {
         val career2 = CareerFormData("2", LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), "Career 2", "...")
         viewModel.setEvent(ResumeStep2Event.CareerSheetEvent(CareerBottomSheetEvent.AddCareerItem(career1)))
         viewModel.setEvent(ResumeStep2Event.CareerSheetEvent(CareerBottomSheetEvent.AddCareerItem(career2)))
+        advanceUntilIdle()
 
         // WHEN (실행): ID가 "1"인 경력을 삭제
         viewModel.setEvent(ResumeStep2Event.DeleteCareerItem("1"))
+        advanceUntilIdle()
 
         // THEN (검증)
         val currentState = viewModel.uiState.value
@@ -115,6 +119,35 @@ class ResumeStep2ViewModelTest {
         assertEquals(1, storedDraft.careerList.size)
         assertEquals("Career 2", storedDraft.careerList.first().careerDescription)
         assertEquals(expectedPeriod, storedDraft.totalCareer)
+    }
+
+    @Test
+    fun `sumCareerPeriod - 30일 이상이면 개월로 올림하여 총 경력을 계산해야 한다`() = runTest {
+        val career1 = CareerFormData("1", LocalDate.of(2024, 1, 1), LocalDate.of(2024, 2, 15), "Career 1", "...")
+        val career2 = CareerFormData("2", LocalDate.of(2024, 3, 1), LocalDate.of(2024, 4, 15), "Career 2", "...")
+
+        viewModel.setEvent(ResumeStep2Event.CareerSheetEvent(CareerBottomSheetEvent.AddCareerItem(career1)))
+        viewModel.setEvent(ResumeStep2Event.CareerSheetEvent(CareerBottomSheetEvent.AddCareerItem(career2)))
+        advanceUntilIdle()
+
+        assertEquals(Period.of(0, 3, 0), viewModel.uiState.value.totalCareer)
+        assertEquals(Period.of(0, 3, 0), fakeResumeStore.draft.value.totalCareer)
+    }
+
+    @Test
+    fun `deleteCareerItem - 마지막 경력 삭제시 총 경력도 0으로 재계산되어야 한다`() = runTest {
+        val career = CareerFormData("1", LocalDate.of(2023, 1, 1), LocalDate.of(2023, 3, 1), "Career 1", "...")
+
+        viewModel.setEvent(ResumeStep2Event.CareerSheetEvent(CareerBottomSheetEvent.AddCareerItem(career)))
+        advanceUntilIdle()
+
+        viewModel.setEvent(ResumeStep2Event.DeleteCareerItem("1"))
+        advanceUntilIdle()
+
+        assertEquals(emptyList<CareerFormData>(), viewModel.uiState.value.careerList)
+        assertEquals(Period.ZERO, viewModel.uiState.value.totalCareer)
+        assertEquals(emptyList<ResumeWritingModel.Career>(), fakeResumeStore.draft.value.careerList)
+        assertEquals(Period.ZERO, fakeResumeStore.draft.value.totalCareer)
     }
 }
 

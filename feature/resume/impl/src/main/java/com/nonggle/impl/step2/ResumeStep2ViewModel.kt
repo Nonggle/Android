@@ -68,10 +68,25 @@ class ResumeStep2ViewModel @Inject constructor(
         }
         return true
     }
-    private fun sumCareerPeriod(items: List<CareerFormData>): Period =
-        items.fold(Period.ZERO) { acc, item ->
-            acc.plus(Period.between(item.careerStartDate, item.careerEndDate))
+
+    private fun sumCareerPeriod(items: List<CareerFormData>): Period {
+        val totalMonths = items.sumOf { item ->
+            val period = Period.between(item.careerStartDate, item.careerEndDate)
+            period.years * 12 + period.months
         }
+        val totalDays = items.sumOf { item ->
+            Period.between(item.careerStartDate, item.careerEndDate).days
+        }
+
+        val normalizedMonths = totalMonths + (totalDays / 30)
+        val normalizedDays = totalDays % 30
+
+        return Period.of(
+            normalizedMonths / 12,
+            normalizedMonths % 12,
+            normalizedDays
+        )
+    }
 
     private suspend fun addCareerItem(data: CareerFormData) {
         val newCareerList = currentState.careerList + data
@@ -97,6 +112,7 @@ class ResumeStep2ViewModel @Inject constructor(
     }
 
     private suspend fun saveTempResume(newCareerList: List<CareerFormData>) {
+        val totalCareer = sumCareerPeriod(newCareerList)
         resumeStore.update {
             it.copy(
                 careerList = newCareerList.map {
@@ -113,14 +129,13 @@ class ResumeStep2ViewModel @Inject constructor(
                         careerDetail = it.careerDetail
                     )
                 },
-                totalCareer = getPeriodFormatter(newCareerList.map {
-                    Period.between(it.careerStartDate, it.careerEndDate)
-                }.reduce { acc, period -> acc.plus(period) })
+                totalCareer = getPeriodFormatter(totalCareer)
             )
         }
     }
 
     private suspend fun deleteTempResume(newCareerList: List<CareerFormData>) {
+        val totalCareer = sumCareerPeriod(newCareerList)
         resumeStore.update {
             it.copy(
                 careerList = newCareerList.map {
@@ -137,9 +152,7 @@ class ResumeStep2ViewModel @Inject constructor(
                         it.careerDetail
                     )
                 },
-                totalCareer = getPeriodFormatter(newCareerList.map {
-                    Period.between(it.careerStartDate, it.careerEndDate)
-                }.reduce { acc, period -> acc.plus(period) })
+                totalCareer = getPeriodFormatter(totalCareer)
             )
         }
     }
