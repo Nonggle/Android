@@ -17,7 +17,6 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     authEventBus: AuthEventBus,
     private val loginRepository: LoginRepository,
-    // TODO: Add a UseCase to check the initial login status
 ) : ViewModel() {
     private val _isLoggedIn = MutableStateFlow(false)
     val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()

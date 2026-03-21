@@ -44,6 +44,7 @@ import coil3.transform.CircleCropTransformation
 import com.nonggle.designsystem.component.FullButton
 import com.nonggle.designsystem.component.NonggleDialog
 import com.nonggle.designsystem.component.NonggleIconButton
+import com.nonggle.designsystem.component.NonggleMainTopAppBar
 import com.nonggle.designsystem.theme.NonggleTheme
 import com.nonggle.feature.download.impl.R
 import com.nonggle.feature.download.impl.DownloadEvent
@@ -80,8 +81,9 @@ internal fun DownloadScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp, vertical = 24.dp),
+            .padding(horizontal = 20.dp),
     ) {
+        NonggleMainTopAppBar(appBarTitle = stringResource(R.string.Download_Title))
         if (uiState.isLoading == true) {
             Box(
                 modifier = Modifier.fillMaxSize(),
