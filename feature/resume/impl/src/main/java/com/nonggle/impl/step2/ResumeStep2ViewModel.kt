@@ -5,6 +5,7 @@ import com.nonggle.common.utils.getPeriodFormatter
 import com.nonggle.ui.BaseViewModel
 import com.nonggle.domain.repository.ResumeDraftStoreInterface
 import com.nonggle.model.ResumeWritingModel
+import com.nonggle.resume.impl.step1.ResumeStep1Effect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -29,7 +30,9 @@ class ResumeStep2ViewModel @Inject constructor(
         when (careerSheetEvent) {
             // 근무 시작일 선택
             is CareerBottomSheetEvent.SelectCareerStartDate -> {
-                updateState { copy(careerFormData = this.careerFormData.copy(careerStartDate = careerSheetEvent.date)) }
+                if(validateStartDate(careerSheetEvent.date)) {
+                    updateState { copy(careerFormData = this.careerFormData.copy(careerStartDate = careerSheetEvent.date)) }
+                }
             }
 
             // 근무 종료일 선택
@@ -58,6 +61,13 @@ class ResumeStep2ViewModel @Inject constructor(
         }
     }
 
+    private fun validateStartDate(date: LocalDate): Boolean {
+        if (date.isAfter(LocalDate.now())) {
+            postEffect(ResumeStep2Effect.SendStartCareerNotValidMessage)
+            return false
+        }
+        return true
+    }
     private fun sumCareerPeriod(items: List<CareerFormData>): Period =
         items.fold(Period.ZERO) { acc, item ->
             acc.plus(Period.between(item.careerStartDate, item.careerEndDate))

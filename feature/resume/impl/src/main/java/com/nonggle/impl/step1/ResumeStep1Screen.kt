@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -147,6 +148,7 @@ internal fun ResumeStep1Screen(
             .fillMaxSize()
             .padding(horizontal = 20.dp, vertical = 24.dp)
             .verticalScroll(scrollState)
+            .imePadding()
     ) {
         Text(
             text = stringResource(R.string.resume1Screen_profile_image),
