@@ -125,8 +125,19 @@ internal fun ResumeStep2Screen(
             onClick = {}, // do nothing
             titleText = getPeriodFormatter(uiState.totalCareer)
         )
+        OutlinedIconButton(
+            contentColor = NonggleTheme.colorScheme.g3,
+            disableContentColor = NonggleTheme.colorScheme.g3,
+            borderColor = NonggleTheme.colorScheme.g_line,
+            titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
+            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
+            onClick = careerBottomSheetClick
+        )
         LazyColumn(
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(bottom = 16.dp, top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
@@ -143,13 +154,5 @@ internal fun ResumeStep2Screen(
                 }
             )
         }
-        OutlinedIconButton(
-            contentColor = NonggleTheme.colorScheme.g3,
-            disableContentColor = NonggleTheme.colorScheme.g3,
-            borderColor = NonggleTheme.colorScheme.g_line,
-            titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
-            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
-            onClick = careerBottomSheetClick
-        )
     }
 }
