@@ -2,6 +2,6 @@
 <resources>
     <string name="HomeScreen_Title">농글</string>
     <string name="HomeScreen_MainTitle">이력서를\n농글과 함께 작성해보아요!</string>
-    <string name="HomeScreen_Download_NotExist">다운로드 중인 문서가 없습니다!</string>
+    <string name="HomeScreen_Download_NotExist">자주 사용하는 이력서를 추가해보세요!</string>
     <string name="HomeScreen_Navigate_ResumeWriting">이력서 작성</string>
 </resources>
