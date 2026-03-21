@@ -81,20 +81,29 @@ internal fun DownloadScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp, vertical = 24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (uiState.isLoading == true) {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         } else if (uiState.isError == true) {
-            FullButton(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                title = stringResource(R.string.Download_Title_RetryButton),
-                onClick = { onEvent(DownloadEvent.RetryGetResumeList) }
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                FullButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    title = stringResource(R.string.Download_Title_RetryButton),
+                    onClick = { onEvent(DownloadEvent.RetryGetResumeList) }
+                )
+            }
         } else {
             LazyColumn(
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
