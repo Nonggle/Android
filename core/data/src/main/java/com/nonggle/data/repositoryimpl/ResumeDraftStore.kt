@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class ResumeDraftStore  @Inject constructor(): ResumeDraftStoreInterface {
     private val _draft = MutableStateFlow(ResumeWritingModel())
-    val draft: StateFlow<ResumeWritingModel> = _draft
+    override val draft: StateFlow<ResumeWritingModel> = _draft
 
     override suspend fun update(reducer: (ResumeWritingModel) -> ResumeWritingModel) {
         _draft.update(reducer)

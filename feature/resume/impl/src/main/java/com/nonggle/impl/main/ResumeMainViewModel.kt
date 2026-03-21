@@ -3,8 +3,9 @@ package com.nonggle.resume.impl.main
 import androidx.lifecycle.viewModelScope
 import com.nonggle.ui.BaseViewModel
 import com.nonggle.domain.repository.ResumeDraftStoreInterface
+import com.nonggle.model.ResumeWritingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,33 +15,37 @@ class ResumeMainViewModel @Inject constructor(
 ) : BaseViewModel<ResumeMainEvent, ResumeMainState, ResumeMainEffect>(
     initialState = ResumeMainState()
 ) {
+    init {
+        viewModelScope.launch {
+            resumeStore.draft.collectLatest { resume ->
+                updateState { copy(submitStatus = validateResume(resume)) }
+            }
+        }
+    }
 
     override fun onEvent(event: ResumeMainEvent) {
         when (event) {
             is ResumeMainEvent.NavigateToComplete -> {
-                if(validateResume()) {
-                    updateState { copy(submitStatus = true) }
+                if (currentState.submitStatus) {
                     postEffect(ResumeMainEffect.NavigateToComplete)
                 }
             }
-            else -> {}
         }
     }
 
-    private fun validateResume(): Boolean {
-        viewModelScope.async {
-            val resumeResult = resumeStore.snapshot()
-            val isNameValid = resumeResult.userName.isNotEmpty()
-            val isBirthDateValid = resumeResult.birthDate.isNotEmpty()
-            val isGenderValid = resumeResult.gender.isNotEmpty()
-            val isIntroduceDetailValid = resumeResult.introduceDetail.isNotEmpty()
-            val isPersonalityListValid = resumeResult.personalityList.isNotEmpty()
-            val isIntroduceValid = resumeResult.introduce.isNotEmpty()
-            if (isNameValid && isBirthDateValid && isGenderValid && isIntroduceValid && isIntroduceDetailValid && isPersonalityListValid
-            ) {
-                return@async true
-            }
-        }
-        return false
+    private fun validateResume(resume: ResumeWritingModel): Boolean {
+        val isNameValid = resume.userName.isNotEmpty()
+        val isBirthDateValid = resume.birthDate.isNotEmpty()
+        val isGenderValid = resume.gender.isNotEmpty()
+        val isIntroduceDetailValid = resume.introduceDetail.isNotEmpty()
+        val isPersonalityListValid = resume.personalityList.isNotEmpty()
+        val isIntroduceValid = resume.introduce.isNotEmpty()
+
+        return isNameValid &&
+            isBirthDateValid &&
+            isGenderValid &&
+            isIntroduceValid &&
+            isIntroduceDetailValid &&
+            isPersonalityListValid
     }
 }
