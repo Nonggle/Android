@@ -1,7 +1,10 @@
 package com.nonggle.mypage.impl
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,8 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nonggle.designsystem.component.FullButton
 import com.nonggle.designsystem.component.NonggleDialog
 import com.nonggle.designsystem.component.NonggleMainTopAppBar
 import com.nonggle.designsystem.theme.NonggleTheme
@@ -43,7 +48,8 @@ internal fun MyPageScreen(
         logoutDialog(
             onDismiss = { showLogoutDialog = false },
             onConfirm = {
-
+                showLogoutDialog = false
+                onEvent(MyPageEvent.LogoutClicked)
             }
         )
     }
@@ -52,6 +58,19 @@ internal fun MyPageScreen(
         modifier = modifier.fillMaxSize()
     ) {
         NonggleMainTopAppBar(appBarTitle = stringResource(R.string.MyPageScreen_MainTitle))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 24.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
+            FullButton(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading,
+                onClick = { showLogoutDialog = true },
+                title = stringResource(R.string.MyPageScreen_LogoutButton)
+            )
+        }
     }
 }
 

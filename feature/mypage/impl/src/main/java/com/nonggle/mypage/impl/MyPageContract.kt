@@ -9,7 +9,7 @@ data class MyPageState(
 ): UiState
 
 sealed interface MyPageEvent: UiEvent {
-
+    data object LogoutClicked : MyPageEvent
 }
 
 sealed interface MyPageEffect: UiEffect {
