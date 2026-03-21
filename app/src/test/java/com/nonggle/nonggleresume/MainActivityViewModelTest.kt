@@ -82,4 +82,26 @@ class MainActivityViewModelTest {
         coVerify(exactly = 0) { loginRepository.logOut() }
         assertFalse(viewModel.isLoggedIn.value)
     }
+
+    @Test
+    fun `onResume 호출시 로그인 상태를 다시 확인해 isLoggedIn을 갱신한다`() = runTest {
+        coEvery { loginRepository.isLoggedIn() } returnsMany listOf(
+            flowOf(true),
+            flowOf(false)
+        )
+
+        val viewModel = MainActivityViewModel(
+            authEventBus = authEventBus,
+            loginRepository = loginRepository,
+        )
+
+        advanceUntilIdle()
+        assertFalse(viewModel.uiState.value is MainActivityUiState.Loading)
+
+        viewModel.onResume()
+
+        advanceUntilIdle()
+
+        assertFalse(viewModel.isLoggedIn.value)
+    }
 }

@@ -45,5 +45,4 @@ class NonggleAppState(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false
         )
-
 }

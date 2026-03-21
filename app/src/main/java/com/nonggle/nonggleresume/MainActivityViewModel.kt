@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,11 +26,7 @@ class MainActivityViewModel @Inject constructor(
     val uiState: StateFlow<MainActivityUiState> = _uiState
 
     init {
-        viewModelScope.launch {
-            loginRepository.isLoggedIn().collect { isLoggedIn ->
-                _isLoggedIn.value = isLoggedIn
-            }
-        }
+        refreshLoginState()
 
         viewModelScope.launch {
             authEventBus.events.collect { event ->
@@ -45,12 +42,22 @@ class MainActivityViewModel @Inject constructor(
                 }
             }
         }
-
-        _uiState.value = MainActivityUiState.Success
     }
 
     fun onLoginSuccess() {
         _isLoggedIn.value = true
+    }
+
+    fun onResume() {
+        refreshLoginState()
+    }
+
+    private fun refreshLoginState() {
+        viewModelScope.launch {
+            _uiState.value = MainActivityUiState.Loading
+            _isLoggedIn.value = loginRepository.isLoggedIn().first()
+            _uiState.value = MainActivityUiState.Success
+        }
     }
 }
 

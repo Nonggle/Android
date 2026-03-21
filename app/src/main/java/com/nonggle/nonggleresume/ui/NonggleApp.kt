@@ -1,6 +1,7 @@
 package com.nonggle.nonggleresume.ui
 
-import android.util.Log
+import android.widget.Toast
+import com.nonggle.nonggleresume.R
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -19,7 +20,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -42,9 +45,13 @@ internal fun NonggleApp(
     appState: NonggleAppState,
 ) {
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val offlineToastMessage = stringResource(R.string.offline_Message)
 
-    LaunchedEffect(isOffline) {/// TODO: 네트워크 미연결시 다이얼로그 처리
-        if (isOffline) Log.d("NOTCONNECT", "네트워크 미연결")
+    LaunchedEffect(isOffline) {
+        if (isOffline) {
+            Toast.makeText(context, offlineToastMessage, Toast.LENGTH_LONG).show()
+        }
     }
 
     val mainNavigator = remember { Navigator(appState.mainNavigationState) }
