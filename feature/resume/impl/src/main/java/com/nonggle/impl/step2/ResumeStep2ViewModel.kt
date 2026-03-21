@@ -1,10 +1,12 @@
 package com.nonggle.resume.impl.step2
 
+import androidx.lifecycle.viewModelScope
 import com.nonggle.common.utils.getPeriodFormatter
 import com.nonggle.ui.BaseViewModel
 import com.nonggle.domain.repository.ResumeDraftStoreInterface
 import com.nonggle.model.ResumeWritingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Period
 import javax.inject.Inject
@@ -15,13 +17,15 @@ class ResumeStep2ViewModel @Inject constructor(
 ) : BaseViewModel<ResumeStep2Event, ResumeStep2State, ResumeStep2Effect>(initialState = ResumeStep2State()) {
 
     override fun onEvent(event: ResumeStep2Event) {
-        when (event) {
-            is ResumeStep2Event.CareerSheetEvent -> handleCareerSheetEvent(event.event)
-            is ResumeStep2Event.DeleteCareerItem -> deleteCareerItem(event.id)
+        viewModelScope.launch {
+            when (event) {
+                is ResumeStep2Event.CareerSheetEvent -> handleCareerSheetEvent(event.event)
+                is ResumeStep2Event.DeleteCareerItem -> deleteCareerItem(event.id)
+            }
         }
     }
 
-    private fun handleCareerSheetEvent(careerSheetEvent: CareerBottomSheetEvent) {
+    private suspend fun handleCareerSheetEvent(careerSheetEvent: CareerBottomSheetEvent) {
         when (careerSheetEvent) {
             // 근무 시작일 선택
             is CareerBottomSheetEvent.SelectCareerStartDate -> {
@@ -59,7 +63,7 @@ class ResumeStep2ViewModel @Inject constructor(
             acc.plus(Period.between(item.careerStartDate, item.careerEndDate))
         }
 
-    private fun addCareerItem(data: CareerFormData) {
+    private suspend fun addCareerItem(data: CareerFormData) {
         val newCareerList = currentState.careerList + data
         updateState {
             copy(
@@ -71,7 +75,7 @@ class ResumeStep2ViewModel @Inject constructor(
         saveTempResume(newCareerList)
     }
 
-    private fun deleteCareerItem(id: String) {
+    private suspend fun deleteCareerItem(id: String) {
         val newCareerList = currentState.careerList.filter { it.id != id }
         updateState {
             copy(
@@ -82,7 +86,7 @@ class ResumeStep2ViewModel @Inject constructor(
         deleteTempResume(newCareerList)
     }
 
-    private fun saveTempResume(newCareerList: List<CareerFormData>) {
+    private suspend fun saveTempResume(newCareerList: List<CareerFormData>) {
         resumeStore.update {
             it.copy(
                 careerList = newCareerList.map {
@@ -106,7 +110,7 @@ class ResumeStep2ViewModel @Inject constructor(
         }
     }
 
-    private fun deleteTempResume(newCareerList: List<CareerFormData>) {
+    private suspend fun deleteTempResume(newCareerList: List<CareerFormData>) {
         resumeStore.update {
             it.copy(
                 careerList = newCareerList.map {

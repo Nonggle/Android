@@ -43,7 +43,7 @@ data class ResumeStep1State(
 sealed interface ResumeStep1Event : UiEvent {
     data class SelectImage(val imageUri: Uri?): ResumeStep1Event
 
-    data class ImageVolumeExceeded(val message: String): ResumeStep1Event
+    data object ImageVolumeExceeded: ResumeStep1Event
 
     data class UserNameChanged(val userName: String): ResumeStep1Event
     data object UserNameCleared: ResumeStep1Event
@@ -63,5 +63,6 @@ sealed interface ResumeStep1Event : UiEvent {
 }
 
 sealed interface ResumeStep1Effect : UiEffect {
-    data class SendToastMessage(val message: String): ResumeStep1Effect
+    data object SendImageVolumeOverFlowMessage: ResumeStep1Effect
+    data object SendBirthDateNotValidMessage: ResumeStep1Effect
 }
