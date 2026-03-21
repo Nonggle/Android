@@ -5,7 +5,7 @@ import com.nonggle.ui.UiEvent
 import com.nonggle.ui.UiState
 import com.nonggle.feature.resume.impl.R
 
-// 각 탭을 명확하게 식별하기 위한 Enum 클래스
+// 각 탭을 식별하기 위한 Enum 클래스
 enum class ResumeTab(val value: Int) {
     INFO(0),       // 기본 정보
     CAREER(1),     // 경력
@@ -19,18 +19,18 @@ enum class ResumeTab(val value: Int) {
     }
 }
 
-// 이력서 화면의 전체적인 UI 상태 (훨씬 단순해짐)
+// 이력서 화면의 전체적인 UI 상태
 data class ResumeMainState(
-    val isLoading: Boolean = false,
     val selectedTab: ResumeTab = ResumeTab.INFO,
-    val tabList: List<Int> = listOf(R.string.resume_basicTitle, R.string.resume_careerTitle, R.string.resume_portfolioTitle)
+    val tabList: List<Int> = listOf(R.string.resume_basicTitle, R.string.resume_careerTitle, R.string.resume_portfolioTitle),
+    val submitStatus: Boolean = false
 ) : UiState
 
 sealed interface ResumeMainEvent: UiEvent {
-    data object submitResume: ResumeMainEvent
+    data object NavigateToComplete : ResumeMainEvent
 }
 
 sealed interface ResumeMainEffect: UiEffect {
-    data class showErrorToastMessage(val message: String): ResumeMainEffect
+    data object NavigateToComplete: ResumeMainEffect
 }
 
