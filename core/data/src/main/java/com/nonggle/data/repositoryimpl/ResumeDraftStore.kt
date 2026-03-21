@@ -13,10 +13,10 @@ class ResumeDraftStore  @Inject constructor(): ResumeDraftStoreInterface {
     private val _draft = MutableStateFlow(ResumeWritingModel())
     val draft: StateFlow<ResumeWritingModel> = _draft
 
-    override fun update(reducer: (ResumeWritingModel) -> ResumeWritingModel) {
+    override suspend fun update(reducer: (ResumeWritingModel) -> ResumeWritingModel) {
         _draft.update(reducer)
     }
 
-    override fun snapshot(): ResumeWritingModel = _draft.value
+    override suspend fun snapshot(): ResumeWritingModel = _draft.value
 
 }
