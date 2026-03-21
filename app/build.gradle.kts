@@ -1,15 +1,22 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    alias(libs.plugins.example.nonggle.android.application.compose)
-    alias(libs.plugins.example.nonggle.android.hilt)
+    alias(libs.plugins.nonggle.android.application.compose)
+    alias(libs.plugins.nonggle.android.hilt)
+    alias(libs.plugins.nonggle.android.detekt)
+}
+
+fun getSecretKey(key: String): String {
+    return gradleLocalProperties(rootDir, providers).getProperty(key)
 }
 
 android {
-    namespace = "com.example.nonggleresume"
+    namespace = "com.nonggle.nonggleresume"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${getSecretKey("KAKAO_NATIVE_APP_KEY")}\"")
+        manifestPlaceholders["kakaoKey"] = "kakao${getSecretKey("KAKAO_NATIVE_APP_KEY")}"
     }
 
     buildFeatures {
@@ -27,13 +34,15 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.io.mockk.mockk)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    api(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.runtime)
 
     // hilt
     implementation(libs.hilt.android)
@@ -44,13 +53,25 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
 
+    // kakao login
+    implementation(libs.kakao.user)
+
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:auth"))
 
-    implementation(project(":feature:home"))
-    implementation(project(":feature:download"))
+    implementation(project(":feature:login:api"))
+    implementation(project(":feature:login:impl"))
+    implementation(project(":feature:home:api"))
+    implementation(project(":feature:home:impl"))
+    implementation(project(":feature:download:api"))
+    implementation(project(":feature:download:impl"))
+    implementation(project(":feature:resume:impl"))
+    implementation(project(":feature:resume_view:impl"))
     implementation(project(":feature:setting"))
 }

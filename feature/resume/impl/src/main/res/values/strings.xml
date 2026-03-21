@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="resume_Title">이력서 작성</string>
+    <string name="resume_basicTitle">기본정보</string>
+    <string name="resume_careerTitle">경력사항</string>
+    <string name="resume_portfolioTitle">자기소개</string>
+    <string name="resume_nextStep">다음</string>
+    <string name="resume_complete">완료</string>
+
+    <string name="resume1Screen_profile_image">프로필 이미지</string>
+    <string name="resume1Screen_profile_image_overflow">업로드 가능한 이미지 용량을 초과했습니다.</string>
+    <string name="resume1Screen_introduceTitle">본인을 소개할 수 있는 이미지를 업로드 해주세요.</string>
+    <string name="resume1Screen_nameTitle">이름</string>
+    <string name="resume1Screen_supportTitle">이름은 필수 입력값입니다.</string>
+    <string name="resume1Screen_HintText_writeUserName">본인의 이름을 입력해주세요.</string>
+
+    <string name="resume1Screen_birthDateTitle">생년월일</string>
+    <string name="resume1Screen_birthDateSubTitle">생년월일을 선택해주세요.</string>
+    <string name="resume1Screen_ErrorTitle_BirthDateInput">생년월일은 필수 입력 값입니다.</string>
+
+    <string name="resume1Screen_genderTitle">성별</string>
+    <string name="resume1Screen_label_women">여</string>
+    <string name="resume1Screen_label_man">남</string>
+    <string name="resume1Screen_ErrorTitle_GenderInput">성별은 필수 입력 값입니다.</string>
+
+    <string name="resume1Screen_label_certificate">자격증</string>
+    <string name="resume1Screen_label_havecertificate">있음</string>
+    <string name="resume1Screen_label_nocertificate">없음</string>
+    <string name="resume1Screen_certificateDetail_inputHintText">자격증을 입력해주세요.</string>
+    <string name="resume1Screen_confirmBtnText">확인</string>
+
+    <string name="resume2Screen_Title_careerTitle">경력사항</string>
+    <string name="resume2Screen_Title_careerSubTitle">※ 어플 사용 이전 본인의 이력을 추가해주세요.</string>
+
+    <string name="resume2Screen_Title_careerAddTitle">경력추가하기</string>
+    <string name="resume2Screen_SubTitle_careerDescribeTitle">경력 소개</string>
+    <string name="resume2Screen_HintText_careerDescribe">경력을 소개해주세요. 예)사과따기</string>
+
+    <string name="resume2Screen_Title_careerPeriod">작업기간</string>
+    <string name="resume2Screen_label_WorkStart">근무시작일</string>
+    <string name="resume2Screen_label_WorkEnd">근무종료일</string>
+
+    <string name="resume2Screen_label_CareerPeriodSelectDate">년 월 선택</string>
+
+    <string name="resume2Screen_Title_careerContent">작업 내용</string>
+    <string name="resume2Screen_HintText_careerContent">업무 내용을 상세히 입력해주세요.</string>
+
+    <string name="resume2Screen_BottomSheet_AddButton">추가하기</string>
+
+    <string name="resume2Screen_DialogTitle_CareerDelete">정말 삭제하시겠어요?</string>
+    <string name="resume2Screen_DialogDetail_CareerDelete">추가하신 경력이 사라져요!</string>
+
+    <string name="resume3Screen_Title_Introduce">자기소개</string>
+    <string name="resume3Screen_HintText_Introduce">본인을 한문장으로 표현해주세요.</string>
+    <string name="resume3Screen_Title_personality">나의성격</string>
+    <string name="resume3Screen_HintText_personality">예) 성실함,꾸준함,긍정적</string>
+    <string name="resume3Screen_Title_extra">추가코멘트</string>
+    <string name="resume3Screen_HintText_extra">하고싶은 말이나 각오를 입력해주세요.</string>
+
+    <string name="resumeCompleteScreen_Title_Loading">업로드 진행중입니다!</string>
+    <string name="resumeCompleteScreen_Title_Error">업로드 중 오류가 발생했습니다!</string>
+    <string name="resumeCompleteScreen_label_ErrorButton">뒤로 가기</string>
+    <string name="resumeCompleteScreen_label_SuccessButton">이력서 보러가기</string>
+
+    <string name="resumeCompleteScreen_SubTitle_Success">이력서 작성이 완료되었습니다.</string>
+
+</resources>

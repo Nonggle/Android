@@ -1,7 +1,7 @@
 import com.android.build.gradle.LibraryExtension
-import com.example.convention.ExtensionType
-import com.example.convention.configureBuildTypes
-import com.example.convention.configureKotlinAndroid
+import com.nonggle.convention.ExtensionType
+import com.nonggle.convention.configureBuildTypes
+import com.nonggle.convention.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

@@ -1,0 +1,26 @@
+package com.nonggle.impl
+
+import com.nonggle.ui.UiEffect
+import com.nonggle.ui.UiEvent
+import com.nonggle.ui.UiState
+
+sealed interface LoginUiState {
+    data object Idle: LoginUiState // 로그인 이전
+
+    data object LoginSuccess: LoginUiState
+
+    data object LoginFail: LoginUiState
+}
+
+data class LoginState (
+    val isLoading: Boolean = false,
+    val loginState: LoginUiState = LoginUiState.Idle
+): UiState
+
+sealed interface LoginEvent: UiEvent {
+    data object KakaoLoginButtonClick: LoginEvent
+}
+
+sealed interface LoginEffect: UiEffect {
+    data object navigateToHome: LoginEffect
+}

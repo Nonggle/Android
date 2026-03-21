@@ -1,11 +1,11 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.example.convention.ExtensionType
-import com.example.convention.configureBuildTypes
-import com.example.convention.configureKotlinAndroid
+import com.nonggle.convention.ExtensionType
+import com.nonggle.convention.configureBuildTypes
+import com.nonggle.convention.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import com.example.convention.libs
+import com.nonggle.convention.libs
 
 class AndroidApplicationConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
@@ -13,6 +13,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
             pluginManager.run {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
+                apply("com.google.gms.google-services")
+                apply("com.google.firebase.crashlytics")
             }
 
             extensions.configure<ApplicationExtension> {

@@ -1,32 +1,57 @@
 [versions]
-agp = "8.13.2"
+agp = "8.13.0"
 androidTools = "31.5.0"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.22"
+kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.12.2"
-composeBom = "2024.06.00"
+composeBom = "2025.08.00"
 appcompat = "1.7.1"
-material = "1.13.0"
 hilt = "2.57.2"
 hilt-navigation-compose = "1.3.0"
 nav3Core = "1.1.0-alpha01"
+navigation3Runtime = "1.1.0-alpha01"
 androidxLifecycleViewModelNavigation3 = "1.2.0"
 desugar_jdk_libs = "2.0.4"
 androidxSavedStateCompose = "1.4.0"
 kotlinxSerializationJson = "1.6.3"
+detekt = "1.23.8"
+coil = "3.3.0"
+ktor = "3.4.0"
+coroutines = "1.10.2"
+javax-inject = "1"
 
 # Project versions
-projectApplicationId = "com.example.nonggleresume"
+projectApplicationId = "com.nonggle.nonggleresume"
 projectVersionName = "1.0"
 projectVersionCode = "1"
 projectMinSdkVersion = "26"
 projectTargetSdkVersion = "36"
 projectCompileSdkVersion = "36"
+
+#kakao sdk
+kakaoSdk = "2.23.2"
+
+# Firebase
+google-services = "4.4.4"
+firebaseCrashlyticsPlugin = "3.0.6"
+
+# material - ModalBottomSheet 드래그 동작으로 인해 별도 정의
+material3 = "1.4.0-alpha02"
+material = "1.13.0"
+
+# tink
+tink = "1.20.0"
+
+#mockk
+mockk = "1.14.9"
+
+#lottie
+lottie = "6.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +59,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -45,11 +71,12 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-savedstate-compose = { group = "androidx.savedstate", name = "savedstate-compose", version.ref = "androidxSavedStateCompose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout"}
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -57,6 +84,7 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt"}
 
 # hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -71,6 +99,44 @@ androidx-lifecycle-viewModel-navigation3 = { group = "androidx.lifecycle", name 
 # 26버전이 필요한 api 21 버전에서도 사용할 수 있게 해주는 역할
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
+# kakao sdk
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakaoSdk" }
+navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3Runtime" }
+
+# coil
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+
+# ktor
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-auth = {module = "io.ktor:ktor-client-auth", version.ref = "ktor"}
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+#crypto
+google-tink-android = { module = "com.google.crypto.tink:tink-android", version.ref = "tink" }
+
+#testcode
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitVersion" }
+junit-junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+# mockk
+io-mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+#coroutines
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+
+# lottie
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
+
+#inject javax
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -80,15 +146,20 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
+# Firebase
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+gms-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+
 # build-logic
-example-nonggle-android-application = {id = "example.nonggle.android.application", version = "unspecified"}
-example-nonggle-android-application-compose = {id = "example.nonggle.android.application.compose", version = "unspecified"}
-example-nonggle-android-library = {id = "example.nonggle.android.library", version = "unspecified"}
-example-nonggle-android-library-compose = {id = "example.nonggle.android.library.compose", version = "unspecified"}
-example-nonggle-android-feature-ui = {id = "example.nonggle.android.feature.ui", version = "unspecified"}
-example-nonggle-module-jvm-library = {id = "example.nonggle.module.jvm.library", version = "unspecified"}
-example-nonggle-android-hilt = {id = "example.nonggle.android.hilt", version = "unspecified"}
-example-nonggle-android-serialization = {id = "example.nonggle.android.serialization", version = "unspecified"}
+nonggle-android-application = {id = "nonggle.android.application", version = "unspecified"}
+nonggle-android-application-compose = {id = "nonggle.android.application.compose", version = "unspecified"}
+nonggle-android-library = {id = "nonggle.android.library", version = "unspecified"}
+nonggle-android-library-compose = {id = "nonggle.android.library.compose", version = "unspecified"}
+nonggle-android-feature-ui = {id = "nonggle.android.feature.ui", version = "unspecified"}
+nonggle-module-jvm-library = {id = "nonggle.module.jvm.library", version = "unspecified"}
+nonggle-android-hilt = {id = "nonggle.android.hilt", version = "unspecified"}
+nonggle-android-serialization = {id = "nonggle.android.serialization", version = "unspecified"}
+nonggle-android-detekt = {id = "nonggle.android.detekt", version = "unspecified"}
 
 # ksp
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
@@ -96,6 +167,10 @@ kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin"}
 
 # hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+
+# detekt
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
 
 [bundles]
 compose = [
