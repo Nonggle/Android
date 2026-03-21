@@ -1,7 +1,11 @@
-package com.example.feature.resume.impl.step2
+package com.nonggle.impl.step2
 
 import com.nonggle.domain.repository.ResumeDraftStoreInterface
 import com.nonggle.model.ResumeWritingModel
+import com.nonggle.resume.impl.step2.CareerBottomSheetEvent
+import com.nonggle.resume.impl.step2.CareerFormData
+import com.nonggle.resume.impl.step2.ResumeStep2Event
+import com.nonggle.resume.impl.step2.ResumeStep2ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

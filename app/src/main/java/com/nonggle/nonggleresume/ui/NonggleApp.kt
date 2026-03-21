@@ -30,8 +30,8 @@ import com.nonggle.navigation.toEntries
 import com.nonggle.feature.home.impl.navigation.homeEntryProvider
 import com.nonggle.feature.resume_view.impl.navigation.resumeViewEntryProvider
 import com.nonggle.nonggleresume.navigation.TOP_LEVEL_NAV_ITEMS
-import com.nonggle.setting.navigation.settingEntryProvider
 import com.nonggle.feature.download.impl.navigation.downLoadEntryProvider
+import com.nonggle.mypage.impl.navigation.myPageEntryProvider
 import com.nonggle.resume.impl.navigation.resumeEntryProvider
 
 // 로그인 후에만 호출됨
@@ -84,7 +84,7 @@ internal fun NonggleApp(
                     resumeEntryProvider(mainNavigator)
                     resumeViewEntryProvider(mainNavigator)
                     downLoadEntryProvider(mainNavigator)
-                    settingEntryProvider(mainNavigator)
+                    myPageEntryProvider(mainNavigator)
                 }
 
                 NavDisplay(

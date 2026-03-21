@@ -42,8 +42,11 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logOut(): AppResult<Unit> {
-        /// TODO: 로그아웃 구현
-        return AppResult.Success(Unit)
+        val response = loginService.logout()
+        return when(response) {
+            is AppResult.Success -> AppResult.Success(Unit)
+            is AppResult.Error -> response
+        }
     }
 
 }

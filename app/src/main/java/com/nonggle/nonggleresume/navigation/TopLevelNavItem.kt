@@ -6,8 +6,8 @@ import androidx.compose.ui.res.stringResource
 import com.nonggle.designsystem.icon.NonggleIcons
 import com.nonggle.api.HomeNavKey
 import com.nonggle.nonggleresume.R
-import com.nonggle.setting.navigation.SettingNavKey
 import com.nonggle.feature.download.api.DownLoadNavKey
+import com.nonggle.mypage.api.MyPageNavKey
 
 data class TopLevelNavItem(
     @DrawableRes val selectedIconRes: Int,
@@ -27,7 +27,7 @@ val DOWNLOAD = TopLevelNavItem(
     title = { stringResource(R.string.nav_item_download) }
 )
 
-val SETTING = TopLevelNavItem(
+val MYPAGE = TopLevelNavItem(
     selectedIconRes = NonggleIcons.settingSelected,
     unselectedIconRes = NonggleIcons.settingUnselected,
     title = { stringResource(R.string.nav_item_setting) }
@@ -36,5 +36,5 @@ val SETTING = TopLevelNavItem(
 val TOP_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
     DownLoadNavKey to DOWNLOAD,
-    SettingNavKey to SETTING,
+    MyPageNavKey to MYPAGE,
 )
