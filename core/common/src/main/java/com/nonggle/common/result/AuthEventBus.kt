@@ -8,6 +8,7 @@ import javax.inject.Singleton
 
 sealed interface AuthEvent {
     data object SessionExpired : AuthEvent
+    data object LoggedOut : AuthEvent
 }
 
 interface AuthEventBus {

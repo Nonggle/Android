@@ -53,14 +53,16 @@ class KakaoLoginManager @Inject constructor(
         }
     }
 
-    private fun kakaoLogout() {
-        UserApiClient.instance.logout { error ->
-            if (error != null) {
-                return@logout
-            } else {
-                return@logout
+    suspend fun kakaoLogout(): Result<Unit> {
+        return runCatching {
+            suspendCoroutine { continuation ->
+                UserApiClient.instance.logout { error ->
+                    when {
+                        error != null -> continuation.resumeWithException(error)
+                        else -> continuation.resume(Unit)
+                    }
+                }
             }
         }
     }
 }
-

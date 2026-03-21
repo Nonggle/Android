@@ -31,14 +31,18 @@ class MainActivityViewModel @Inject constructor(
                 _isLoggedIn.value = isLoggedIn
             }
         }
-        // Listen for session expiration events
+
         viewModelScope.launch {
-            /// TODO: 로그인 상태 확인 -> 토큰이 정상적으로 존재하는지 확인
-            // _isLoggedIn.value = authRepository.isLoggedIn()
             authEventBus.events.collect { event ->
-                if (event is AuthEvent.SessionExpired) {
-                    loginRepository.logOut()  // 토큰 삭제
-                    _isLoggedIn.value = false  // 이것만으로 로그인 화면 전환 + backstack 자동 소멸
+                when (event) {
+                    AuthEvent.SessionExpired -> {
+                        loginRepository.logOut()
+                        _isLoggedIn.value = false
+                    }
+
+                    AuthEvent.LoggedOut -> {
+                        _isLoggedIn.value = false
+                    }
                 }
             }
         }
@@ -57,9 +61,6 @@ sealed interface MainActivityUiState {
     data object Success : MainActivityUiState {
         override fun shouldUseDarkTheme(isSystemDarkTheme: Boolean) = isSystemDarkTheme
     }
-
-    // 스플래시 화면 상태를 유지해야하는지에 대한 여부
-    fun shouldKeepSplashScreen() = this is Loading
 
     // 다크 테마 사용 필요성
     fun shouldUseDarkTheme(isSystemDarkTheme: Boolean) = isSystemDarkTheme

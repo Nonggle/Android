@@ -1,8 +1,11 @@
 package com.nonggle.mypage.impl
 
 import androidx.lifecycle.viewModelScope
+import com.nonggle.common.result.AuthEvent
+import com.nonggle.common.result.AuthEventBus
 import com.nonggle.model.AppResult
 import com.nonggle.domain.usecase.LogoutUseCase
+import com.nonggle.impl.KakaoLoginManager
 import com.nonggle.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -10,7 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val logoutUseCase: LogoutUseCase
+    private val logoutUseCase: LogoutUseCase,
+    private val kakaoLoginManager: KakaoLoginManager,
+    private val authEventBus: AuthEventBus,
 ): BaseViewModel<MyPageEvent, MyPageState, MyPageEffect>(initialState = MyPageState()) {
 
     override fun onEvent(event: MyPageEvent) {
@@ -24,15 +29,15 @@ class MyPageViewModel @Inject constructor(
 
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
-            when (logoutUseCase()) {
-                is AppResult.Success -> {
-                    updateState { copy(isLoading = false) }
-                }
+            val apiResult = logoutUseCase()
+            val kakaoResult = kakaoLoginManager.kakaoLogout()
 
-                is AppResult.Error -> {
-                    updateState { copy(isLoading = false) }
-                }
+            if (apiResult is AppResult.Error || kakaoResult.isFailure) {
+                postEffect(MyPageEffect.LogoutFailed)
             }
+
+            authEventBus.emit(AuthEvent.LoggedOut)
+            updateState { copy(isLoading = false) }
         }
     }
 }

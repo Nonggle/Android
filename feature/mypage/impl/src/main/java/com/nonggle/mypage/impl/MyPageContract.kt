@@ -13,5 +13,5 @@ sealed interface MyPageEvent: UiEvent {
 }
 
 sealed interface MyPageEffect: UiEffect {
-
+    data object LogoutFailed : MyPageEffect
 }

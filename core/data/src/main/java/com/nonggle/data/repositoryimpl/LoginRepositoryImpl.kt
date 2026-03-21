@@ -43,6 +43,8 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun logOut(): AppResult<Unit> {
         val response = loginService.logout()
+        tokenManager.deleteToken()
+
         return when(response) {
             is AppResult.Success -> AppResult.Success(Unit)
             is AppResult.Error -> response
