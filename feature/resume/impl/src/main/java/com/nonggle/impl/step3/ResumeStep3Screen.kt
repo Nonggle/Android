@@ -127,7 +127,8 @@ internal fun ResumeStep3Screen(
         if(uiState.personalityList.isNotEmpty()) {
             FlowRow(
                modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 uiState.personalityList.forEach { item ->
                     NonggleChip(

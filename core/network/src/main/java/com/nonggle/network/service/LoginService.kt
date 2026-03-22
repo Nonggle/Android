@@ -33,7 +33,7 @@ class LoginServiceImpl @Inject constructor(
 
     override suspend fun logout(): AppResult<Unit?> {
         return safeApiCall(ioDispatcher) {
-            baseClient.post("/logout")
+            baseClient.post("/auth/logout")
         }
     }
 }
