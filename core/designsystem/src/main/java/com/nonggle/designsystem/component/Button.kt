@@ -260,7 +260,7 @@ private fun NonggleButtonPreview() {
         NonggleButton(
             contentColor = NonggleTheme.colorScheme.white,
             backgroundColor = NonggleTheme.colorScheme.m1,
-            onClick = { /*TODO*/ }
+            onClick = { }
         ) {
             Text("Nonggle Button")
         }

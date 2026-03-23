@@ -22,7 +22,6 @@ class KakaoLoginManager @Inject constructor(
                     loginWithKakaoTalk()
                 } catch (e: Throwable) {
                     if (e is ClientError && e.reason == ClientErrorCause.Cancelled) {
-                        /// FIXME: 사용자가 취소했다는 다이얼로그로 처리되도록 추후 수정
                         throw e
                     } else {
                         loginWithKakaoAccount()
@@ -53,5 +52,17 @@ class KakaoLoginManager @Inject constructor(
             }
         }
     }
-}
 
+    suspend fun kakaoLogout(): Result<Unit> {
+        return runCatching {
+            suspendCoroutine { continuation ->
+                UserApiClient.instance.logout { error ->
+                    when {
+                        error != null -> continuation.resumeWithException(error)
+                        else -> continuation.resume(Unit)
+                    }
+                }
+            }
+        }
+    }
+}

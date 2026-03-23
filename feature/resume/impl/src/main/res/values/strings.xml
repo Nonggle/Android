@@ -9,6 +9,7 @@
 
     <string name="resume1Screen_profile_image">프로필 이미지</string>
     <string name="resume1Screen_profile_image_overflow">업로드 가능한 이미지 용량을 초과했습니다.</string>
+    <string name="resume1Screen_birthdate_notValid">현재 날짜를 초과하는 생년월일을 지정할 수 없습니다.</string>
     <string name="resume1Screen_introduceTitle">본인을 소개할 수 있는 이미지를 업로드 해주세요.</string>
     <string name="resume1Screen_nameTitle">이름</string>
     <string name="resume1Screen_supportTitle">이름은 필수 입력값입니다.</string>
@@ -39,6 +40,7 @@
     <string name="resume2Screen_Title_careerPeriod">작업기간</string>
     <string name="resume2Screen_label_WorkStart">근무시작일</string>
     <string name="resume2Screen_label_WorkEnd">근무종료일</string>
+    <string name="resume2Screen_startCareerDate_NotValid">근무 시작날짜는 현재 날짜를 초과할 수 없습니다.</string>
 
     <string name="resume2Screen_label_CareerPeriodSelectDate">년 월 선택</string>
 

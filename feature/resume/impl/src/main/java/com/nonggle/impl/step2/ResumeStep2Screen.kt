@@ -1,5 +1,6 @@
 package com.nonggle.resume.impl.step2
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +12,13 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import com.nonggle.designsystem.component.OutlinedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -43,6 +46,18 @@ internal fun ResumeStep2Screen(
         skipPartiallyExpanded = true,
         confirmValueChange = {false}
     )
+    val startCareerDateNotValidMessage = stringResource(R.string.resume2Screen_startCareerDate_NotValid)
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when(effect) {
+                is ResumeStep2Effect.SendStartCareerNotValidMessage -> {
+                    Toast.makeText(context, startCareerDateNotValidMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     ResumeStep2Screen(
         modifier = modifier,
@@ -110,8 +125,19 @@ internal fun ResumeStep2Screen(
             onClick = {}, // do nothing
             titleText = getPeriodFormatter(uiState.totalCareer)
         )
+        OutlinedIconButton(
+            contentColor = NonggleTheme.colorScheme.g3,
+            disableContentColor = NonggleTheme.colorScheme.g3,
+            borderColor = NonggleTheme.colorScheme.g_line,
+            titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
+            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
+            onClick = careerBottomSheetClick
+        )
         LazyColumn(
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(bottom = 16.dp, top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
@@ -128,13 +154,5 @@ internal fun ResumeStep2Screen(
                 }
             )
         }
-        OutlinedIconButton(
-            contentColor = NonggleTheme.colorScheme.g3,
-            disableContentColor = NonggleTheme.colorScheme.g3,
-            borderColor = NonggleTheme.colorScheme.g_line,
-            titleText = stringResource(R.string.resume2Screen_Title_careerAddTitle),
-            titleTextStyle = NonggleTheme.typography.b4_btn.copy(color = NonggleTheme.colorScheme.g3),
-            onClick = careerBottomSheetClick
-        )
     }
 }

@@ -1,6 +1,7 @@
 package com.nonggle.resume.impl.step2
 
 import androidx.compose.runtime.Stable
+import com.nonggle.resume.impl.step1.ResumeStep1Effect
 import com.nonggle.ui.UiEffect
 import com.nonggle.ui.UiEvent
 import com.nonggle.ui.UiState
@@ -42,5 +43,5 @@ sealed interface ResumeStep2Event : UiEvent {
 }
 
 sealed interface ResumeStep2Effect : UiEffect {
-
+    data object SendStartCareerNotValidMessage: ResumeStep2Effect
 }

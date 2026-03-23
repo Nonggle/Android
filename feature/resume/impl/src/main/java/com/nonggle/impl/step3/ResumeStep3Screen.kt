@@ -1,5 +1,6 @@
 package com.nonggle.resume.impl.step3
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -7,8 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,11 +37,13 @@ internal fun ResumeStep3Screen(
     viewModel: ResumeStep3ViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
 
     ResumeStep3Screen(
         modifier = modifier,
         uiState = uiState,
-        onEvent = viewModel::setEvent
+        onEvent = viewModel::setEvent,
+        scrollState = scrollState
     )
 }
 
@@ -46,11 +52,14 @@ internal fun ResumeStep3Screen(
     modifier: Modifier = Modifier,
     uiState: ResumeStep3State,
     onEvent: (ResumeStep3Event) -> Unit = {},
-) {
+    scrollState: ScrollState,
+    ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState)
+            .imePadding()
     ) {
         NonggleTextField(
             modifier = Modifier
@@ -118,7 +127,8 @@ internal fun ResumeStep3Screen(
         if(uiState.personalityList.isNotEmpty()) {
             FlowRow(
                modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 uiState.personalityList.forEach { item ->
                     NonggleChip(

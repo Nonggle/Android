@@ -20,50 +20,44 @@ class ResumeStep1ViewModel @Inject constructor(
     private val imageContentReadUseCase: ImageContentReadUseCase
 ) : BaseViewModel<ResumeStep1Event, ResumeStep1State, ResumeStep1Effect>(initialState = ResumeStep1State()) {
     override fun onEvent(event: ResumeStep1Event) {
-        when (event) {
-            is ResumeStep1Event.SelectImage -> setProfileImageUri(event.imageUri)
-
-            is ResumeStep1Event.ImageVolumeExceeded -> {
-                postEffect(ResumeStep1Effect.SendToastMessage(message = event.message))
-            }
-
-            is ResumeStep1Event.UserNameChanged -> userNameChanged(event.userName)
-            is ResumeStep1Event.UserNameCleared -> userNameCleared()
-            is ResumeStep1Event.RemoveProfileImage -> removeProfileImageUri()
-
-            is ResumeStep1Event.BirthDateChanged -> setBirthDate(event.birthDate)
-            is ResumeStep1Event.SelectGender -> selectGender(event.gender)
-            is ResumeStep1Event.ExistCertification -> existCertification(event.exist)
-            is ResumeStep1Event.AddCertification -> addCertification()
-            is ResumeStep1Event.CertificationChanged -> updateState { copy(certificationInput = event.certification) }
-            is ResumeStep1Event.RemoveCertificationChip -> removeCertificationChip(event.id)
-        }
-    }
-
-    private fun setProfileImageUri(imageUri: Uri?) {
-        if(imageUri == null) {
-            return
-        }
-        var imageMeta: ResumeWritingModel.ResumeImageMeta? = null
         viewModelScope.launch {
-            yield()
-            imageMeta = imageContentReadUseCase(imageUri.toString())
+            when (event) {
+                is ResumeStep1Event.SelectImage -> setProfileImageUri(event.imageUri)
 
-            if (imageMeta == null) {
-                // TODO 토스트/에러 상태
-                return@launch
-            }
+                is ResumeStep1Event.ImageVolumeExceeded -> {
+                    postEffect(ResumeStep1Effect.SendImageVolumeOverFlowMessage)
+                }
 
-            updateState {
-                copy(
-                    info = this.info.copy(profileImageUrl = imageUri.toString())
-                )
+                is ResumeStep1Event.UserNameChanged -> userNameChanged(event.userName)
+                is ResumeStep1Event.UserNameCleared -> userNameCleared()
+                is ResumeStep1Event.RemoveProfileImage -> removeProfileImageUri()
+
+                is ResumeStep1Event.BirthDateChanged -> setBirthDate(event.birthDate)
+                is ResumeStep1Event.SelectGender -> selectGender(event.gender)
+                is ResumeStep1Event.ExistCertification -> existCertification(event.exist)
+                is ResumeStep1Event.AddCertification -> addCertification()
+                is ResumeStep1Event.CertificationChanged -> updateState { copy(certificationInput = event.certification) }
+                is ResumeStep1Event.RemoveCertificationChip -> removeCertificationChip(event.id)
             }
-            resumeStore.update { it.copy(imageMeta = imageMeta!!) }
         }
     }
 
-    private fun removeProfileImageUri() {
+    private suspend fun setProfileImageUri(imageUri: Uri?) {
+        if (imageUri == null) return
+        var imageMeta: ResumeWritingModel.ResumeImageMeta? = null
+        imageMeta = imageContentReadUseCase(imageUri.toString())
+
+        if (imageMeta == null) return
+
+        updateState {
+            copy(
+                info = this.info.copy(profileImageUrl = imageUri.toString())
+            )
+        }
+        resumeStore.update { it.copy(imageMeta = imageMeta) }
+    }
+
+    private suspend fun removeProfileImageUri() {
         updateState {
             copy(
                 info = this.info.copy(
@@ -76,21 +70,21 @@ class ResumeStep1ViewModel @Inject constructor(
         }
     }
 
-    private fun userNameChanged(userName: String) {
+    private suspend fun userNameChanged(userName: String) {
         updateState { copy(info = this.info.copy(userName = userName)) }
         resumeStore.update {
             it.copy(userName = userName)
         }
     }
 
-    private fun userNameCleared() {
+    private suspend fun userNameCleared() {
         updateState { copy(info = this.info.copy(userName = "")) }
         resumeStore.update {
             it.copy(userName = "")
         }
     }
 
-    private fun selectGender(gender: Gender) {
+    private suspend fun selectGender(gender: Gender) {
         updateState { copy(info = this.info.copy(gender = gender)) }
         resumeStore.update {
             it.copy(gender = gender.value)
@@ -98,7 +92,12 @@ class ResumeStep1ViewModel @Inject constructor(
     }
 
 
-    private fun setBirthDate(date: LocalDate) {
+    private suspend fun setBirthDate(date: LocalDate) {
+        // 생년월일 지정 날짜가 현재를 초과할 수 없으므로 에러 토스트 발행
+        if (date.isAfter(LocalDate.now())) {
+            postEffect(ResumeStep1Effect.SendBirthDateNotValidMessage)
+            return
+        }
         updateState {
             copy(
                 info = this.info.copy(
@@ -115,7 +114,7 @@ class ResumeStep1ViewModel @Inject constructor(
         }
     }
 
-    private fun existCertification(exist: Boolean) {
+    private suspend fun existCertification(exist: Boolean) {
         if (exist) {
             updateState {
                 copy(certificationExist = exist)
@@ -133,7 +132,7 @@ class ResumeStep1ViewModel @Inject constructor(
         }
     }
 
-    private fun removeCertificationChip(id: String) {
+    private suspend fun removeCertificationChip(id: String) {
         updateState {
             val certificationList = this.info.certificationList.filter { it.id != id }
             copy(info = this.info.copy(certificationList = certificationList))
@@ -143,7 +142,7 @@ class ResumeStep1ViewModel @Inject constructor(
         }
     }
 
-    private fun addCertification() {
+    private suspend fun addCertification() {
         val newCertificationList =
             currentState.info.certificationList + CertificationTag(certificationTitle = currentState.certificationInput.trim())
         updateState {

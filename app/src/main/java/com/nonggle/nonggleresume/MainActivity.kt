@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -97,7 +99,10 @@ class MainActivity : ComponentActivity() {
                     darkTheme = themeSettings.darkTheme,
                 ) {
                     Surface(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .systemBarsPadding()
+                            .statusBarsPadding(),
                         color = NonggleTheme.colorScheme.white
                     ) {
                         if (isLoggedIn) {
@@ -133,8 +138,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        /// TODO: loading 상태 true로 업데이트
-        /// TODO: 백그라운드 -> 포그라운드 전환일 경우 로그인 유효성을 미리 확인
+        viewModel.onResume()
     }
 
     override fun onPause() {

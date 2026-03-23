@@ -1,8 +1,10 @@
 package com.nonggle.resume.impl.step3
 
+import androidx.lifecycle.viewModelScope
 import com.nonggle.ui.BaseViewModel
 import com.nonggle.domain.repository.ResumeDraftStoreInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -11,23 +13,25 @@ class ResumeStep3ViewModel @Inject constructor(
 ) : BaseViewModel<ResumeStep3Event, ResumeStep3State, ResumeStep3Effect>(initialState = ResumeStep3State()) {
 
     override fun onEvent(event: ResumeStep3Event) {
-        when(event) {
-            is ResumeStep3Event.IntroduceChanged -> introduceChanged(event.introduce)
-            is ResumeStep3Event.PersonalityInput -> updateState { copy(personality = event.value) }
-            is ResumeStep3Event.RemovePersonalityChip -> removePersonalityChip(event.id)
-            is ResumeStep3Event.AddPersonalityChip -> addPersonality()
-            is ResumeStep3Event.IntroduceDetailInput -> introduceDetailChanged(event.value)
+        viewModelScope.launch {
+            when(event) {
+                is ResumeStep3Event.IntroduceChanged -> introduceChanged(event.introduce)
+                is ResumeStep3Event.PersonalityInput -> updateState { copy(personality = event.value) }
+                is ResumeStep3Event.RemovePersonalityChip -> removePersonalityChip(event.id)
+                is ResumeStep3Event.AddPersonalityChip -> addPersonality()
+                is ResumeStep3Event.IntroduceDetailInput -> introduceDetailChanged(event.value)
+            }
         }
     }
 
-    private fun introduceChanged(introduce: String) {
+    private suspend fun introduceChanged(introduce: String) {
         updateState { copy(introduce = introduce) }
         resumeStore.update {
             it.copy(introduce = introduce)
         }
     }
 
-    private fun removePersonalityChip(chipId: String) {
+    private suspend fun removePersonalityChip(chipId: String) {
         val newList = currentState.personalityList.filter { it.id != chipId }
         updateState { copy(personalityList = newList) }
         resumeStore.update {
@@ -35,7 +39,7 @@ class ResumeStep3ViewModel @Inject constructor(
         }
     }
 
-    private fun addPersonality() {
+    private suspend fun addPersonality() {
         val newList = currentState.personalityList + PersonalityTag(personality = currentState.personality?.trim() ?: "")
         updateState {
             if ((personality ?: "").trim().isEmpty()) return@updateState this
@@ -49,7 +53,7 @@ class ResumeStep3ViewModel @Inject constructor(
         }
     }
 
-    private fun introduceDetailChanged(value: String) {
+    private suspend fun introduceDetailChanged(value: String) {
         updateState { copy(introduceDetail = value) }
         resumeStore.update {
             it.copy(introduceDetail = value)

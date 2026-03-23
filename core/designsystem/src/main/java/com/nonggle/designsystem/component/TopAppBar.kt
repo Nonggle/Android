@@ -61,7 +61,8 @@ fun NonggleTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonggleMainTopAppBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    appBarTitle: String,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -74,7 +75,7 @@ fun NonggleMainTopAppBar(
         ),
         title = {
             Text(
-                text = stringResource(R.string.app_name),
+                text = appBarTitle,
                 color = NonggleTheme.colorScheme.m1,
                 style = TextStyle(
                     fontFamily = soYo,
@@ -111,6 +112,6 @@ private fun NonggleTopAppBarPreview() {
 @Composable
 private fun NonggleMainTopAppBarPreview() {
     NonggleTheme {
-        NonggleMainTopAppBar()
+        NonggleMainTopAppBar(appBarTitle = "농글")
     }
 }

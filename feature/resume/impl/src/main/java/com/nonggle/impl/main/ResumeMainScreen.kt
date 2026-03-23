@@ -1,6 +1,5 @@
 package com.nonggle.resume.impl.main
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,11 +9,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.nonggle.designsystem.component.NonggleTabRow
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,7 +40,14 @@ internal fun ResumeMainScreen(
 
     val pagerState = rememberPagerState(pageCount = { uiState.tabList.size })
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect {  effect ->
+            when(effect) {
+                is ResumeMainEffect.NavigateToComplete -> navigateToComplete()
+            }
+        }
+    }
 
     ResumeMainScreen(
         modifier = modifier,
@@ -52,10 +58,9 @@ internal fun ResumeMainScreen(
                 pagerState.animateScrollToPage(index)
             }
         },
-        navigateToComplete = {
+        navigateToNext = {
             if (pagerState.currentPage == uiState.tabList.size - 1) {
-                /// FIXME: 데이터 검증 거친 후 이동 만약 검증 실패시 오류 생긴 화면으로 이동
-                navigateToComplete()
+                viewModel.setEvent(ResumeMainEvent.NavigateToComplete)
             } else {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -63,7 +68,7 @@ internal fun ResumeMainScreen(
             }
         },
         navigateGoBack = navigateToHome,
-        context = context
+        submitState = uiState.submitStatus,
     )
 }
 
@@ -73,10 +78,10 @@ internal fun ResumeMainScreen(
     modifier: Modifier = Modifier,
     tabList: List<Int>,
     pagerState: PagerState,
+    submitState: Boolean,
     onTabClick: (Int) -> Unit,
-    navigateToComplete: () -> Unit,
+    navigateToNext: () -> Unit,
     navigateGoBack: () -> Unit,
-    context: Context,
 ) {
 
     Column(
@@ -117,10 +122,9 @@ internal fun ResumeMainScreen(
         FullButton(
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = navigateToComplete,
-            title = if (pagerState.currentPage == tabList.size - 1) stringResource(R.string.resume_complete) else stringResource(
-                R.string.resume_nextStep
-            )
+            enabled = if (pagerState.currentPage == tabList.size - 1) submitState else true,
+            onClick = navigateToNext,
+            title = if (pagerState.currentPage == tabList.size - 1) stringResource(R.string.resume_complete) else stringResource(R.string.resume_nextStep)
         )
     }
 

@@ -81,7 +81,7 @@ internal fun HomeScreen(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                NonggleMainTopAppBar()
+                NonggleMainTopAppBar(appBarTitle = stringResource(R.string.HomeScreen_Title))
                 Text(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                     text = stringResource(R.string.HomeScreen_MainTitle, uiState.userName),

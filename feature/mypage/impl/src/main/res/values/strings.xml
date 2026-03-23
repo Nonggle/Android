@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="MyPageScreen_MainTitle">마이페이지</string>
+    <string name="MyPageScreen_LogoutButton">로그아웃</string>
+    <string name="Logout_DialogTitle">로그아웃</string>
+    <string name="Logout_DialogSubTitle">로그아웃 하시겠습니까?</string>
+</resources>

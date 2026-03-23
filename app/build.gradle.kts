@@ -73,5 +73,6 @@ dependencies {
     implementation(project(":feature:download:impl"))
     implementation(project(":feature:resume:impl"))
     implementation(project(":feature:resume_view:impl"))
-    implementation(project(":feature:setting"))
+    implementation(project(":feature:mypage:api"))
+    implementation(project(":feature:mypage:impl"))
 }

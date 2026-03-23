@@ -44,6 +44,7 @@ import coil3.transform.CircleCropTransformation
 import com.nonggle.designsystem.component.FullButton
 import com.nonggle.designsystem.component.NonggleDialog
 import com.nonggle.designsystem.component.NonggleIconButton
+import com.nonggle.designsystem.component.NonggleMainTopAppBar
 import com.nonggle.designsystem.theme.NonggleTheme
 import com.nonggle.feature.download.impl.R
 import com.nonggle.feature.download.impl.DownloadEvent
@@ -80,21 +81,31 @@ internal fun DownloadScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp, vertical = 24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 20.dp),
     ) {
+        NonggleMainTopAppBar(appBarTitle = stringResource(R.string.Download_Title))
         if (uiState.isLoading == true) {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         } else if (uiState.isError == true) {
-            FullButton(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                title = stringResource(R.string.Download_Title_RetryButton),
-                onClick = { onEvent(DownloadEvent.RetryGetResumeList) }
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                FullButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    title = stringResource(R.string.Download_Title_RetryButton),
+                    onClick = { onEvent(DownloadEvent.RetryGetResumeList) }
+                )
+            }
         } else {
             LazyColumn(
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(

@@ -1,8 +1,11 @@
 package com.nonggle.domain.repository
 import com.nonggle.model.ResumeWritingModel
+import kotlinx.coroutines.flow.StateFlow
 
 interface ResumeDraftStoreInterface {
-    fun update(reducer: (ResumeWritingModel) -> ResumeWritingModel)
+    val draft: StateFlow<ResumeWritingModel>
 
-    fun snapshot(): ResumeWritingModel
+    suspend fun update(reducer: (ResumeWritingModel) -> ResumeWritingModel)
+
+    suspend fun snapshot(): ResumeWritingModel
 }

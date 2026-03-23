@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -63,6 +64,9 @@ internal fun ResumeStep1Screen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val profileImageOverflowMessage = stringResource(R.string.resume1Screen_profile_image_overflow)
+    val birthDateNotValidMessage = stringResource(R.string.resume1Screen_birthdate_notValid)
+
 
     val scrollState = rememberScrollState()
     val datePickerState = rememberDatePickerState()
@@ -78,8 +82,11 @@ internal fun ResumeStep1Screen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is ResumeStep1Effect.SendToastMessage -> {
-                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                is ResumeStep1Effect.SendImageVolumeOverFlowMessage -> {
+                    Toast.makeText(context, profileImageOverflowMessage, Toast.LENGTH_SHORT).show()
+                }
+                is ResumeStep1Effect.SendBirthDateNotValidMessage -> {
+                    Toast.makeText(context, birthDateNotValidMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -92,7 +99,7 @@ internal fun ResumeStep1Screen(
             val sizeInBytes = getImageSizeFromUri(context, uri)
             val sizeInMB = sizeInBytes / (1024.0 * 1024.0)
             if (sizeInMB > Policy.MAX_PROFILE_IMAGE_SIZE_IN_BYTES) {
-                viewModel.setEvent(ResumeStep1Event.ImageVolumeExceeded(message = "업로드 가능한 이미지 용량을 초과했습니다."))
+                viewModel.setEvent(ResumeStep1Event.ImageVolumeExceeded)
                 return@rememberLauncherForActivityResult
             } else {
                 uri.let { viewModel.setEvent(ResumeStep1Event.SelectImage(it)) }
@@ -141,6 +148,7 @@ internal fun ResumeStep1Screen(
             .fillMaxSize()
             .padding(horizontal = 20.dp, vertical = 24.dp)
             .verticalScroll(scrollState)
+            .imePadding()
     ) {
         Text(
             text = stringResource(R.string.resume1Screen_profile_image),

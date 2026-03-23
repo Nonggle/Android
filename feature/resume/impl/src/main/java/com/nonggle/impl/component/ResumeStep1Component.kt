@@ -188,8 +188,9 @@ fun certificationInput(
         }
         if (certificationList.isNotEmpty()) {
             FlowRow(
-                modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 certificationList.forEach { item ->
                     NonggleChip(
